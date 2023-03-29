@@ -1,0 +1,18 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class SafetyBriefingInfo extends Model
+{
+    protected $table = 'safetybriefinginfo';
+
+    protected $fillable = [
+        'id',
+        'briefingDate',
+        'briefingTime',
+        'maxParticipant',
+    ];
+}

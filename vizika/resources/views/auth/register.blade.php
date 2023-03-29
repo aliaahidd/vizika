@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('Register') }}</div>
+                <div class="card-header d-flex justify-content-center">{{ __('Register') }}</div>
 
                 <div class="card-body">
                     <form method="POST" action="{{ route('register') }}">
@@ -61,11 +61,41 @@
                             </div>
                         </div>
 
+                        <div class="row mb-3">
+                            <label for="category" class="col-md-4 col-form-label text-md-end">{{ __('User Type') }}</label>
+
+                            <div class="col-md-6">
+                                <select class="form-control" name="category">
+                                    <option value="">Please select</option>
+                                    <option value="SHEQ Officer">SHEQ Officer</option>
+                                    <option value="SHEQ Guard">SHEQ Guard</option>
+                                    <option value="Staff">Staff</option>
+                                    <option value="Contractor">Contractor</option>
+                                </select>
+                                @error('category')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+
+                            </div>
+                        </div>
+
                         <div class="row mb-0">
-                            <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
+                            <div class="col-md-6 offset-md-4 text-center">
+                                <button type="submit" class="btn btn-primary btn-block">
                                     {{ __('Register') }}
                                 </button>
+                            </div>
+                        </div>
+
+                        <br>
+                        <div class="row mb-0">
+                            <div class="col-md-8 offset-md-4">
+                                <label for="register">Have an account?</label>
+                                <a class="btn btn-link" href="{{ route('login') }}">
+                                    {{ __('Login') }}
+                                </a>
                             </div>
                         </div>
                     </form>
