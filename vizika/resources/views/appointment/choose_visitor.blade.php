@@ -11,7 +11,7 @@
 <script src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>
 
 <script>
-    // to search the appointment 
+    // to search the visitor contractor 
     $(document).ready(function() {
         $('#dataTable').DataTable({
             "order": [
@@ -23,7 +23,7 @@
             }
         });
 
-        // filter appointment
+        // filter visitor contractor 
         $('.dataTables_filter input[type="search"]').css({
             'width': '300px',
             'display': 'inline-block',
@@ -43,7 +43,6 @@
 <div class="card">
     <div class="card-header pb-0">
         <div class="row">
-
             <!-- if user == committee, then have add new appointment button  -->
             @if( auth()->user()->category=="Staff")
             <div class="col-lg-2 col-md-2 col-sm-2" style="float: right;">
@@ -51,7 +50,6 @@
                     <i class="fas fa-plus"></i>&nbsp; Register New Visitor</a>
             </div>
             @endif
-
         </div>
     </div>
 
@@ -66,7 +64,7 @@
                             <th>ID</th>
                             <th>Name</th>
                             <th>Email</th>
-                            <th>Invite</th>
+                            <th>Type</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -75,7 +73,7 @@
                             <td>{{ $data->id }}</td>
                             <td>{{ $data->name }}</td>
                             <td>{{ $data->email }}</td>
-                            <td><a name="visitor" class="btn btn-primary" href="{{ route('appointment/createappointment', $data->id) }}">View</a></td>
+                            <td>{{ $data->category }}</td>
                         </tr>
                         @endforeach
                     </tbody>

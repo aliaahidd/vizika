@@ -13,11 +13,14 @@ return new class extends Migration
     {
         Schema::create('visitrecord', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('userID');
+            $table->bigInteger('staffID');
+            $table->bigInteger('contVisitID');
+            $table->string('appointmentPurpose');
+            $table->string('appointmentAgenda');
             $table->date('checkInDate');
             $table->time('checkInTime');
-            $table->date('checkOutDate');
-            $table->time('checkOutTime');
+            $table->date('checkOutDate')->nullable();
+            $table->time('checkOutTime')->nullable();
             $table->timestamps();
         });
     }

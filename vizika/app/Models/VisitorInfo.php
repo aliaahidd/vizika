@@ -13,8 +13,11 @@ class VisitorInfo extends Model
         'id',
         'userID',
         'employeeID',
-        'company',
+        'companyName',
         'occupation',
         'phoneNo',
+        'birthDate',
+        'address',
+        'passportPhoto',
     ];
 }

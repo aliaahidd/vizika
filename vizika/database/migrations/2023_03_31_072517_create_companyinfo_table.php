@@ -11,15 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('contractorinfo', function (Blueprint $table) {
+        Schema::create('companyinfo', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('userID');
             $table->string('companyName');
-            $table->string('phoneNo');
-            $table->date('passExpiryDate');
-            $table->date('birthDate');
-            $table->string('address');
-            $table->string('passportPhoto');
+            $table->string('companyEmail');
+            $table->string('companyPhoneNo');
+            $table->string('companyAdddress');
             $table->timestamps();
         });
     }
@@ -29,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('contractorinfo');
+        Schema::dropIfExists('companyinfo');
     }
 };

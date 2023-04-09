@@ -77,7 +77,7 @@
                             <td>{{ $data->name }}</td>
                             <td>{{ $data->email }}</td>
                             <td>{{ $data->phoneNo }}</td>
-                            <td>{{ $data->company }}</td>
+                            <td>{{ $data->companyName }}</td>
                             <td>{{ $data->occupation }}</td>
                             <td>
                                 <ul class="navbar-nav flex-row ml-auto ">

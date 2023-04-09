@@ -18,16 +18,23 @@
             @csrf
             <div class="row">
                 <div class="col">
-                    <label>Visitor Name</label>
-                    <input type="text" name="name" class="form-control" placeholder="Visitor Name" required>
+                    <label>Name</label>
+                    <input type="text" name="name" class="form-control" placeholder="Name" required>
                     <br>
-                    <label>Visitor Email</label>
-                    <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" placeholder="Visitor Email" value="{{ old('email') }}" required autocomplete="email">
+                    <label>Email</label>
+                    <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" placeholder="Email" value="{{ old('email') }}" required autocomplete="email">
                     @error('email')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
                     </span>
                     @enderror
+                    <br>
+                    <label>User Type</label>
+                    <select class="form-control" id="userType" name="category" onchange="toggleDropdown()">
+                        <option value="">Please select</option>
+                        <option value="Contractor">Contractor</option>
+                        <option value="Visitor">Visitor</option>
+                    </select>
                 </div>
             </div>
             <br>

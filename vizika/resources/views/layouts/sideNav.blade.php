@@ -106,6 +106,12 @@
                             <span>Appointment</span>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('choosevisitor*') ? 'active' : '' }}" href="{{ route('choosevisitor') }}">
+                            <i class="material-icons">today</i>
+                            <span>Visitor & Contractor</span>
+                        </a>
+                    </li>
                     @endif
 
 
@@ -137,6 +143,8 @@
                                 <span class="d-none d-md-inline-block"><strong>{{ Auth::user()->name }}</strong><br> {{Auth::user()->category}}</span>
                             </a>
                             <div class="dropdown-menu dropdown-menu-small">
+                                <a class="dropdown-item" href="{{ route('profile', Auth::user()->id ) }}">
+                                    <i class="material-icons">&#xE7FD;</i> Profile</a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item text-danger" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">

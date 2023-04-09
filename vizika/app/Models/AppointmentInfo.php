@@ -12,10 +12,11 @@ class AppointmentInfo extends Model
     protected $fillable = [
         'id',
         'staffID',
-        'visitorID',
-        'appointmentName',
+        'contVisitID',
+        'appointmentPurpose',
+        'appointmentAgenda',
         'appointmentDate',
         'appointmentTime',
-        'appointmentPurpose',
+        'appointmentStatus',
     ];
 }

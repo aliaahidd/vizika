@@ -41,7 +41,7 @@ class DashboardController extends Controller
             ) {
                 return view('dashboard.Contractor');
             } else {
-                return view('profile.contractor_detail');
+                return redirect()->route('contractordetail');
             }
         }
         if ($category == 'Visitor') {
@@ -54,7 +54,7 @@ class DashboardController extends Controller
             ) {
                 return view('dashboard.Visitor');
             } else {
-                return view('profile.visitor_detail');
+                return redirect()->route('visitordetail');
             }
         }
     }

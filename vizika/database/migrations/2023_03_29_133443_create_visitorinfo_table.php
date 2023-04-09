@@ -15,9 +15,12 @@ return new class extends Migration
             $table->id();
             $table->bigInteger('userID');
             $table->string('employeeID');
-            $table->string('company');
+            $table->string('companyName');
             $table->string('occupation');
             $table->string('phoneNo');
+            $table->date('birthDate');
+            $table->string('address');
+            $table->string('passportPhoto');
             $table->timestamps();
         });
     }

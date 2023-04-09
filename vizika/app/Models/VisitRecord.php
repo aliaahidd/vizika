@@ -11,7 +11,10 @@ class VisitRecord extends Model
 
     protected $fillable = [
         'id',
-        'userID',
+        'staffID',
+        'contVisitID',
+        'appointmentPurpose',
+        'appointmentAgenda',
         'checkInDate',
         'checkInTime',
         'checkOutDate',

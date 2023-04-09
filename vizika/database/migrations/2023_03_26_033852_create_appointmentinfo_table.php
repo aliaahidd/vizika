@@ -14,11 +14,12 @@ return new class extends Migration
         Schema::create('appointmentinfo', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('staffID');
-            $table->bigInteger('visitorID');
-            $table->string('appointmentName');
+            $table->bigInteger('contVisitID');
+            $table->string('appointmentPurpose');
+            $table->string('appointmentAgenda');
             $table->date('appointmentDate');
             $table->time('appointmentTime');
-            $table->string('appointmentPurpose');
+            $table->string('appointmentStatus');
             $table->timestamps();
         });
     }

@@ -31,27 +31,46 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'loadDashboard'])->name('dashboard');
 
 //PROFILE 
+//display profile page (all user)
+Route::get('/Profile/{id}', [App\Http\Controllers\ProfileController::class, 'loadProfile'])->name('profile');
+//display edit profile page (all user)
+Route::get('/Profile/Edit-Profile/{id}', [App\Http\Controllers\ProfileController::class, 'editprofile'])->name('editprofile');
+//query edit profile page (all user)
+Route::put('updateprofile/{id}', [App\Http\Controllers\ProfileController::class, 'updateprofile'])->name('updateprofile');
+//display page contractor detail
+Route::get('/contractor-detail', [App\Http\Controllers\ProfileController::class, 'contractordetail'])->name('contractordetail');
+//display page contractor detail
+Route::get('/visitor-detail', [App\Http\Controllers\ProfileController::class, 'visitordetail'])->name('visitordetail');
 //store additional contractor info
 Route::post('/contractor-info', [App\Http\Controllers\ProfileController::class, 'storecontractorinfo'])->name('storecontractorinfo');
-Route::post('/info', [App\Http\Controllers\ProfileController::class, 'storevisitorinfo'])->name('storevisitorinfo');
+//store additional visitor info
+Route::post('/visitor-info', [App\Http\Controllers\ProfileController::class, 'storevisitorinfo'])->name('storevisitorinfo');
+//visitor list page
+Route::get('/visitor', [App\Http\Controllers\ProfileController::class, 'visitor'])->name('visitor');
 
 
 //APPOINTMENT
 //appointment page
 Route::get('/appointment', [App\Http\Controllers\AppointmentController::class, 'appointment'])->name('appointment');
-//display page
-Route::get('/create-appointment', [App\Http\Controllers\AppointmentController::class, 'setappointment'])->name('appointment/setappointment');
 //query insert appointment
-Route::post('/set-appointment/{id}', [App\Http\Controllers\AppointmentController::class, 'storeappointment'])->name('storeappointment');
-
+Route::post('/set-appointment', [App\Http\Controllers\AppointmentController::class, 'storeappointment'])->name('storeappointment');
 //choose visitor page load
-Route::get('/appointment/choose-visitor', [App\Http\Controllers\AppointmentController::class, 'choosevisitorform'])->name('appointment/choosevisitor');
+Route::get('/appointment/choose-visitor', [App\Http\Controllers\AppointmentController::class, 'choosevisitorform'])->name('choosevisitor');
 //create appointment page load
-Route::get('/appointment/create-appointment/{id}', [App\Http\Controllers\AppointmentController::class, 'createappointmentform'])->name('appointment/createappointment');
+Route::get('/appointment/create-appointment', [App\Http\Controllers\AppointmentController::class, 'createappointmentform'])->name('appointment/createappointment');
 //register visitor page load
 Route::get('/appointment/register-visitor', [App\Http\Controllers\AppointmentController::class, 'registervisitorform'])->name('appointment/registervisitorform');
 //register visitor (insert)
 Route::post('/register-visitor', [App\Http\Controllers\AppointmentController::class, 'registervisitor'])->name('registervisitor');
-
-//visitor list page
-Route::get('/visitor', [App\Http\Controllers\ProfileController::class, 'visitor'])->name('visitor');
+//route to the aattend the visit
+Route::get('/Attend-visit/{id}', [App\Http\Controllers\AppointmentController::class, 'attendvisit'])->name('attendvisit');
+//route to the not aattend the visit
+Route::get('/Not-attend-visit/{id}', [App\Http\Controllers\AppointmentController::class, 'notattendvisit'])->name('notattendvisit');
+//show modal visitor
+Route::get('/visitor/{id}', [App\Http\Controllers\AppointmentController::class, 'modalVisitor'])->name('visitor.showV');
+//show modal contractor
+Route::get('/contractor/{id}', [App\Http\Controllers\AppointmentController::class, 'modalContractor'])->name('contractor.showC');
+//show modal visitor
+Route::get('/checkin-visitor/{id}', [App\Http\Controllers\AppointmentController::class, 'checkinvisitor'])->name('checkin-visitor');
+//show modal visitor
+Route::get('/checkin-contractor/{id}', [App\Http\Controllers\AppointmentController::class, 'checkincontractor'])->name('checkin-contractor');

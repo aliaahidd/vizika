@@ -10,24 +10,48 @@ use Illuminate\Support\Facades\Hash;
 use App\Mail\SendEmail;
 use App\Models\AppointmentInfo;
 use App\Models\User;
+use Carbon\Carbon;
 
 class AppointmentController extends Controller
 {
     // list of appointment for all users    
     public function appointment()
     {
+        //staff view 
         $appointmentStaff = DB::table('appointmentinfo')
             ->orderBy('appointmentinfo.id', 'desc')
-            ->join('users', 'users.id', '=', 'appointmentinfo.visitorID')
+            ->join('users', 'users.id', '=', 'appointmentinfo.contVisitID')
             ->where('staffID', Auth::user()->id)
             ->get();
 
+        //visitor view
         $appointmentVisitor = DB::table('appointmentinfo')
             ->orderBy('appointmentinfo.id', 'desc')
             ->join('users', 'users.id', '=', 'appointmentinfo.staffID')
-            ->where('visitorID', Auth::user()->id)
+            ->select([
+                'users.id AS staffID',
+                'appointmentinfo.id AS appointmentID', 'users.*', 'appointmentinfo.*'
+            ])
+            ->where('contVisitID', Auth::user()->id)
             ->get();
-        return view('appointment.list_appointment', compact('appointmentVisitor', 'appointmentStaff'));
+
+        //guard view
+
+        // Set the timezone to Kuala Lumpur
+        $kl_timezone = 'Asia/Kuala_Lumpur';
+
+        // Get today's date in Kuala Lumpur timezone
+        $today_date = Carbon::now($kl_timezone)->toDateString();
+
+        $appointmentGuard = DB::table('appointmentinfo')
+            ->orderBy('appointmentinfo.id', 'desc')
+            ->join('users as cont_visit_user', 'appointmentInfo.contVisitID', '=', 'cont_visit_user.id')
+            ->join('users as staff_user', 'appointmentInfo.staffID', '=', 'staff_user.id')
+            ->select('appointmentInfo.*', 'cont_visit_user.*', 'cont_visit_user.name as cont_visit_name', 'staff_user.name as staff_name')
+            ->where('appointmentDate', $today_date)
+            ->get();
+
+        return view('appointment.list_appointment', compact('appointmentVisitor', 'appointmentStaff', 'appointmentGuard'));
     }
 
     //choose visitor form page
@@ -36,17 +60,26 @@ class AppointmentController extends Controller
         $visitorlist = DB::table('users')
             ->orderBy('name', 'asc')
             ->where('category', 'Visitor')
+            ->orwhere('category', 'Contractor')
             ->get();
 
         return view('appointment.choose_visitor', compact('visitorlist'));
     }
 
     //create appointment form page
-    public function createappointmentform(Request $request, $id)
+    public function createappointmentform(Request $request)
     {
-        $appointment = User::find($id);
+        $visitorlist = DB::table('users')
+            ->orderBy('name', 'asc')
+            ->where('category', 'Visitor')
+            ->get();
 
-        return view('appointment.create_appointment', compact('appointment'));
+        $contractorlist = DB::table('users')
+            ->orderBy('name', 'asc')
+            ->where('category', 'Contractor')
+            ->get();
+
+        return view('appointment.create_appointment', compact('visitorlist', 'contractorlist'));
     }
 
     public function registervisitorform()
@@ -61,6 +94,7 @@ class AppointmentController extends Controller
         // get user auth
         $name = $request->input('name');
         $email = $request->input('email');
+        $category = $request->input('category');
 
         $Email = User::where('email', $email)->first();
         if ($Email) {
@@ -73,57 +107,153 @@ class AppointmentController extends Controller
             'name' => $name,
             'email' => $email,
             'password' => Hash::make('visitor123'),
-            'category' => 'Visitor',
+            'category' => $category,
         );
 
         // insert query
         DB::table('users')->insert($data);
 
         sleep(1);
-        return redirect()->route('appointment/choosevisitor');
+        return redirect()->route('choosevisitor');
     }
 
     //store appointment details
-    public function storeappointment(Request $request, $id)
+    public function storeappointment(Request $request)
     {
         $dataquery = array(
             'staffID'             =>  Auth::user()->id,
-            'visitorID'           =>  $id,
-            'appointmentName'     =>  $request->appointmentName,
+            'contVisitID'         =>  $request->contVisit,
+            'appointmentPurpose'  =>  $request->appointmentPurpose,
+            'appointmentAgenda'   =>  $request->appointmentAgenda,
             'appointmentDate'     =>  $request->appointmentDate,
             'appointmentTime'     =>  $request->appointmentTime,
-            'appointmentPurpose'  =>  $request->appointmentPurpose,
+            'appointmentStatus'   =>  'Pending',
         );
         // insert query appointment
         DB::table('appointmentinfo')->insert($dataquery);
 
+        $user = DB::table('users')
+            ->select([
+                'name', 'email',
+            ])
+            ->where('users.id', $request->contVisit)
+            ->first();
+
         //send email
         $this->validate($request, [
-            'name'                =>  'required',
-            'appointmentName'     =>  'required',
+            'appointmentPurpose'  =>  'required',
+            'appointmentAgenda'   =>  'required',
             'appointmentDate'     =>  'required',
             'appointmentTime'     =>  'required',
-            'email'               =>  'required|email',
-            'appointmentPurpose'  =>  'required'
         ]);
 
         $data = array(
-            'name'                =>  $request->name,
-            'appointmentName'     =>  $request->appointmentName,
-            'appointmentDate'     =>  $request->appointmentDate,
-            'appointmentTime'     =>  $request->appointmentTime,
+            'name'                =>  $user->name,
+            'email'               =>  $user->email,
             'appointmentPurpose'  =>  $request->appointmentPurpose,
-            'email'               =>  $request->email
+            'appointmentAgenda'   =>  $request->appointmentAgenda,
+            'appointmentDate'     =>  $request->appointmentDate,
+            'appointmentTime'     =>  $request->appointmentTime
         );
 
         $to = [
             [
-                'email' => $request->email,
+                'email' => $user->email,
             ]
         ];
 
         //send email 
         Mail::to($to)->send(new SendEmail($data));
         return back()->with('success', 'Email sent.');
+    }
+
+    //function for visitor to attend 
+    public function attendvisit($id)
+    {
+        $visit = AppointmentInfo::find($id);
+        $visit->appointmentStatus = "Attend";
+
+        $visit->update();
+        return redirect()->route('appointment');
+    }
+
+    //function for visitor to attend 
+    public function notattendvisit($id)
+    {
+        $visit = AppointmentInfo::find($id);
+        $visit->appointmentStatus = "Not Attend";
+
+        $visit->update();
+        return redirect()->route('appointment');
+    }
+
+    //modal visitor 
+    public function modalVisitor($id)
+    {
+        $visitor = DB::table('appointmentinfo')
+            ->join('users', 'users.id', '=', 'appointmentinfo.contVisitID')
+            ->join('visitorinfo', 'visitorinfo.userID', '=', 'appointmentinfo.contVisitID')
+            ->select('appointmentinfo.*', 'users.*', 'visitorinfo.*', 'appointmentinfo.id as appointmentID')
+
+            ->where('contVisitID', $id)
+            ->first();
+        return response()->json($visitor);
+    }
+
+    //modal contractor
+    public function modalContractor($id)
+    {
+        $visitor = DB::table('appointmentinfo')
+            ->join('users', 'users.id', '=', 'appointmentinfo.contVisitID')
+            ->join('contractorinfo', 'contractorinfo.userID', '=', 'appointmentinfo.contVisitID')
+            ->select('appointmentInfo.*', 'users.*', 'contractorinfo.*', 'appointmentinfo.id as appointmentID')
+            ->where('contVisitID', $id)
+            ->first();
+        return response()->json($visitor);
+    }
+
+    public function checkinvisitor($id)
+    {
+        // Set the timezone to Kuala Lumpur
+        $kl_timezone = 'Asia/Kuala_Lumpur';
+
+        // Get today's date in Kuala Lumpur timezone
+        $today_date = Carbon::now($kl_timezone)->toDateString();
+
+        $appointment = DB::table('appointmentinfo')
+            ->where('id', $id)
+            ->first();
+
+        $staffID = $appointment->staffID;
+        $contVisitID = $appointment->contVisitID;
+        $purpose = $appointment->appointmentPurpose;
+        $agenda = $appointment->appointmentAgenda;
+
+        date_default_timezone_set("Asia/Kuala_Lumpur");
+
+        $dataquery = array(
+            'staffID'             =>  $staffID,
+            'contVisitID'         =>  $contVisitID,
+            'appointmentPurpose'  =>  $purpose,
+            'appointmentAgenda'   =>  $agenda,
+            'checkInDate'         =>  date('Y-m-d'),
+            'checkInTime'         =>  date('H:i:s'),
+        );
+        // insert query appointment
+        DB::table('visitrecord')->insert($dataquery);
+
+        //delete appointment record
+        $appointmentinfo = AppointmentInfo::find($id);
+        if ($appointmentinfo) {
+            // If the record exists, delete it
+            $appointmentinfo->delete();
+        } 
+
+        return redirect()->route('appointment');
+    }
+
+    public function checkincontractor($id)
+    {
+        return redirect()->route('dashboard');
     }
 }
