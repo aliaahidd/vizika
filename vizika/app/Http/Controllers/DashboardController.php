@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class DashboardController extends Controller
 {
@@ -21,11 +22,24 @@ class DashboardController extends Controller
     {
         $category = Auth::user()->category;
 
+        // Set the timezone to Kuala Lumpur
+        $kl_timezone = 'Asia/Kuala_Lumpur';
+
+        // Get today's date in Kuala Lumpur timezone
+        $today_date = Carbon::now($kl_timezone)->toDateString();
+
         if ($category == 'SHEQ Officer') {
             return view('dashboard.Officer');
         }
         if ($category == 'SHEQ Guard') {
-            return view('dashboard.Guard');
+            $visitorlog = DB::table('visitrecord')
+                ->join('users as cont_visit_user', 'visitrecord.contVisitID', '=', 'cont_visit_user.id')
+                ->join('users as staff_user', 'visitrecord.staffID', '=', 'staff_user.id')
+                ->select('visitrecord.*', 'visitrecord.id as recordID', 'cont_visit_user.*', 'cont_visit_user.name as cont_visit_name', 'staff_user.name as staff_name')
+                ->where('checkInDate', $today_date)
+                ->get();
+
+            return view('dashboard.Guard', compact('visitorlog'));
         }
         if ($category == 'Staff') {
             //dd(Auth::user()->id);

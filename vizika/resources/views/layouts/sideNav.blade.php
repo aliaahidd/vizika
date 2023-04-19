@@ -38,17 +38,7 @@
                         </a>
                     </li>
 
-                    <!-- DASHBOARD START -->
-                    @if( auth()->user()->category== "Contractor")
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('dashboard*') ? 'active' : '' }}" href="{{ route('dashboard') }}">
-                            <i class="material-icons">work</i>
-                            <span>Safety Briefing</span>
-                        </a>
-                    </li>
-                    @endif
-
-                    @if( auth()->user()->category== "Visitor" || auth()->user()->category== "SHEQ Guard")
+                    @if( auth()->user()->category== "Visitor" || auth()->user()->category== "SHEQ Guard" || auth()->user()->category== "Contractor")
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('appointment*') ? 'active' : '' }}" href="{{ route('appointment') }}">
                             <i class="material-icons">today</i>
@@ -57,9 +47,19 @@
                     </li>
                     @endif
 
+                    <!-- DASHBOARD START -->
+                    @if( auth()->user()->category== "Contractor")
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('briefing*') ? 'active' : '' }}" href="{{ route('briefing') }}">
+                            <i class="material-icons">work</i>
+                            <span>Safety Briefing</span>
+                        </a>
+                    </li>
+                    @endif
+
                     @if( auth()->user()->category== "SHEQ Officer")
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('dashboard*') ? 'active' : '' }}" href="{{ route('dashboard') }}">
+                        <a class="nav-link {{ request()->routeIs('logvisitor*') ? 'active' : '' }}" href="{{ route('logvisitor') }}">
                             <i class="material-icons">checklist</i>
                             <span>Visitor Log</span>
                         </a>
@@ -83,7 +83,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('dashboard*') ? 'active' : '' }}" href="{{ route('dashboard') }}">
+                        <a class="nav-link {{ request()->routeIs('briefing*') ? 'active' : '' }}" href="{{ route('briefing') }}">
                             <i class="material-icons">work</i>
                             <span>Safety Briefing</span>
                         </a>
@@ -104,6 +104,12 @@
                         <a class="nav-link {{ request()->routeIs('appointment*') ? 'active' : '' }}" href="{{ route('appointment') }}">
                             <i class="material-icons">today</i>
                             <span>Appointment</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('record*') ? 'active' : '' }}" href="{{ route('record') }}">
+                            <i class="material-icons">today</i>
+                            <span>Record History</span>
                         </a>
                     </li>
                     <li class="nav-item">

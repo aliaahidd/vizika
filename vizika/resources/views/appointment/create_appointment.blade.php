@@ -56,18 +56,20 @@
                     <br>
 
                     <label for="contractorlistlabel" id="contractorlist" style="display:none;">Contractor Name:</label>
-                    <select class="form-control" id="contractorlistlabel" name="contVisit" style="display:none;">
+                    <select class="form-control" id="contractorlistlabel" name="contractorName" style="display:none;">
                         @foreach($contractorlist as $data)
                         <option value="{{$data->id}}">{{$data->name}}</option>
                         @endforeach
                     </select>
+                    <button style="display:none;" class="btn btn-info" type="button" id="addmorec">Add more</button>
 
                     <label for="visitorlistlabel" id="visitorlist" style="display:none;">Visitor Name:</label>
-                    <select class="form-control" id="visitorlistlabel" name="contVisit" style="display:none;">
+                    <select class="form-control" id="visitorlistlabel" name="visitorName" style="display:none;">
                         @foreach($visitorlist as $data)
                         <option value="{{$data->id}}">{{$data->name}}</option>
                         @endforeach
                     </select>
+                    <button style="display:none;" class="btn btn-info" type="button" id="addmorev">Add more</button>
                 </div>
             </div>
             <br>
@@ -142,13 +144,17 @@
         if (userType.value === "Contractor") {
             visitorlistlabel.style.display = "none";
             visitorlist.style.display = "none";
+            addmorev.style.display = "none";
             contractorlistlabel.style.display = "block";
             contractorlist.style.display = "block";
+            addmorec.style.display = "block";
         } else if (userType.value === "Visitor") {
             contractorlistlabel.style.display = "none";
             contractorlist.style.display = "none";
+            addmorec.style.display = "none";
             visitorlistlabel.style.display = "block";
             visitorlist.style.display = "block";
+            addmorev.style.display = "block";
         } else {
             contractorlistlabel.style.display = "none";
             contractorlist.style.display = "none";
@@ -157,4 +163,21 @@
         }
     }
 </script>
+
+<script>
+    $(document).ready(function() {
+        // When the "Add more" button is clicked
+        $('#addmorec').click(function() {
+            // Clone the dropdown field
+            var clonedField = $(this).prev('select[name="contractorName"]').clone();
+
+            // Clear the selected value of the cloned field
+            clonedField.val('');
+
+            // Append the cloned field to the form
+            $(this).after(clonedField);
+        });
+    });
+</script>
+
 @endsection

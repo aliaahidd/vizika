@@ -134,7 +134,7 @@
                     <!-- FOR STAFF TO VIEW RECORD APPOINTNMENT LIST END -->
 
                     <!-- FOR VISITOR TO VIEW RECORD APPOINTMENT LIST START -->
-                    @if( auth()->user()->category== "Visitor")
+                    @if( auth()->user()->category== "Visitor" || auth()->user()->category== "Contractor")
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                         <thead>
                             <tr>
@@ -278,7 +278,6 @@
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         <a href="#" id="v-link" class="btn btn-primary" data-bs-dismiss="modal"><span id="v-text">Check-in</span></a>
                         <div id="v-id" style="display: none"></div>
-
                     </div>
                 </div>
             </div>
@@ -345,6 +344,7 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         <a href="#" id="c-link" class="btn btn-primary" data-bs-dismiss="modal"><span id="c-text">Check-in</span></a>
+                        <div id="c-id" style="display: none"></div>
                     </div>
                 </div>
             </div>
@@ -397,7 +397,8 @@
             var userURL = $(this).data('url');
             $.get(userURL, function(data) {
                 $('#contractorShowModal').modal('show');
-                $('#c-id').text(data.id);
+                $('#c-id').text(data.appointmentID);
+                $('#c-id').attr('data-appointment-id', data.appointmentID);
                 $('#c-name').text(data.name);
                 $('#c-email').text(data.email);
                 $('#c-phoneNo').text(data.phoneNo);
@@ -408,10 +409,19 @@
                 var link = '{{ route("checkin-contractor", ":id") }}';
                 link = link.replace(':id', data.appointmentID);
                 $('#c-link').attr('href', link);
-                $('#c-text').text('Check-In'); // reset button text
+                $('#c-text').text('Check-In');
             })
         });
 
+        $('body').on('click', '#c-link', function(event) {
+            event.preventDefault(); // prevent the default behavior of the link
+            var appointmentID = $('#c-id').attr('data-appointment-id');
+            var link = '{{ route("checkin-contractor", ":id") }}';
+            link = link.replace(':id', appointmentID);
+            $('#c-link').attr('href', link);
+            $('#c-text').text('Check-In'); // reset button text
+            window.location.href = link; // redirect the user to the new page
+        });
     });
 </script>
 @endsection

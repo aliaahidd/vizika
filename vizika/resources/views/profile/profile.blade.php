@@ -68,7 +68,7 @@
                     </div>
                     <div class="row">
                         <div class="col-4">
-                            <label for="passExpiryDate">Name</label>
+                            <label for="passExpiryDate">Pass Expiry Date</label>
                         </div>
                         <div class="col">
                             <label for="passExpiryDatee">{{ $contractor->passExpiryDate }}</label>

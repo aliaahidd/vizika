@@ -12,7 +12,8 @@ class SafetyBriefingInfo extends Model
     protected $fillable = [
         'id',
         'briefingDate',
-        'briefingTime',
+        'briefingTimeStart',
+        'briefingTimeEnd',
         'maxParticipant',
     ];
 }

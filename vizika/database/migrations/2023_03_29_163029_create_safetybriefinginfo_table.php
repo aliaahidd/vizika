@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::create('safetybriefinginfo', function (Blueprint $table) {
             $table->id();
             $table->date('briefingDate');
-            $table->time('briefingTime');
+            $table->time('briefingTimeStart');
+            $table->time('briefingTimeEnd');
             $table->bigInteger('maxParticipant');
             $table->timestamps();
         });

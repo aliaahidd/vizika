@@ -70,7 +70,26 @@ Route::get('/Not-attend-visit/{id}', [App\Http\Controllers\AppointmentController
 Route::get('/visitor/{id}', [App\Http\Controllers\AppointmentController::class, 'modalVisitor'])->name('visitor.showV');
 //show modal contractor
 Route::get('/contractor/{id}', [App\Http\Controllers\AppointmentController::class, 'modalContractor'])->name('contractor.showC');
+
+//RECORD VISIT
+//past record lisr
+Route::get('/record', [App\Http\Controllers\RecordController::class, 'record'])->name('record');
+//visitor log
+Route::get('/Visitor-Log', [App\Http\Controllers\RecordController::class, 'visitorlog'])->name('logvisitor');
 //show modal visitor
-Route::get('/checkin-visitor/{id}', [App\Http\Controllers\AppointmentController::class, 'checkinvisitor'])->name('checkin-visitor');
+Route::get('/checkin-visitor/{id}', [App\Http\Controllers\RecordController::class, 'checkinvisitor'])->name('checkin-visitor');
 //show modal visitor
-Route::get('/checkin-contractor/{id}', [App\Http\Controllers\AppointmentController::class, 'checkincontractor'])->name('checkin-contractor');
+Route::get('/checkin-contractor/{id}', [App\Http\Controllers\RecordController::class, 'checkincontractor'])->name('checkin-contractor');
+//checkout
+Route::get('/checkout/{id}', [App\Http\Controllers\RecordController::class, 'checkout'])->name('checkout');
+
+//SAFTEY BRIEFING
+//safety briefing list 
+Route::get('/briefing', [App\Http\Controllers\BriefingController::class, 'briefing'])->name('briefing');
+//create briefing info 
+Route::get('/briefing/create-briefing-info', [App\Http\Controllers\BriefingController::class, 'createbriefinginfo'])->name('briefing/createbriefinginfo');
+// store briefing info
+Route::post('/set-briefing', [App\Http\Controllers\BriefingController::class, 'storebriefinginfo'])->name('storebriefinginfo');
+
+
+

@@ -49,6 +49,7 @@ class AppointmentController extends Controller
             ->join('users as staff_user', 'appointmentInfo.staffID', '=', 'staff_user.id')
             ->select('appointmentInfo.*', 'cont_visit_user.*', 'cont_visit_user.name as cont_visit_name', 'staff_user.name as staff_name')
             ->where('appointmentDate', $today_date)
+            ->where('appointmentStatus', 'Attend')
             ->get();
 
         return view('appointment.list_appointment', compact('appointmentVisitor', 'appointmentStaff', 'appointmentGuard'));
@@ -120,9 +121,19 @@ class AppointmentController extends Controller
     //store appointment details
     public function storeappointment(Request $request)
     {
+        if ($request->input('contractorName')) {
+            // Contractor dropdown was selected
+            $contVisit = $request->input('contractorName');
+            // process data for contractor
+        } elseif ($request->input('visitorName')) {
+            // Visitor dropdown was selected
+            $contVisit = $request->input('visitorName');
+            // process data for visitor
+        } 
+
         $dataquery = array(
             'staffID'             =>  Auth::user()->id,
-            'contVisitID'         =>  $request->contVisit,
+            'contVisitID'         =>  $contVisit,
             'appointmentPurpose'  =>  $request->appointmentPurpose,
             'appointmentAgenda'   =>  $request->appointmentAgenda,
             'appointmentDate'     =>  $request->appointmentDate,
@@ -136,7 +147,7 @@ class AppointmentController extends Controller
             ->select([
                 'name', 'email',
             ])
-            ->where('users.id', $request->contVisit)
+            ->where('users.id', $contVisit)
             ->first();
 
         //send email
@@ -210,50 +221,5 @@ class AppointmentController extends Controller
             ->where('contVisitID', $id)
             ->first();
         return response()->json($visitor);
-    }
-
-    public function checkinvisitor($id)
-    {
-        // Set the timezone to Kuala Lumpur
-        $kl_timezone = 'Asia/Kuala_Lumpur';
-
-        // Get today's date in Kuala Lumpur timezone
-        $today_date = Carbon::now($kl_timezone)->toDateString();
-
-        $appointment = DB::table('appointmentinfo')
-            ->where('id', $id)
-            ->first();
-
-        $staffID = $appointment->staffID;
-        $contVisitID = $appointment->contVisitID;
-        $purpose = $appointment->appointmentPurpose;
-        $agenda = $appointment->appointmentAgenda;
-
-        date_default_timezone_set("Asia/Kuala_Lumpur");
-
-        $dataquery = array(
-            'staffID'             =>  $staffID,
-            'contVisitID'         =>  $contVisitID,
-            'appointmentPurpose'  =>  $purpose,
-            'appointmentAgenda'   =>  $agenda,
-            'checkInDate'         =>  date('Y-m-d'),
-            'checkInTime'         =>  date('H:i:s'),
-        );
-        // insert query appointment
-        DB::table('visitrecord')->insert($dataquery);
-
-        //delete appointment record
-        $appointmentinfo = AppointmentInfo::find($id);
-        if ($appointmentinfo) {
-            // If the record exists, delete it
-            $appointmentinfo->delete();
-        } 
-
-        return redirect()->route('appointment');
-    }
-
-    public function checkincontractor($id)
-    {
-        return redirect()->route('dashboard');
     }
 }
