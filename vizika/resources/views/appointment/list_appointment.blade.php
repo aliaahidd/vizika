@@ -105,7 +105,7 @@
                         <tbody>
                             @foreach($appointmentStaff As $key=>$data)
                             <tr id="row{{$data->id}}">
-                                <td>{{ $data->id }}</td>
+                                <td>{{ $data->appointmentID }}</td>
                                 <td>{{ $data->appointmentDate }}</td>
                                 <td>{{ $data->appointmentTime }}</td>
                                 <td>{{ $data->appointmentPurpose }}</td>

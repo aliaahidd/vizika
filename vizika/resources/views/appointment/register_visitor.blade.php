@@ -1,8 +1,8 @@
 @extends('layouts.sideNav')
 
 @section('content')
-<h4>Appointment</h4>
-<h6>Appointment / Register Visitor</h6>
+<h4>Visitor & Contractor</h4>
+<h6>Register Visitor & Contractor</h6>
 
 <!-- message box if the new visitor has been added -->
 @if(session()->has('message'))

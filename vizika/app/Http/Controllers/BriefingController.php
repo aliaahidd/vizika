@@ -6,23 +6,72 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Models\SafetyBriefingInfo;
+use Carbon\Carbon;
 
 class BriefingController extends Controller
 {
     public function briefing()
     {
-        $briefinginfolist = DB::table('safetybriefinginfo')
-            ->orderBy('id', 'desc')
-            ->get();
+        // Set the timezone to Kuala Lumpur
+        $kl_timezone = 'Asia/Kuala_Lumpur';
+
+        // Get today's date in Kuala Lumpur timezone
+        $today_date = Carbon::now($kl_timezone)->toDateString();
 
         //check the expiry date pass for contractor
-        $id = Auth::user()->id;
-
-        $expirydatecontractor = DB::table('contractorinfo')
-            ->where('id', $id)
+        $validitypasscheck = DB::table('contractorinfo')
+            ->where('userID', Auth::user()->id)
+            ->where('passExpiryDate', '<', $today_date)
             ->first();
 
-        return view('briefing.list_briefing', compact('briefinginfolist'));
+        if ($validitypasscheck) {
+            $alreadyenroll = DB::table('briefingsession')
+                ->where('contractorID', Auth::user()->id)
+                ->first();
+
+            if ($alreadyenroll) {
+                $briefingenrollmentdetails = DB::table('briefingsession')
+                    ->join('safetybriefinginfo', 'safetybriefinginfo.id', '=', 'briefingsession.briefingID')
+                    ->where('briefingsession.contractorID', Auth::user()->id)
+                    ->get();
+
+                return view('briefing.list_briefing', compact('alreadyenroll', 'briefingenrollmentdetails'));
+            } else {
+
+                $briefinginfolist = DB::table('safetybriefinginfo')
+                    ->orderBy('id', 'desc')
+                    ->get();
+
+                //count total current participants foe each session 
+                $totalParticipant = DB::table('briefingsession')
+                    ->select('briefingID', DB::raw('count(DISTINCT contractorID) as totalParticipants'))
+                    ->groupBy('briefingID')
+                    ->get();
+
+                //check if the totalparticipant is exceed the max participants
+                foreach ($briefinginfolist as $key => $data) {
+                    $enrollmentOpen = true;
+
+                    foreach ($totalParticipant as $session) {
+                        if ($session->briefingID == $data->id) {
+                            $data->totalParticipants = $session->totalParticipants;
+                            break;
+                        }
+                    }
+
+                    //close enrollment if exceed max participants
+                    if ($session->totalParticipants >= $data->maxParticipant) {
+                        $enrollmentOpen = false;
+                    }
+
+                    $data->enrollmentOpen = $enrollmentOpen;
+                }
+
+                return view('briefing.list_briefing', compact('briefinginfolist', 'totalParticipant'));
+            }
+        }
+
+        return redirect()->back()->with('success', 'Sorry, you do not have permission to enroll');
     }
 
     public function createbriefinginfo()
@@ -57,6 +106,24 @@ class BriefingController extends Controller
 
         // insert query
         DB::table('safetybriefinginfo')->insert($data);
+
+        sleep(1);
+        return redirect()->route('briefing');
+    }
+
+    public function enrollbriefing($id)
+    {
+        //check the expiry date pass for contractor
+        $userID = Auth::user()->id;
+
+        $data = array(
+            'briefingID' => $id,
+            'contractorID' => $userID,
+            'totalParticipant' => 0,
+        );
+
+        // insert query
+        DB::table('briefingsession')->insert($data);
 
         sleep(1);
         return redirect()->route('briefing');

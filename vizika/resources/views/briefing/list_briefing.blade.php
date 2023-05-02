@@ -107,6 +107,68 @@
                         </tbody>
                     </table>
                     @endif
+
+                    @if( auth()->user()->category== "Contractor")
+                    @if ($alreadyenroll)
+                    <div class="container">
+                        <div class="row justify-content-md-center">
+                            <div class="col d-flex justify-content-center">
+                                <h2>You already enroll in safety briefing</h2>
+                            </div>
+                        </div>
+                        <br>
+                        @foreach($briefingenrollmentdetails As $key=>$data)
+                        
+                        <table  style="margin-left: auto; margin-right: auto;" id="dataTable" width="30%" cellspacing="0">
+                            <tr>
+                                <td><h5><i class="material-icons">event</i><span> Date</span></h5></td>
+                                <td><h5>{{ $data->briefingDate }}</h5></td>
+                            </tr>
+                            <tr>
+                                <td><h5><i class="material-icons">schedule</i><span> Time Start</span></h5></td>
+                                <td><h5>{{ $data->briefingTimeStart }}</h5></td>
+                            </tr>
+                            <tr>
+                                <td><h5><i class="material-icons">schedule</i><span> Time End</span></h5></td>
+                                <td><h5>{{ $data->briefingTimeEnd }}</h5></td>
+                            </tr>
+                        </table>
+                    </div>
+                    @endforeach
+
+                    @else
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Date</th>
+                                <th>Time Start</th>
+                                <th>Time End</th>
+                                <th>Total Participant</th>
+                                <th>Enroll</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($briefinginfolist As $key=>$data)
+                            <tr id="row{{$data->id}}">
+                                <td>{{ $data->id }}</td>
+                                <td>{{ $data->briefingDate }}</td>
+                                <td>{{ $data->briefingTimeStart }}</td>
+                                <td>{{ $data->briefingTimeEnd }}</td>
+                                <td>{{ $data->totalParticipants ?? 0 }}/{{ $data->maxParticipant }}</td>
+                                <td>
+                                    @if ($data->enrollmentOpen)
+                                    <a class="btn btn-primary" href="{{ route('enrollbriefing', $data->id) }}">Enroll</a>
+                                    @else
+                                    <label>Already full</label>
+                                    @endif
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                    @endif
+                    @endif
                 </div>
             </div>
         </div>

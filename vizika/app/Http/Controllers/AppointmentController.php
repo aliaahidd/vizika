@@ -21,6 +21,10 @@ class AppointmentController extends Controller
         $appointmentStaff = DB::table('appointmentinfo')
             ->orderBy('appointmentinfo.id', 'desc')
             ->join('users', 'users.id', '=', 'appointmentinfo.contVisitID')
+            ->select([
+                'users.id AS staffID',
+                'appointmentinfo.id AS appointmentID', 'users.*', 'appointmentinfo.*'
+            ])
             ->where('staffID', Auth::user()->id)
             ->get();
 

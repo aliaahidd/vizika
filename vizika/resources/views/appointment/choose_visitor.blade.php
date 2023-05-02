@@ -1,8 +1,8 @@
 @extends('layouts.sideNav')
 
 @section('content')
-<h4>Appointment</h4>
-<h6>Appointment / Choose Visitor</h6>
+<h4>Visitor & Contractor</h4>
+<h6>List Visitor & Contractor</h6>
 
 <script src="{{ asset('frontend') }}/js/jquery.dataTables.js"></script>
 <script src="{{ asset('frontend') }}/js/dataTables.bootstrap4.js"></script>
@@ -19,7 +19,7 @@
             ],
             "language": {
                 search: '<i class="fa fa-search" aria-hidden="true"></i>',
-                searchPlaceholder: 'Search visitor'
+                searchPlaceholder: 'Search Visitor Contractor'
             }
         });
 
@@ -46,8 +46,8 @@
             <!-- if user == committee, then have add new appointment button  -->
             @if( auth()->user()->category=="Staff")
             <div class="col-lg-2 col-md-2 col-sm-2" style="float: right;">
-                <a class="btn btn-primary" style="float: right; width:100%;" role="button" href="{{ route('appointment/registervisitorform') }}">
-                    <i class="fas fa-plus"></i>&nbsp; Register New Visitor</a>
+                <a class="btn btn-primary" style="float: right; width:185px;" role="button" href="{{ route('appointment/registervisitorform') }}">
+                    <i class="fas fa-plus"></i>&nbsp; Register Visitor Contractor</a>
             </div>
             @endif
         </div>

@@ -90,6 +90,16 @@ Route::get('/briefing', [App\Http\Controllers\BriefingController::class, 'briefi
 Route::get('/briefing/create-briefing-info', [App\Http\Controllers\BriefingController::class, 'createbriefinginfo'])->name('briefing/createbriefinginfo');
 // store briefing info
 Route::post('/set-briefing', [App\Http\Controllers\BriefingController::class, 'storebriefinginfo'])->name('storebriefinginfo');
+//enroll briefing session
+Route::get('/briefingsession/{id}', [App\Http\Controllers\BriefingController::class, 'enrollbriefing'])->name('enrollbriefing');
 
+//REPORT
+//report list
+Route::get('/report', [App\Http\Controllers\ReportController::class, 'report'])->name('report');
+//generatereport
+Route::get('/Report-Generated', [App\Http\Controllers\ReportController::class, 'generatereport'])->name('generatereport');
 
+//CALENDAR
+//calendar
+Route::get('/calendar', [App\Http\Controllers\CalendarController::class, 'calendar'])->name('calendar');
 

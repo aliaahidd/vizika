@@ -8,6 +8,12 @@
     </div>
 </div>
 
+@if (session('success'))
+    <script>
+        window.alert('{{ session("success") }}');
+    </script>
+@endif
+
 <!-- Dashboard information start -->
 <div class="row">
     <div class="col">
