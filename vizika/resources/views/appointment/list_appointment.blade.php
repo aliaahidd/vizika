@@ -1,6 +1,7 @@
 @extends('layouts.sideNav')
 
 @section('content')
+<meta name="csrf-token" content="{{ csrf_token() }}">
 <h4>Appointment</h4>
 <h6>Appointment List</h6>
 @if( auth()->user()->category== "SHEQ Guard")
@@ -194,7 +195,7 @@
                         <tbody>
                             @foreach($appointmentGuard As $key=>$data)
                             <tr id="row{{$data->id}}">
-                                <td>{{ $data->id }}</td>
+                                <td>{{ $data->appointmentID }}</td>
                                 <td>{{ $data->cont_visit_name }}</td>
                                 <td>{{ $data->staff_name }}</td>
                                 <td>{{ $data->appointmentPurpose }}</td>
@@ -225,60 +226,72 @@
                         <h5 class="modal-title" id="exampleModalLabel">Profile</h5>
                         <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
                     </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-5">
-                                <img id="v-photo" width="200px">
-                            </div>
-                            <div class="col">
-                                <div class="row">
-                                    <div class="col-5">
-                                        <label>Name</label>
-                                    </div>
-                                    <div class="col">
-                                        <label><span id="v-name"></span></label>
-                                    </div>
+                    <form method="post" action="{{ route('checkin-contractor', ':id') }}">
+                        @csrf
+                        @method('post')
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-5">
+                                    <img id="v-photo" width="200px">
                                 </div>
-                                <div class="row">
-                                    <div class="col-5">
-                                        <label>Email</label>
+                                <div class="col">
+                                    <div class="row">
+                                        <div class="col-5">
+                                            <label>Name</label>
+                                        </div>
+                                        <div class="col">
+                                            <label><span id="v-name"></span></label>
+                                        </div>
                                     </div>
-                                    <div class="col">
-                                        <label><span id="v-email"></span></label>
+                                    <div class="row">
+                                        <div class="col-5">
+                                            <label>Email</label>
+                                        </div>
+                                        <div class="col">
+                                            <label><span id="v-email"></span></label>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-5">
-                                        <label>Phone No</label>
+                                    <div class="row">
+                                        <div class="col-5">
+                                            <label>Phone No</label>
+                                        </div>
+                                        <div class="col">
+                                            <label><span id="v-phoneNo"></span></label>
+                                        </div>
                                     </div>
-                                    <div class="col">
-                                        <label><span id="v-phoneNo"></span></label>
+                                    <div class="row">
+                                        <div class="col-5">
+                                            <label>Company Name</label>
+                                        </div>
+                                        <div class="col">
+                                            <label><span id="v-companyName"></span></label>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-5">
-                                        <label>Company Name</label>
+                                    <div class="row">
+                                        <div class="col-5">
+                                            <label>Occupation</label>
+                                        </div>
+                                        <div class="col">
+                                            <label><span id="v-occupation"></span></label>
+                                        </div>
                                     </div>
-                                    <div class="col">
-                                        <label><span id="v-companyName"></span></label>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-5">
-                                        <label>Occupation</label>
-                                    </div>
-                                    <div class="col">
-                                        <label><span id="v-occupation"></span></label>
+                                    <div class="row">
+                                        <div class="col-5">
+                                            <label>Pass Number</label>
+                                        </div>
+                                        <div class="col">
+                                            <label><input type="text" name="pass_number" id="passNo" class="form-control" required></label>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <a href="#" id="v-link" class="btn btn-primary" data-bs-dismiss="modal"><span id="v-text">Check-in</span></a>
-                        <div id="v-id" style="display: none"></div>
-                    </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" id="v-link" class="btn btn-primary" data-bs-dismiss="modal"><span id="v-text">Check-in</span></button>
+                            <div id="v-id" style="display: none"></div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -292,66 +305,80 @@
                         <h5 class="modal-title" id="exampleModalLabel">Profile</h5>
                         <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
                     </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-5">
-                                <img id="c-photo" width="200px">
-                            </div>
-                            <div class="col">
-                                <div class="row">
-                                    <div class="col-5">
-                                        <label>Name</label>
-                                    </div>
-                                    <div class="col">
-                                        <label><span id="c-name"></span></label>
-                                    </div>
+                    <form method="post" action="{{ route('checkin-contractor', ':id') }}">
+                        @csrf
+                        @method('post')
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-5">
+                                    <img id="c-photo" width="200px">
                                 </div>
-                                <div class="row">
-                                    <div class="col-5">
-                                        <label>Email</label>
+                                <div class="col">
+                                    <div class="row">
+                                        <div class="col-5">
+                                            <label>Name</label>
+                                        </div>
+                                        <div class="col">
+                                            <label><span id="c-name"></span></label>
+                                        </div>
                                     </div>
-                                    <div class="col">
-                                        <label><span id="c-email"></span></label>
+                                    <div class="row">
+                                        <div class="col-5">
+                                            <label>Email</label>
+                                        </div>
+                                        <div class="col">
+                                            <label><span id="c-email"></span></label>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-5">
-                                        <label>Phone No</label>
+                                    <div class="row">
+                                        <div class="col-5">
+                                            <label>Phone No</label>
+                                        </div>
+                                        <div class="col">
+                                            <label><span id="c-phoneNo"></span></label>
+                                        </div>
                                     </div>
-                                    <div class="col">
-                                        <label><span id="c-phoneNo"></span></label>
+                                    <div class="row">
+                                        <div class="col-5">
+                                            <label>Company Name</label>
+                                        </div>
+                                        <div class="col">
+                                            <label><span id="c-companyName"></span></label>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-5">
-                                        <label>Company Name</label>
+                                    <div class="row">
+                                        <div class="col-5">
+                                            <label>Expiry Validity Pass</label>
+                                        </div>
+                                        <div class="col">
+                                            <label><span id="c-pass"></span></label>
+                                        </div>
                                     </div>
-                                    <div class="col">
-                                        <label><span id="c-companyName"></span></label>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-5">
-                                        <label>Expiry Validity Pass</label>
-                                    </div>
-                                    <div class="col">
-                                        <label><span id="c-pass"></span></label>
+                                    <div class="row">
+                                        <div class="col-5">
+                                            <label>Pass Number</label>
+                                        </div>
+                                        <div class="col">
+                                            <label><input type="text" name="pass_number" id="passNo" class="form-control" required></label>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <a href="#" id="c-link" class="btn btn-primary" data-bs-dismiss="modal"><span id="c-text">Check-in</span></a>
-                        <div id="c-id" style="display: none"></div>
-                    </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" id="c-link" class="btn btn-primary" data-bs-dismiss="modal"><span id="c-text">Check-in</span></button>
+                            <div id="c-id" style="display: none"></div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
 
     </div>
 </body>
+<!-- CSRF Token -->
+<meta name="csrf-token" content="{{ csrf_token() }}">
 
 <script src="{{ asset('frontend') }}/js/jquery.dataTables.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js"></script>
@@ -374,18 +401,29 @@
                 var link = '{{ route("checkin-visitor", ":id") }}';
                 link = link.replace(':id', data.appointmentID);
                 $('#v-link').attr('href', link);
+                $('#v-link').attr('data-appointment-id', data.appointmentID);
                 $('#v-text').text('Check-In');
             })
         });
 
         $('body').on('click', '#v-link', function(event) {
             event.preventDefault(); // prevent the default behavior of the link
-            var appointmentID = $('#v-id').attr('data-appointment-id');
-            var link = '{{ route("checkin-visitor", ":id") }}';
-            link = link.replace(':id', appointmentID);
-            $('#v-link').attr('href', link);
-            $('#v-text').text('Check-In'); // reset button text
-            window.location.href = link; // redirect the user to the new page
+
+            // get the pass number input value
+            var passNumber = $('#passNo').val();
+
+            // check if the pass number is empty or not
+            if (!passNumber) {
+                alert('Please enter a pass number');
+                return false;
+            }
+
+            var appointmentID = $('#v-link').attr('data-appointment-id');
+            var formAction = "{{ route('checkin-visitor', ':id') }}";
+            formAction = formAction.replace(':id', appointmentID);
+            $('form').attr('action', formAction);
+
+            $('form').submit();
         });
     });
 </script>
@@ -409,18 +447,30 @@
                 var link = '{{ route("checkin-contractor", ":id") }}';
                 link = link.replace(':id', data.appointmentID);
                 $('#c-link').attr('href', link);
+                $('#c-link').attr('data-appointment-id', data.appointmentID);
                 $('#c-text').text('Check-In');
             })
         });
 
+
         $('body').on('click', '#c-link', function(event) {
             event.preventDefault(); // prevent the default behavior of the link
-            var appointmentID = $('#c-id').attr('data-appointment-id');
-            var link = '{{ route("checkin-contractor", ":id") }}';
-            link = link.replace(':id', appointmentID);
-            $('#c-link').attr('href', link);
-            $('#c-text').text('Check-In'); // reset button text
-            window.location.href = link; // redirect the user to the new page
+
+            // get the pass number input value
+            var passNumber = $('#passNo').val();
+
+            // check if the pass number is empty or not
+            if (!passNumber) {
+                alert('Please enter a pass number');
+                return false;
+            }
+
+            var appointmentID = $('#c-link').attr('data-appointment-id');
+            var formAction = "{{ route('checkin-contractor', ':id') }}";
+            formAction = formAction.replace(':id', appointmentID);
+            $('form').attr('action', formAction);
+
+            $('form').submit();
         });
     });
 </script>

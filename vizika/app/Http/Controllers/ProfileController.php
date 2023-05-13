@@ -156,16 +156,6 @@ class ProfileController extends Controller
         return view('dashboard.Visitor');
     }
 
-    public function visitor(Request $request)
-    {
-        $visitorlist = DB::table('visitorinfo')
-            ->orderBy('visitorinfo.id', 'desc')
-            ->join('users', 'users.id', '=', 'visitorinfo.userID')
-            ->get();
-
-        return view('blacklist.list_visitor', compact('visitorlist'));
-    }
-
     public function contractordetail(Request $request)
     {
         $companylist = DB::table('companyinfo')

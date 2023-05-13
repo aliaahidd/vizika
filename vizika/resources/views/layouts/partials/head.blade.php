@@ -27,13 +27,14 @@
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.5/css/bootstrap-select.min.css" rel="stylesheet">
 
-     <!-- drag and drop file for proposal -->
+    <!-- drag and drop file for proposal -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
 
     <!-- sweet alert fire -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/10.5.1/sweetalert2.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/10.5.1/sweetalert2.all.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <style>
         .info-color {
@@ -74,7 +75,7 @@
             line-height: 1.5;
             font-weight: 500;
         }
-        
+
         /* START STYLE FOR DRAG AND DROP PROPOSAL */
         .drag-area {
             border: 2px dashed #2d2d2d;
@@ -127,6 +128,7 @@
             object-fit: cover;
             border-radius: 5px;
         }
+
         /* END STYLE FOR DRAG AND DROP PROPOSAL */
     </style>
 

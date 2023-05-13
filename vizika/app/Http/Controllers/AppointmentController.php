@@ -49,9 +49,9 @@ class AppointmentController extends Controller
 
         $appointmentGuard = DB::table('appointmentinfo')
             ->orderBy('appointmentinfo.id', 'desc')
-            ->join('users as cont_visit_user', 'appointmentInfo.contVisitID', '=', 'cont_visit_user.id')
-            ->join('users as staff_user', 'appointmentInfo.staffID', '=', 'staff_user.id')
-            ->select('appointmentInfo.*', 'cont_visit_user.*', 'cont_visit_user.name as cont_visit_name', 'staff_user.name as staff_name')
+            ->join('users as cont_visit_user', 'appointmentinfo.contVisitID', '=', 'cont_visit_user.id')
+            ->join('users as staff_user', 'appointmentinfo.staffID', '=', 'staff_user.id')
+            ->select('appointmentinfo.*', 'appointmentinfo.id as appointmentID', 'cont_visit_user.*', 'cont_visit_user.name as cont_visit_name', 'staff_user.name as staff_name')
             ->where('appointmentDate', $today_date)
             ->where('appointmentStatus', 'Attend')
             ->get();
@@ -133,7 +133,7 @@ class AppointmentController extends Controller
             // Visitor dropdown was selected
             $contVisit = $request->input('visitorName');
             // process data for visitor
-        } 
+        }
 
         $dataquery = array(
             'staffID'             =>  Auth::user()->id,

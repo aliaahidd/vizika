@@ -17,6 +17,7 @@ return new class extends Migration
             $table->bigInteger('contVisitID');
             $table->string('appointmentPurpose');
             $table->string('appointmentAgenda');
+            $table->string('passNo');
             $table->date('checkInDate');
             $table->time('checkInTime');
             $table->date('checkOutDate')->nullable();

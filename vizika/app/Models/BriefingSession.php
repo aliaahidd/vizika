@@ -15,4 +15,5 @@ class BriefingSession extends Model
         'contractorID',
         'totalParticipant',
     ];
+    
 }

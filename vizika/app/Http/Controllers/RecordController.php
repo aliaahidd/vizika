@@ -39,7 +39,19 @@ class RecordController extends Controller
         return view('record.list_record', compact('recordliststaff', 'filteryear'));
     }
 
-    public function checkinvisitor($id)
+    public function historyappointment()
+    {
+        $historyappointment = DB::table('visitrecord')
+            ->orderBy('visitrecord.id', 'desc')
+            ->join('users as cont_visit_user', 'visitrecord.contVisitID', '=', 'cont_visit_user.id')
+            ->join('users as staff_user', 'visitrecord.staffID', '=', 'staff_user.id')
+            ->select('visitrecord.*', 'cont_visit_user.*', 'cont_visit_user.name as cont_visit_name', 'staff_user.name as staff_name')
+            ->get();
+
+        return view('record.past_appointment', compact('historyappointment'));
+    }
+
+    public function checkinvisitor(Request $request, $id)
     {
         // Set the timezone to Kuala Lumpur
         $kl_timezone = 'Asia/Kuala_Lumpur';
@@ -57,11 +69,15 @@ class RecordController extends Controller
         $purpose = $appointment->appointmentPurpose;
         $agenda = $appointment->appointmentAgenda;
 
+        //request pass number from ajax
+        $passNumber = $request->input('pass_number');
+
         $dataquery = array(
             'staffID'             =>  $staffID,
             'contVisitID'         =>  $contVisitID,
             'appointmentPurpose'  =>  $purpose,
             'appointmentAgenda'   =>  $agenda,
+            'passNo'              =>  $passNumber,
             'checkInDate'         =>  $today_date,
             'checkInTime'         =>  $time_now,
         );
@@ -78,7 +94,7 @@ class RecordController extends Controller
         return redirect()->route('appointment');
     }
 
-    public function checkincontractor($id)
+    public function checkincontractor(Request $request, $id)
     {
         // Set the timezone to Kuala Lumpur
         $kl_timezone = 'Asia/Kuala_Lumpur';
@@ -96,11 +112,15 @@ class RecordController extends Controller
         $purpose = $appointment->appointmentPurpose;
         $agenda = $appointment->appointmentAgenda;
 
+        //request pass number from ajax
+        $passNumber = $request->input('pass_number');
+
         $dataquery = array(
             'staffID'             =>  $staffID,
             'contVisitID'         =>  $contVisitID,
             'appointmentPurpose'  =>  $purpose,
             'appointmentAgenda'   =>  $agenda,
+            'passNo'              =>  $passNumber,
             'checkInDate'         =>  $today_date,
             'checkInTime'         =>  $time_now,
         );

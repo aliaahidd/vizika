@@ -1,11 +1,11 @@
 @extends('layouts.main')
- 
+
 @section('sideNav')
 
 <div class="container-fluid">
     <div class="row">
         <!-- Main Sidebar -->
-        <aside class="main-sidebar col-12 col-md-3 col-lg-2 px-0">
+        <aside class="main-sidebar col-12 col-md-3 col-lg-2 px-0" style="position: fixed;">
             <div class="main-navbar">
                 <nav class="navbar align-items-stretch navbar-light bg-white flex-md-nowrap border-bottom p-0">
                     <a class="navbar-brand w-100 mr-0" href="{{ route('dashboard') }}" style="line-height: 25px;">
@@ -38,7 +38,7 @@
                         </a>
                     </li>
 
-                    @if( auth()->user()->category== "Visitor" || auth()->user()->category== "SHEQ Guard" || auth()->user()->category== "Contractor")
+                    @if( auth()->user()->category== "Visitor" || auth()->user()->category== "Contractor")
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('appointment*') ? 'active' : '' }}" href="{{ route('appointment') }}">
                             <i class="material-icons">today</i>
@@ -71,10 +71,20 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('visitor*') ? 'active' : '' }}" href="{{ route('visitor') }}">
+                        <a class="nav-link {{ request()->routeIs('visitor*') ? 'active' : '' }}" data-toggle="collapse" data-target="#visitorSubMenu">
                             <i class="material-icons">badge</i>
                             <span>Visitors</span>
                         </a>
+                        <div class="collapse" id="visitorSubMenu" style="margin-left: 20px">
+                            <ul class="nav flex-column">
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('visitor') ? 'active' : '' }}" href="{{ route('visitor') }}">Active Visitor</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('blacklistlist') ? 'active' : '' }}" href="{{ route('blacklistlist') }}">Blacklist Visitor</a>
+                                </li>
+                            </ul>
+                        </div>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('report*') ? 'active' : '' }}" href="{{ route('report') }}">
@@ -91,6 +101,22 @@
                     @endif
 
                     @if( auth()->user()->category== "SHEQ Guard")
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('appointment*') ? 'active' : '' }}" data-toggle="collapse" data-target="#appointmentSubMenu">
+                            <i class="material-icons">today</i>
+                            <span>Appointment</span>
+                        </a>
+                        <div class="collapse" id="appointmentSubMenu" style="margin-left: 20px">
+                            <ul class="nav flex-column">
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('appointment') ? 'active' : '' }}" href="{{ route('appointment') }}">Today's Appointment</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('historyappointment') ? 'active' : '' }}" href="{{ route('historyappointment') }}">Past Appointment</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('dashboard*') ? 'active' : '' }}" href="{{ route('dashboard') }}">
                             <i class="material-icons">fingerprint</i>
@@ -140,7 +166,6 @@
                         <div class="d-md-flex mt-auto mb-auto mr-md-4 d-none" style="width: auto">
 
                         </div>
-
                     </div>
                     <ul class="navbar-nav border-left flex-row ml-auto ">
                         <li class="nav-item border-right dropdown">

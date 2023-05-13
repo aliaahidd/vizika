@@ -18,60 +18,66 @@ class BriefingController extends Controller
         // Get today's date in Kuala Lumpur timezone
         $today_date = Carbon::now($kl_timezone)->toDateString();
 
-        //check the expiry date pass for contractor
-        $validitypasscheck = DB::table('contractorinfo')
-            ->where('userID', Auth::user()->id)
-            ->where('passExpiryDate', '<', $today_date)
-            ->first();
+        if (Auth::user()->category == 'Contractor') {
 
-        if ($validitypasscheck) {
-            $alreadyenroll = DB::table('briefingsession')
-                ->where('contractorID', Auth::user()->id)
+            //check the expiry date pass for contractor
+            $validitypasscheck = DB::table('contractorinfo')
+                ->where('userID', Auth::user()->id)
+                ->where('passExpiryDate', '<', $today_date)
                 ->first();
 
-            if ($alreadyenroll) {
-                $briefingenrollmentdetails = DB::table('briefingsession')
-                    ->join('safetybriefinginfo', 'safetybriefinginfo.id', '=', 'briefingsession.briefingID')
-                    ->where('briefingsession.contractorID', Auth::user()->id)
-                    ->get();
+            if ($validitypasscheck) {
+                $alreadyenroll = DB::table('briefingsession')
+                    ->where('contractorID', Auth::user()->id)
+                    ->first();
 
-                return view('briefing.list_briefing', compact('alreadyenroll', 'briefingenrollmentdetails'));
-            } else {
+                if ($alreadyenroll) {
+                    $briefingenrollmentdetails = DB::table('briefingsession')
+                        ->join('safetybriefinginfo', 'safetybriefinginfo.id', '=', 'briefingsession.briefingID')
+                        ->where('briefingsession.contractorID', Auth::user()->id)
+                        ->get();
 
-                $briefinginfolist = DB::table('safetybriefinginfo')
-                    ->orderBy('id', 'desc')
-                    ->get();
+                    return view('briefing.list_briefing', compact('alreadyenroll', 'briefingenrollmentdetails'));
+                } else {
 
-                //count total current participants foe each session 
-                $totalParticipant = DB::table('briefingsession')
-                    ->select('briefingID', DB::raw('count(DISTINCT contractorID) as totalParticipants'))
-                    ->groupBy('briefingID')
-                    ->get();
+                    $briefinginfolist = DB::table('safetybriefinginfo')
+                        ->orderBy('id', 'desc')
+                        ->get();
 
-                //check if the totalparticipant is exceed the max participants
-                foreach ($briefinginfolist as $key => $data) {
-                    $enrollmentOpen = true;
-
-                    foreach ($totalParticipant as $session) {
-                        if ($session->briefingID == $data->id) {
-                            $data->totalParticipants = $session->totalParticipants;
-                            break;
+                        foreach ($briefinginfolist as $briefingInfo) {
+                            $enrollmentOpen = true;
+                        
+                            $totalParticipant = DB::table('briefingsession')
+                                ->where('briefingID', $briefingInfo->id)
+                                ->distinct('contractorID')
+                                ->count('contractorID');
+                        
+                            if ($totalParticipant >= $briefingInfo->maxParticipant) {
+                                $enrollmentOpen = false;
+                            }
+                        
+                            $briefingInfo->totalParticipants = $totalParticipant;
+                            $briefingInfo->enrollmentOpen = $enrollmentOpen;
                         }
-                    }
 
-                    //close enrollment if exceed max participants
-                    if ($session->totalParticipants >= $data->maxParticipant) {
-                        $enrollmentOpen = false;
-                    }
-
-                    $data->enrollmentOpen = $enrollmentOpen;
+                    return view('briefing.list_briefing', compact('briefinginfolist', 'totalParticipant', 'alreadyenroll'));
                 }
-
-                return view('briefing.list_briefing', compact('briefinginfolist', 'totalParticipant'));
             }
-        }
 
-        return redirect()->back()->with('success', 'Sorry, you do not have permission to enroll');
+            return redirect()->back()->with('success', 'Sorry, you do not have permission to enroll');
+        } else if (Auth::user()->category == 'SHEQ Officer') {
+            $briefinginfolist = DB::table('safetybriefinginfo')
+                ->orderBy('id', 'desc')
+                ->get();
+
+            //count total current participants foe each session 
+            $totalParticipant = DB::table('briefingsession')
+                ->select('briefingID', DB::raw('count(DISTINCT contractorID) as totalParticipants'))
+                ->groupBy('briefingID')
+                ->get();
+
+            return view('briefing.list_briefing', compact('briefinginfolist', 'totalParticipant'));
+        }
     }
 
     public function createbriefinginfo()

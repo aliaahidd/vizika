@@ -2,7 +2,7 @@
 
 @section('content')
 <h4>Visitor List</h4>
-<h6>Active Visitor List</h6>
+<h6>Blacklist Visitor List</h6>
 
 <script src="{{ asset('frontend') }}/js/jquery.dataTables.js"></script>
 <script src="{{ asset('frontend') }}/js/dataTables.bootstrap4.js"></script>
@@ -62,7 +62,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($visitorlist As $key=>$data)
+                        @foreach($blacklistlist As $key=>$data)
                         <tr id="row{{$data->id}}">
                             <td>{{ $data->employeeID }}</td>
                             <td>{{ $data->name }}</td>
@@ -77,7 +77,7 @@
                                             <span class="d-none d-md-inline-block"><i class="large material-icons">more_vert</i></span>
                                         </a>
                                         <div class="dropdown-menu dropdown-menu-small">
-                                            <a class="dropdown-item text-danger" href="{{ route('profile-visitor', [$data->userID, 'from' => 'active_users']) }}">
+                                            <a class="dropdown-item text-danger" href="{{ route('profile-visitor', [$data->userID, 'from' => 'blacklist_users']) }}">
                                                 <i class="material-icons text-danger">search</i> View </a>
                                         </div>
                                     </li>

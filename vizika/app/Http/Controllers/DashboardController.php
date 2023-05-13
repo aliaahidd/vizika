@@ -22,54 +22,92 @@ class DashboardController extends Controller
     {
         $category = Auth::user()->category;
 
+        if ($category == 'SHEQ Officer') {
+            return redirect()->route('dashboardOfficer');
+        }
+        if ($category == 'SHEQ Guard') {
+            return redirect()->route('dashboardGuard');
+        }
+        if ($category == 'Staff') {
+            return redirect()->route('DashboardStaff');
+        }
+        if ($category == 'Contractor') {
+            return redirect()->route('dashboardContractor');
+        }
+        if ($category == 'Visitor') {
+            return redirect()->route('dashboardVisitor');
+        }
+    }
+
+    public function visitorDashboard()
+    {
+        $id = Auth::user()->id;
+
+        //if contractor info exists in the table 
+        if (DB::table('visitorinfo')
+            ->where('userID', $id)
+            ->exists()
+        ) {
+            return view('dashboard.Visitor');
+        } else {
+            return redirect()->route('visitordetail');
+        }
+    }
+
+    public function contractorDashboard()
+    {
+        $id = Auth::user()->id;
+
+        //if contractor info exists in the table 
+        if (DB::table('contractorinfo')
+            ->where('userID', $id)
+            ->exists()
+        ) {
+            return view('dashboard.Contractor');
+        } else {
+            return redirect()->route('contractordetail');
+        }
+    }
+
+    public function guardDashboard()
+    {
+
         // Set the timezone to Kuala Lumpur
         $kl_timezone = 'Asia/Kuala_Lumpur';
 
         // Get today's date in Kuala Lumpur timezone
         $today_date = Carbon::now($kl_timezone)->toDateString();
 
-        if ($category == 'SHEQ Officer') {
-            return view('dashboard.Officer');
-        }
-        if ($category == 'SHEQ Guard') {
-            $visitorlog = DB::table('visitrecord')
-                ->join('users as cont_visit_user', 'visitrecord.contVisitID', '=', 'cont_visit_user.id')
-                ->join('users as staff_user', 'visitrecord.staffID', '=', 'staff_user.id')
-                ->select('visitrecord.*', 'visitrecord.id as recordID', 'cont_visit_user.*', 'cont_visit_user.name as cont_visit_name', 'staff_user.name as staff_name')
-                ->where('checkInDate', $today_date)
-                ->get();
+        $visitorlog = DB::table('visitrecord')
+            ->join('users as cont_visit_user', 'visitrecord.contVisitID', '=', 'cont_visit_user.id')
+            ->join('users as staff_user', 'visitrecord.staffID', '=', 'staff_user.id')
+            ->select('visitrecord.*', 'visitrecord.id as recordID', 'cont_visit_user.*', 'cont_visit_user.name as cont_visit_name', 'staff_user.name as staff_name')
+            ->where('checkInDate', $today_date)
+            ->get();
 
-            return view('dashboard.Guard', compact('visitorlog'));
-        }
-        if ($category == 'Staff') {
-            //dd(Auth::user()->id);
-            return view('dashboard.Staff');
-        }
-        if ($category == 'Contractor') {
-            $id = Auth::user()->id;
+        return view('dashboard.Guard', compact('visitorlog'));
+    }
 
-            //if contractor info exists in the table 
-            if (DB::table('contractorinfo')
-                ->where('userID', $id)
-                ->exists()
-            ) {
-                return view('dashboard.Contractor');
-            } else {
-                return redirect()->route('contractordetail');
-            }
-        }
-        if ($category == 'Visitor') {
-            $id = Auth::user()->id;
+    public function officerDashboard()
+    {
+        // Set the timezone to Kuala Lumpur
+        $kl_timezone = 'Asia/Kuala_Lumpur';
 
-            //if contractor info exists in the table 
-            if (DB::table('visitorinfo')
-                ->where('userID', $id)
-                ->exists()
-            ) {
-                return view('dashboard.Visitor');
-            } else {
-                return redirect()->route('visitordetail');
-            }
-        }
+        // Get today's date in Kuala Lumpur timezone
+        $today_date = Carbon::now($kl_timezone)->toDateString();
+
+        //count total visitor 
+        $totalVisitor = DB::table('visitorinfo')->count();
+        //count total contractor
+        $totalContractor = DB::table('contractorinfo')->count();
+        //count total today appointment
+        $totalTodayAppointment = DB::table('appointmentinfo')->where('appointmentDate',$today_date)->count();
+
+        return view('dashboard.Officer', compact('totalVisitor', 'totalContractor','totalTodayAppointment'));
+    }
+
+    public function staffDashboard()
+    {
+        return view('dashboard.Staff');
     }
 }

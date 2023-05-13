@@ -1,15 +1,14 @@
 @extends('layouts.sideNav')
 
 @section('content')
-<h4>Report</h4>
-<h6>Record List</h6>
+<h4>Appointment</h4>
+<h6>Past Appointment List</h6>
 
 <script src="{{ asset('frontend') }}/js/jquery.dataTables.js"></script>
 <script src="{{ asset('frontend') }}/js/dataTables.bootstrap4.js"></script>
 <script src="//code.jquery.com/jquery-1.12.3.js"></script>
 <script src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>
-
 
 <script>
     // to search the appointment 
@@ -48,35 +47,20 @@
     @endif
 
     <div class="card">
-        <div class="card-body">
-            <form method="get" action="{{ route('generatereport') }}">
-                <div class="row">
-                    <div class="col">
-                        <label>Date Start:</label>
-                        <input type="date" name="dateStart" class="form-control" onchange="setMinDate()">
-                    </div>
-                    <div class="col">
-                        <label>Date End:</label>
-                        <input type="date" name="dateEnd" class="form-control" id="dateEnd" min="">
-                    </div>
-                </div>
-                <br>
-                <div class="row">
-                    <div class="col"><button class="btn btn-primary" style="float: right">Generate Report</button></div>
-                </div>
-            </form>
-        </div>
-    </div>
-    <br>
-
-    <div class="card">
         <div class="card-header pb-0">
-            <div style="float: right; margin-bottom: 10px;">
-                @if($exportData)
-                <a href="{{ route('exportPDF', ['exportData' => $data]) }}" name="buttonAll" class="btn btn-primary"><i class="material-icons">print</i> Export PDF</a>
-                @else
-                <a href="{{ route('exportPDF', ['exportData' => $data]) }}" name="buttonGenerated" class="btn btn-primary"><i class="material-icons">fingerprint</i> Export PDF</a>
-                @endif
+            <div class="row">
+                <!-- <div class=" {{  auth()->user()->category== 'Staff' ? 'col-lg-10 col-md-10 col-sm-10' : (request()->routeIs('appointment') ? 'col-lg-10 col-md-10 col-sm-10' : 'col-lg-12 col-md-12 col-sm-12') }}">
+                <nav class="">
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('appointment') ? 'active' : '' }}" href="{{ route('appointment') }}" role="tab" aria-selected="true">Visitor Appointment</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('appointment') ? 'active' : '' }}" href="{{ route('appointment/createappointment') }}" role="tab" aria-selected="true">Contractor Appointment</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div> -->
             </div>
         </div>
 
@@ -97,7 +81,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($reportlist As $key=>$data)
+                            @foreach($historyappointment As $key=>$data)
                             <tr id="row{{$data->id}}">
                                 <td>{{ $data->id }}</td>
                                 <td>{{ $data->cont_visit_name }}</td>
@@ -118,11 +102,3 @@
 
 <script src="{{ asset('frontend') }}/js/jquery.dataTables.js"></script>
 @endsection
-
-<script>
-    function setMinDate() {
-        const dateStartInput = document.querySelector('input[name="dateStart"]');
-        const dateEndInput = document.querySelector('input[name="dateEnd"]');
-        dateEndInput.min = dateStartInput.value;
-    }
-</script>

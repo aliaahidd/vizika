@@ -18,7 +18,7 @@
                         <i class="material-icons md-48" style="font-size: 50px; top: 10px">person</i>
                     </div>
                     <div class="col-8">
-                        <h1>75</h1>
+                        <h1>{{ $totalVisitor }}</h1>
                         <span>Total Visitor</span>
                     </div>
                 </div>
@@ -30,11 +30,11 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-4">
-                        <i class="material-icons md-48" style="font-size: 50px; top: 10px">event</i>
+                        <i class="material-icons md-48" style="font-size: 50px; top: 10px">person</i>
                     </div>
                     <div class="col-8">
-                        <h1>356</h1>
-                        <span>Total Appointment</span>
+                        <h1>{{ $totalContractor }}</h1>
+                        <span>Total Contractor</span>
                     </div>
                 </div>
             </div>
@@ -48,8 +48,8 @@
                         <i class="material-icons md-48" style="font-size: 50px; top: 10px">event</i>
                     </div>
                     <div class="col-8">
-                        <h1>20</h1>
-                        <span>Total Checkin</span>
+                        <h1>{{$totalTodayAppointment}}</h1>
+                        <span>Today's Appt.</span>
                     </div>
                 </div>
             </div>

@@ -126,8 +126,7 @@
                                     <th>ID</th>
                                     <th>Visitor Name</th>
                                     <th>KANEKA Staff</th>
-                                    <th>Purpose</th>
-                                    <th>Agenda</th>
+                                    <th>Pass No</th>
                                     <th>Check-In</th>
                                     <th>Check-Out</th>
                                 </tr>
@@ -138,8 +137,7 @@
                                     <td>{{ $data->recordID }}</td>
                                     <td>{{ $data->cont_visit_name }}</td>
                                     <td>{{ $data->staff_name }}</td>
-                                    <td>{{ $data->appointmentPurpose }}</td>
-                                    <td>{{ $data->appointmentAgenda }}</td>
+                                    <td>{{ $data->passNo }}</td>
                                     <td>{{ $data->checkInDate }} {{ $data->checkInTime }}</td>
                                     <td>
                                         @if($data->checkOutTime == NULL)

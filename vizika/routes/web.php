@@ -29,6 +29,17 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home'); //nama kat url link / nama function / nama panggil kat interface
 Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'loadDashboard'])->name('dashboard');
+//dashboard for visitor
+Route::get('/dashboard/Visitor', [App\Http\Controllers\DashboardController::class, 'visitorDashboard'])->name('dashboardVisitor');
+//dashboard for contractor
+Route::get('/Dashboard-Contractor', [App\Http\Controllers\DashboardController::class, 'contractorDashboard'])->name('dashboardContractor');
+//dashboard for officer
+Route::get('/dashboard/SHEQ-Officer', [App\Http\Controllers\DashboardController::class, 'officerDashboard'])->name('dashboardOfficer');
+//dashboard for guard
+Route::get('/Dashboard-SHEQ-Guard', [App\Http\Controllers\DashboardController::class, 'guardDashboard'])->name('dashboardGuard');
+//dashboard for staff
+Route::get('/Dashboard-Staff', [App\Http\Controllers\DashboardController::class, 'staffDashboard'])->name('DashboardStaff');
+
 
 //PROFILE 
 //display profile page (all user)
@@ -45,8 +56,6 @@ Route::get('/visitor-detail', [App\Http\Controllers\ProfileController::class, 'v
 Route::post('/contractor-info', [App\Http\Controllers\ProfileController::class, 'storecontractorinfo'])->name('storecontractorinfo');
 //store additional visitor info
 Route::post('/visitor-info', [App\Http\Controllers\ProfileController::class, 'storevisitorinfo'])->name('storevisitorinfo');
-//visitor list page
-Route::get('/visitor', [App\Http\Controllers\ProfileController::class, 'visitor'])->name('visitor');
 
 
 //APPOINTMENT
@@ -74,12 +83,14 @@ Route::get('/contractor/{id}', [App\Http\Controllers\AppointmentController::clas
 //RECORD VISIT
 //past record lisr
 Route::get('/record', [App\Http\Controllers\RecordController::class, 'record'])->name('record');
+//past appointment history page
+Route::get('/Appointment-History', [App\Http\Controllers\RecordController::class, 'historyappointment'])->name('historyappointment');
 //visitor log
 Route::get('/Visitor-Log', [App\Http\Controllers\RecordController::class, 'visitorlog'])->name('logvisitor');
 //show modal visitor
 Route::get('/checkin-visitor/{id}', [App\Http\Controllers\RecordController::class, 'checkinvisitor'])->name('checkin-visitor');
 //show modal visitor
-Route::get('/checkin-contractor/{id}', [App\Http\Controllers\RecordController::class, 'checkincontractor'])->name('checkin-contractor');
+Route::post('/checkin-contractor/{id}', [App\Http\Controllers\RecordController::class, 'checkincontractor'])->name('checkin-contractor');
 //checkout
 Route::get('/checkout/{id}', [App\Http\Controllers\RecordController::class, 'checkout'])->name('checkout');
 
@@ -98,8 +109,23 @@ Route::get('/briefingsession/{id}', [App\Http\Controllers\BriefingController::cl
 Route::get('/report', [App\Http\Controllers\ReportController::class, 'report'])->name('report');
 //generatereport
 Route::get('/Report-Generated', [App\Http\Controllers\ReportController::class, 'generatereport'])->name('generatereport');
+//export pdf 
+Route::get('/export-pdf', [App\Http\Controllers\ReportController::class, 'exportPDF'])->name('exportPDF');
+
 
 //CALENDAR
 //calendar
 Route::get('/calendar', [App\Http\Controllers\CalendarController::class, 'calendar'])->name('calendar');
+Route::post('/calendarAjax', [App\Http\Controllers\CalendarController::class, 'calendarAjax'])->name('calendarAjax');
+
+//BLACKLIST
+//visitor list page
+Route::get('/visitor', [App\Http\Controllers\BlacklistController::class, 'visitor'])->name('visitor');
+//blacklist list page
+Route::get('/list-blacklist', [App\Http\Controllers\BlacklistController::class, 'blacklistlist'])->name('blacklistlist');
+//blacklist
+Route::post('/blacklist/{id}', [App\Http\Controllers\BlacklistController::class, 'blacklist'])->name('blacklist');
+//profile visitor
+Route::get('/Profile-Visitor/{id}', [App\Http\Controllers\BlacklistController::class, 'profilevisitor'])->name('profile-visitor');
+
 

@@ -15,6 +15,7 @@ class VisitRecord extends Model
         'contVisitID',
         'appointmentPurpose',
         'appointmentAgenda',
+        'passNo',
         'checkInDate',
         'checkInTime',
         'checkOutDate',
