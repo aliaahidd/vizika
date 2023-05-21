@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BlacklistVisitor;
 use App\Models\VisitorInfo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -81,6 +82,22 @@ class BlacklistController extends Controller
         // insert query
         DB::table('blacklistvisitor')->insert($data);
 
+
+        return redirect()->route('visitor');
+    }
+
+    public function unblacklist($id)
+    {
+        $blacklist = DB::table('blacklistvisitor')
+            ->where('visitorID', $id)
+            ->first();
+
+        if ($blacklist) {
+            // If the record exists, delete it
+            DB::table('blacklistvisitor')
+                ->where('visitorID', $id)
+                ->delete();
+        }
 
         return redirect()->route('visitor');
     }

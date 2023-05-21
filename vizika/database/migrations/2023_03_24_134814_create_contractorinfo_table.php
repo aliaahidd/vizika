@@ -20,6 +20,7 @@ return new class extends Migration
             $table->date('birthDate');
             $table->string('address');
             $table->string('passportPhoto');
+            $table->string('validityPassPhoto');
             $table->timestamps();
         });
     }

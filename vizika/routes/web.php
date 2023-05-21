@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,7 +39,7 @@ Route::get('/dashboard/SHEQ-Officer', [App\Http\Controllers\DashboardController:
 //dashboard for guard
 Route::get('/Dashboard-SHEQ-Guard', [App\Http\Controllers\DashboardController::class, 'guardDashboard'])->name('dashboardGuard');
 //dashboard for staff
-Route::get('/Dashboard-Staff', [App\Http\Controllers\DashboardController::class, 'staffDashboard'])->name('DashboardStaff');
+Route::get('/Dashboard-Staff', [App\Http\Controllers\DashboardController::class, 'staffDashboard'])->name('dashboardStaff');
 
 
 //PROFILE 
@@ -46,8 +47,10 @@ Route::get('/Dashboard-Staff', [App\Http\Controllers\DashboardController::class,
 Route::get('/Profile/{id}', [App\Http\Controllers\ProfileController::class, 'loadProfile'])->name('profile');
 //display edit profile page (all user)
 Route::get('/Profile/Edit-Profile/{id}', [App\Http\Controllers\ProfileController::class, 'editprofile'])->name('editprofile');
-//query edit profile page (all user)
-Route::put('updateprofile/{id}', [App\Http\Controllers\ProfileController::class, 'updateprofile'])->name('updateprofile');
+//query edit profile page (contractor)
+Route::put('updateprofile/{id}', [App\Http\Controllers\ProfileController::class, 'updateProfileContractor'])->name('updateProfileContractor');
+//query edit profile page (visitor)
+Route::put('updateprofile/{id}', [App\Http\Controllers\ProfileController::class, 'updateProfileVisitor'])->name('updateProfileVisitor');
 //display page contractor detail
 Route::get('/contractor-detail', [App\Http\Controllers\ProfileController::class, 'contractordetail'])->name('contractordetail');
 //display page contractor detail
@@ -61,12 +64,19 @@ Route::post('/visitor-info', [App\Http\Controllers\ProfileController::class, 'st
 //APPOINTMENT
 //appointment page
 Route::get('/appointment', [App\Http\Controllers\AppointmentController::class, 'appointment'])->name('appointment');
+//appointment page
+Route::get('/appointment-today', [App\Http\Controllers\AppointmentController::class, 'appointmenttoday'])->name('appointment/today');
 //query insert appointment
 Route::post('/set-appointment', [App\Http\Controllers\AppointmentController::class, 'storeappointment'])->name('storeappointment');
+//query insert appointment multiple 
+Route::post('/set-appointment-multiple', [App\Http\Controllers\AppointmentController::class, 'storeappointmentmultiple'])->name('storeappointmentmultiple');
+
 //choose visitor page load
 Route::get('/appointment/choose-visitor', [App\Http\Controllers\AppointmentController::class, 'choosevisitorform'])->name('choosevisitor');
 //create appointment page load
 Route::get('/appointment/create-appointment', [App\Http\Controllers\AppointmentController::class, 'createappointmentform'])->name('appointment/createappointment');
+//create appointment page load
+Route::get('/appointment/create-appointment-old', [App\Http\Controllers\AppointmentController::class, 'createappointmentformold'])->name('appointment/createappointmentformold');
 //register visitor page load
 Route::get('/appointment/register-visitor', [App\Http\Controllers\AppointmentController::class, 'registervisitorform'])->name('appointment/registervisitorform');
 //register visitor (insert)
@@ -88,7 +98,7 @@ Route::get('/Appointment-History', [App\Http\Controllers\RecordController::class
 //visitor log
 Route::get('/Visitor-Log', [App\Http\Controllers\RecordController::class, 'visitorlog'])->name('logvisitor');
 //show modal visitor
-Route::get('/checkin-visitor/{id}', [App\Http\Controllers\RecordController::class, 'checkinvisitor'])->name('checkin-visitor');
+Route::post('/checkin-visitor/{id}', [App\Http\Controllers\RecordController::class, 'checkinvisitor'])->name('checkin-visitor');
 //show modal visitor
 Route::post('/checkin-contractor/{id}', [App\Http\Controllers\RecordController::class, 'checkincontractor'])->name('checkin-contractor');
 //checkout
@@ -110,8 +120,9 @@ Route::get('/report', [App\Http\Controllers\ReportController::class, 'report'])-
 //generatereport
 Route::get('/Report-Generated', [App\Http\Controllers\ReportController::class, 'generatereport'])->name('generatereport');
 //export pdf 
-Route::get('/export-pdf', [App\Http\Controllers\ReportController::class, 'exportPDF'])->name('exportPDF');
-
+Route::get('/export-pdf-all/{exportData}', [App\Http\Controllers\ReportController::class, 'exportPDFAll'])->name('exportPDFAll');
+//export pdf 
+Route::get('/export-pdf-generated/{exportData}/{dateStart}/{dateEnd}', [App\Http\Controllers\ReportController::class, 'exportPDFGenerated'])->name('exportPDFGenerated');
 
 //CALENDAR
 //calendar
@@ -125,6 +136,8 @@ Route::get('/visitor', [App\Http\Controllers\BlacklistController::class, 'visito
 Route::get('/list-blacklist', [App\Http\Controllers\BlacklistController::class, 'blacklistlist'])->name('blacklistlist');
 //blacklist
 Route::post('/blacklist/{id}', [App\Http\Controllers\BlacklistController::class, 'blacklist'])->name('blacklist');
+//blacklist
+Route::get('/unblacklist/{id}', [App\Http\Controllers\BlacklistController::class, 'unblacklist'])->name('unblacklist');
 //profile visitor
 Route::get('/Profile-Visitor/{id}', [App\Http\Controllers\BlacklistController::class, 'profilevisitor'])->name('profile-visitor');
 

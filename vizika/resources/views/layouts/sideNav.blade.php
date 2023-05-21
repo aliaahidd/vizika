@@ -109,7 +109,7 @@
                         <div class="collapse" id="appointmentSubMenu" style="margin-left: 20px">
                             <ul class="nav flex-column">
                                 <li class="nav-item">
-                                    <a class="nav-link {{ request()->routeIs('appointment') ? 'active' : '' }}" href="{{ route('appointment') }}">Today's Appointment</a>
+                                    <a class="nav-link {{ request()->routeIs('appointment/today') ? 'active' : '' }}" href="{{ route('appointment/today') }}">Today's Appointment</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link {{ request()->routeIs('historyappointment') ? 'active' : '' }}" href="{{ route('historyappointment') }}">Past Appointment</a>
@@ -130,6 +130,18 @@
                         <a class="nav-link {{ request()->routeIs('appointment*') ? 'active' : '' }}" href="{{ route('appointment') }}">
                             <i class="material-icons">today</i>
                             <span>Appointment</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('appointment*') ? 'active' : '' }}" href="{{ route('appointment/createappointment') }}">
+                            <i class="material-icons">today</i>
+                            <span>Create Appointment (NEW)</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('appointment*') ? 'active' : '' }}" href="{{ route('appointment/createappointmentformold') }}">
+                            <i class="material-icons">today</i>
+                            <span>Create Appointment (OLD)</span>
                         </a>
                     </li>
                     <li class="nav-item">

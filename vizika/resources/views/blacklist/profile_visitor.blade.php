@@ -46,7 +46,7 @@
         @if(request()->query('from') == 'active_users')
         <a class="btn btn-danger" style="color: white; float: right" id="blacklistBtn" data-toggle="modal" data-target="#yourModal"><i class="material-icons">block</i> Blacklist</a>
         @elseif(request()->query('from') == 'blacklist_users')
-        <a class="btn btn-success" style="color: white; float: right" id="unblacklistBtn" data-toggle="modal" data-target="#yourModal"><i class="material-icons">block</i> Unblacklist</a>
+        <a class="btn btn-success" style="color: white; float: right" id="unblacklistBtn" href="{{ route('unblacklist', $visitor->userID) }}"><i class="material-icons">block</i> Unblacklist</a>
         @endif
     </div>
 </div>

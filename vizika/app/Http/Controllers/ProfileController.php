@@ -6,6 +6,7 @@ use App\Models\ContractorInfo;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use App\Models\VisitorInfo;
 use Illuminate\Http\Request;
 
 class ProfileController extends Controller
@@ -52,7 +53,7 @@ class ProfileController extends Controller
         return view('profile.edit_profile', compact('contractor', 'visitor'));
     }
 
-    public function updateprofile(Request $request, $id)
+    public function updateProfileContractor(Request $request, $id)
     {
         // find the id from contractorinfo
 
@@ -60,7 +61,7 @@ class ProfileController extends Controller
 
         if ($request->hasFile('passportPhoto')) {
             //unlink the old contractorinfo file from assets folder
-            $path = public_path() . '/assets/' . $contractorinfo->passportPhoto;
+            $path = public_path() . '/assets/avatar' . $contractorinfo->passportPhoto;
             if (file_exists($path)) {
                 unlink($path);
             }
@@ -70,9 +71,27 @@ class ProfileController extends Controller
             //to rename the contractorinfo file
             $filename = time() . '.' . $contractorinfo->passportPhoto->getClientOriginalExtension();
             // to store the new file by moving to assets folder
-            $request->passportPhoto->move('assets', $filename);
+            $request->passportPhoto->move('assets/avatar', $filename);
 
             $contractorinfo->passportPhoto = $filename;
+        }
+
+        if ($request->hasFile('validityPassImg')) {
+            //unlink the old contractorinfo file from assets folder
+            $path = public_path() . '/assets/pass' . $contractorinfo->validityPassPhoto;
+            if (file_exists($path)) {
+                unlink($path);
+            }
+
+            $contractorinfo->validityPassPhoto = $request->file('validityPassImg');
+
+            //to rename the contractorinfo file
+            $filename2 = time() . '.' . $contractorinfo->validityPassPhoto->getClientOriginalExtension();
+
+            // to store the new file by moving to assets folder
+            $request->file('validityPassImg')->move('assets/pass', $filename2);
+
+            $contractorinfo->validityPassPhoto = $filename2;
         }
 
         $contractorinfo->companyName = $request->input('companyName');
@@ -88,6 +107,43 @@ class ProfileController extends Controller
         return redirect()->back()->with('message', 'Contractor Info Updated Successfully');
     }
 
+    public function updateProfileVisitor(Request $request, $id)
+    {
+        // find the id from visitorinfo
+
+        $visitorinfo = VisitorInfo::find($id);
+
+        if ($request->hasFile('passportPhoto')) {
+            //unlink the old visitorinfo file from assets folder
+            $path = public_path() . '/assets/avatar' . $visitorinfo->passportPhoto;
+            if (file_exists($path)) {
+                unlink($path);
+            }
+
+            $visitorinfo->passportPhoto = $request->file('passportPhoto');
+
+            //to rename the visitorinfo file
+            $filename = time() . '.' . $visitorinfo->passportPhoto->getClientOriginalExtension();
+            // to store the new file by moving to assets folder
+            $request->passportPhoto->move('assets/avatar', $filename);
+
+            $visitorinfo->passportPhoto = $filename;
+        }
+
+        $visitorinfo->companyName = $request->input('companyName');
+        $visitorinfo->phoneNo = $request->input('phoneNo');
+        $visitorinfo->employeeID = $request->input('employeeID');
+        $visitorinfo->occupation = $request->input('occupation');
+        $visitorinfo->birthDate = $request->input('birthDate');
+        $visitorinfo->address = $request->input('address');
+
+        // upadate query in the database
+        $visitorinfo->update();
+
+        // display message box in the same page
+        return redirect()->back()->with('message', 'Visitor Info Updated Successfully');
+    }
+
     public function storecontractorinfo(Request $request)
     {
         // get user auth
@@ -98,12 +154,19 @@ class ProfileController extends Controller
         $birthDate = $request->input('birthDate');
         $address = $request->input('address');
         $passportPhoto = $request->file('contractorImg');
+        $validityPass = $request->file('validityPassImg');
 
         // to rename the contractorinfo file
         $filename = time() . '.' . $passportPhoto->getClientOriginalExtension();
 
         // to store the file by moving to assets folder
-        $passportPhoto->move('assets', $filename);
+        $passportPhoto->move('assets/avatar', $filename);
+
+        // to rename the contractorinfo file
+        $filename2 = time() . '.' . $validityPass->getClientOriginalExtension();
+
+        // to store the file by moving to assets folder
+        $validityPass->move('assets/pass', $filename2);
 
         $data = array(
             'userID' => $id,
@@ -113,6 +176,7 @@ class ProfileController extends Controller
             'birthDate' => $birthDate,
             'address' => $address,
             'passportPhoto' => $filename,
+            'validityPassPhoto' => $filename2,
         );
 
         // insert query
@@ -137,7 +201,7 @@ class ProfileController extends Controller
         $filename = time() . '.' . $passportPhoto->getClientOriginalExtension();
 
         // to store the file by moving to assets folder
-        $passportPhoto->move('assets', $filename);
+        $passportPhoto->move('assets/avatar', $filename);
 
         $data = array(
             'userID' => $id,

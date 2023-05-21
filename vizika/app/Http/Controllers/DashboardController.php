@@ -29,7 +29,7 @@ class DashboardController extends Controller
             return redirect()->route('dashboardGuard');
         }
         if ($category == 'Staff') {
-            return redirect()->route('DashboardStaff');
+            return redirect()->route('dashboardStaff');
         }
         if ($category == 'Contractor') {
             return redirect()->route('dashboardContractor');
@@ -101,9 +101,27 @@ class DashboardController extends Controller
         //count total contractor
         $totalContractor = DB::table('contractorinfo')->count();
         //count total today appointment
-        $totalTodayAppointment = DB::table('appointmentinfo')->where('appointmentDate',$today_date)->count();
+        $totalTodayAppointment = DB::table('appointmentinfo')->where('appointmentDate', $today_date)->count();
+        //count total record visit
+        $totalVisitRecord = DB::table('visitrecord')->count();
+        //count for line chart 7 days from today date
+        $today = date('Y-m-d');
+        $pastDate = date('Y-m-d', strtotime('-7 days'));
 
-        return view('dashboard.Officer', compact('totalVisitor', 'totalContractor','totalTodayAppointment'));
+        $totalVisitLine = [];
+        for ($i = 0; $i < 7; $i++) {
+            $date = date('Y-m-d', strtotime('-' . $i . ' days'));
+            $count = DB::table('visitrecord')
+                ->where('checkInDate', $date)
+                ->orderBy('checkInDate', 'asc')
+                ->count();
+            $totalVisitLine[$date] = $count;
+        }
+
+        // Sort the $totalAppointments array by the date keys in ascending order
+        ksort($totalVisitLine);
+
+        return view('dashboard.Officer', compact('totalVisitor', 'totalContractor', 'totalTodayAppointment', 'totalVisitRecord', 'totalVisitLine'));
     }
 
     public function staffDashboard()

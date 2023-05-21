@@ -20,7 +20,7 @@
     <div class="col-md-8">
         @if (Auth::user()->category == 'Contractor')
         <div class="card" style="padding: 20px;">
-            <form method="POST" action="{{ route('updateprofile', $contractor->contID) }}" enctype="multipart/form-data">
+            <form method="POST" action="{{ route('updateProfileContractor', $contractor->contID) }}" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 <div class="form-row">
@@ -37,7 +37,7 @@
                     <div class="col-4">
                         <br>
                         <input type="file" name="passportPhoto" class="form-control">
-                        <img src="/assets/{{$contractor->passportPhoto}}" width="200px" style="float: right">
+                        <img src="/assets/avatar/{{$contractor->passportPhoto}}" width="200px" style="float: right">
                     </div>
                 </div>
 
@@ -59,6 +59,13 @@
                     <label for="birthDate">Birth Date</label>
                     <input type="date" class="form-control" id="birthDate" name="birthDate" value="{{ $contractor->birthDate }}">
                 </div>
+                <div class="form-group">
+                    <br>
+                    <label for="address">Validity Pass Photo</label>
+                    <input type="file" class="form-control" id="validityPass" name="validityPassImg">
+                    <br>
+                    <img src="/assets/pass/{{$contractor->validityPassPhoto}}" width="250px"> 
+                </div>
                 <button type="submit" class="btn btn-primary mr-2">Update</button>
                 <a href="{{ route('dashboard') }}" class="btn btn-danger">Cancel</a>
             </form>
@@ -66,7 +73,7 @@
 
         @elseif (Auth::user()->category == 'Visitor')
         <div class="card" style="padding: 20px;">
-            <form method="POST" action="{{ route('updateprofile', $visitor->visitID) }}" enctype="multipart/form-data">
+            <form method="POST" action="{{ route('updateProfileVisitor', $visitor->visitID) }}" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 <div class="form-row">
@@ -86,7 +93,7 @@
                     <div class="col-4">
                         <br>
                         <input type="file" name="passportPhoto" class="form-control">
-                        <img src="/assets/{{$visitor->passportPhoto}}" height="300px" style="float: right">
+                        <img src="/assets/avatar/{{$visitor->passportPhoto}}" height="300px" style="float: right">
                     </div>
                 </div>
 

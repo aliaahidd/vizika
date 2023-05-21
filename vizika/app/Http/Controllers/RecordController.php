@@ -46,6 +46,7 @@ class RecordController extends Controller
             ->join('users as cont_visit_user', 'visitrecord.contVisitID', '=', 'cont_visit_user.id')
             ->join('users as staff_user', 'visitrecord.staffID', '=', 'staff_user.id')
             ->select('visitrecord.*', 'cont_visit_user.*', 'cont_visit_user.name as cont_visit_name', 'staff_user.name as staff_name')
+            ->whereNotNull('checkOutDate')
             ->get();
 
         return view('record.past_appointment', compact('historyappointment'));
@@ -69,15 +70,15 @@ class RecordController extends Controller
         $purpose = $appointment->appointmentPurpose;
         $agenda = $appointment->appointmentAgenda;
 
-        //request pass number from ajax
-        $passNumber = $request->input('pass_number');
+        // request pass number from ajax
+        $passNumber = $request->input('passNoV');
 
         $dataquery = array(
             'staffID'             =>  $staffID,
             'contVisitID'         =>  $contVisitID,
             'appointmentPurpose'  =>  $purpose,
             'appointmentAgenda'   =>  $agenda,
-            'passNo'              =>  $passNumber,
+            'passNo'              =>  $passNumber,            
             'checkInDate'         =>  $today_date,
             'checkInTime'         =>  $time_now,
         );
@@ -91,7 +92,7 @@ class RecordController extends Controller
             $appointmentinfo->delete();
         }
 
-        return redirect()->route('appointment');
+        return redirect()->route('dashboardGuard');
     }
 
     public function checkincontractor(Request $request, $id)
@@ -113,7 +114,7 @@ class RecordController extends Controller
         $agenda = $appointment->appointmentAgenda;
 
         //request pass number from ajax
-        $passNumber = $request->input('pass_number');
+        $passNumber = $request->input('passNoC');
 
         $dataquery = array(
             'staffID'             =>  $staffID,
@@ -132,9 +133,12 @@ class RecordController extends Controller
         if ($appointmentinfo) {
             // If the record exists, delete it
             $appointmentinfo->delete();
+        } else {
+            // Record doesn't exist, handle the case accordingly
+            return redirect()->back()->with('error', 'Appointment record not found.');
         }
 
-        return redirect()->route('appointment');
+        return redirect()->route('dashboardGuard');
     }
 
     public function checkout($id)

@@ -18,5 +18,6 @@ class ContractorInfo extends Model
         'birthDate',
         'address',
         'passportPhoto',
+        'validityPassPhoto',
     ];
 }

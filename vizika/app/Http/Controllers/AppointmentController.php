@@ -39,6 +39,12 @@ class AppointmentController extends Controller
             ->where('contVisitID', Auth::user()->id)
             ->get();
 
+        return view('appointment.list_appointment', compact('appointmentVisitor', 'appointmentStaff'));
+    }
+
+    // list of appointment for all users    
+    public function appointmenttoday()
+    {
         //guard view
 
         // Set the timezone to Kuala Lumpur
@@ -56,7 +62,7 @@ class AppointmentController extends Controller
             ->where('appointmentStatus', 'Attend')
             ->get();
 
-        return view('appointment.list_appointment', compact('appointmentVisitor', 'appointmentStaff', 'appointmentGuard'));
+        return view('appointment.list_today_appointment', compact('appointmentGuard'));
     }
 
     //choose visitor form page
@@ -85,6 +91,22 @@ class AppointmentController extends Controller
             ->get();
 
         return view('appointment.create_appointment', compact('visitorlist', 'contractorlist'));
+    }
+
+    //create appointment form page
+    public function createappointmentformold(Request $request)
+    {
+        $visitorlist = DB::table('users')
+            ->orderBy('name', 'asc')
+            ->where('category', 'Visitor')
+            ->get();
+
+        $contractorlist = DB::table('users')
+            ->orderBy('name', 'asc')
+            ->where('category', 'Contractor')
+            ->get();
+
+        return view('appointment.create_appointment_old', compact('visitorlist', 'contractorlist'));
     }
 
     public function registervisitorform()
@@ -125,15 +147,17 @@ class AppointmentController extends Controller
     //store appointment details
     public function storeappointment(Request $request)
     {
-        if ($request->input('contractorName')) {
+        if ($request->input('userType') == 'Contractor') {
             // Contractor dropdown was selected
             $contVisit = $request->input('contractorName');
             // process data for contractor
-        } elseif ($request->input('visitorName')) {
+        } elseif ($request->input('userType') == 'Visitor') {
             // Visitor dropdown was selected
             $contVisit = $request->input('visitorName');
             // process data for visitor
         }
+
+        dd($contVisit);
 
         $dataquery = array(
             'staffID'             =>  Auth::user()->id,
@@ -182,6 +206,77 @@ class AppointmentController extends Controller
         return back()->with('success', 'Email sent.');
     }
 
+    public function storeappointmentmultiple(Request $request)
+    {
+        $appointments = $request->input('appointments');
+        $successCount = 0;
+
+        foreach ($appointments as $user) {
+            $contVisitID = $user['contVisitID'];
+            $appointmentDate = $user['appointmentDate'];
+            $appointmentTime = $user['appointmentTime'];
+            $appointmentPurpose = $user['appointmentPurpose'];
+            $appointmentAgenda = $user['appointmentAgenda'];
+
+            // Create a new appointment record in the database
+            $appointment = new AppointmentInfo();
+            $appointment->staffID = Auth::user()->id;
+            $appointment->contVisitID = $contVisitID;
+            $appointment->appointmentPurpose = $appointmentPurpose;
+            $appointment->appointmentAgenda = $appointmentAgenda;
+            $appointment->appointmentDate = $appointmentDate;
+            $appointment->appointmentTime = $appointmentTime;
+            $appointment->appointmentStatus = 'Pending';
+            $appointment->save();
+            $successCount++;
+
+            $contVisit = DB::table('users')
+                ->select([
+                    'name', 'email',
+                ])
+                ->where('users.id', $contVisitID)
+                ->first();
+
+            //send email
+
+            $data = array(
+                'name'                =>  $contVisit->name,
+                'email'               =>  $contVisit->email,
+                'appointmentPurpose'  =>  $appointmentPurpose,
+                'appointmentAgenda'   =>  $appointmentAgenda,
+                'appointmentDate'     =>  $appointmentDate,
+                'appointmentTime'     =>  $appointmentTime
+            );
+
+            $to = [
+                [
+                    'email' => $contVisit->email,
+                ]
+            ];
+
+            //send email 
+            Mail::to($to)->send(new SendEmail($data));
+        }
+
+        if ($successCount > 0) {
+            $response = [
+                'success' => true,
+                'message' => 'Appointments created successfully.',
+                'redirect' => route('appointment'),
+
+            ];
+        } else {
+            $response = [
+                'success' => false,
+                'message' => 'Failed to create appointments.',
+                'redirect' => null,
+
+            ];
+        }
+
+        return response()->json($response);
+    }
+
     //function for visitor to attend 
     public function attendvisit($id)
     {
@@ -209,7 +304,6 @@ class AppointmentController extends Controller
             ->join('users', 'users.id', '=', 'appointmentinfo.contVisitID')
             ->join('visitorinfo', 'visitorinfo.userID', '=', 'appointmentinfo.contVisitID')
             ->select('appointmentinfo.*', 'users.*', 'visitorinfo.*', 'appointmentinfo.id as appointmentID')
-
             ->where('contVisitID', $id)
             ->first();
         return response()->json($visitor);
