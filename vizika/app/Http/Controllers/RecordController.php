@@ -175,6 +175,7 @@ class RecordController extends Controller
             ->join('users as cont_visit_user', 'visitrecord.contVisitID', '=', 'cont_visit_user.id')
             ->join('users as staff_user', 'visitrecord.staffID', '=', 'staff_user.id')
             ->select('visitrecord.*', 'visitrecord.id as recordID', 'cont_visit_user.*', 'cont_visit_user.name as cont_visit_name', 'staff_user.name as staff_name')
+            ->where('checkInDate', $today_date)
             ->get();
 
         return view('record.visitorlog', compact('visitorlog'));

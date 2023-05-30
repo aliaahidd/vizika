@@ -127,8 +127,8 @@
         <div class="card">
             <div class="card-body">
                 <h5>List Name</h5>
-                <table id="selectedList" style="width: 100%"></table>
-                <button type="button" class="btn btn-primary" onclick="inviteSelectedUsers()">Invite</button>
+                <table id="selectedList" style="width: 100%" class="mb-3"></table>
+                <button type="button" class="btn btn-primary" onclick="inviteSelectedUsers()" style="float: right">Invite</button>
             </div>
         </div>
     </div>

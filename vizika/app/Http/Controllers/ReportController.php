@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\SafetyBriefingInfo;
 use Carbon\Carbon;
 use Dompdf\Dompdf;
+use Illuminate\Support\Facades\Response;
 
 
 class ReportController extends Controller
@@ -27,6 +28,7 @@ class ReportController extends Controller
             ->join('users as cont_visit_user', 'visitrecord.contVisitID', '=', 'cont_visit_user.id')
             ->join('users as staff_user', 'visitrecord.staffID', '=', 'staff_user.id')
             ->select('visitrecord.*', 'cont_visit_user.*', 'cont_visit_user.name as cont_visit_name', 'staff_user.name as staff_name')
+            ->whereNotNull('visitrecord.checkOutDate')
             ->get();
 
         return view('report.list_report', compact('reportlist'))->with('data', $data)->with('exportData', true);
@@ -192,5 +194,94 @@ class ReportController extends Controller
 
         // Return the file download response
         return response()->download(public_path('storage/' . $filename))->deleteFileAfterSend(true);
+    }
+
+    public function exportExcelAll($exportData)
+    {
+        if ($exportData) {
+
+            if ($exportData == 'AllReport') {
+                // Query for all report
+                $data = DB::table('visitrecord')
+                    ->orderBy('visitrecord.id', 'desc')
+                    ->join('users as cont_visit_user', 'visitrecord.contVisitID', '=', 'cont_visit_user.id')
+                    ->join('users as staff_user', 'visitrecord.staffID', '=', 'staff_user.id')
+                    ->select('visitrecord.*', 'cont_visit_user.*', 'cont_visit_user.name as cont_visit_name', 'staff_user.name as staff_name')
+                    ->get();
+            } else {
+                // Handle other cases if needed
+                // For example, if no button is clicked
+                $data = null;
+            }
+        } else {
+            $data = null;
+        }
+
+        // Generate the CSV content
+        $csv = "ID,Contractor/Visitor Name,Staff Name,CheckIn,CheckOut,Purpose,Agenda\r\n";
+
+        foreach ($data as $record) {
+            $csv .= $record->id . ','
+                . $record->cont_visit_name . ','
+                . $record->staff_name . ','
+                . $record->checkInDate . ' ' . $record->checkInTime . ','
+                . $record->checkOutDate . ' ' . $record->checkOutTime . ','
+                . $record->appointmentPurpose . ','
+                . $record->appointmentAgenda . "\r\n";
+        }
+
+        // Generate the Excel file
+        $filename = 'visit_records.csv';
+        $headers = [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename=' . $filename,
+        ];
+
+        return Response::make($csv, 200, $headers);
+    }
+
+    public function exportExcelGenerated($exportData, $dateStart, $dateEnd)
+    {
+        if ($exportData) {
+
+            if ($exportData == 'GeneratedReport') {
+                // Query for generated report
+                $data = DB::table('visitrecord')
+                    ->orderBy('visitrecord.id', 'desc')
+                    ->join('users as cont_visit_user', 'visitrecord.contVisitID', '=', 'cont_visit_user.id')
+                    ->join('users as staff_user', 'visitrecord.staffID', '=', 'staff_user.id')
+                    ->select('visitrecord.*', 'cont_visit_user.*', 'cont_visit_user.name as cont_visit_name', 'staff_user.name as staff_name')
+                    ->whereBetween('checkInDate', [$dateStart, $dateEnd])
+                    ->get();
+            } else {
+                // Handle other cases if needed
+                // For example, if no button is clicked
+                $data = null;
+            }
+        } else {
+            $data = null;
+        }
+
+        // Generate the CSV content
+        $csv = "ID,Contractor/Visitor Name,Staff Name,CheckIn,CheckOut,Purpose,Agenda\r\n";
+
+        foreach ($data as $record) {
+            $csv .= $record->id . ','
+                . $record->cont_visit_name . ','
+                . $record->staff_name . ','
+                . $record->checkInDate . ' ' . $record->checkInTime . ','
+                . $record->checkOutDate . ' ' . $record->checkOutTime . ','
+                . $record->appointmentPurpose . ','
+                . $record->appointmentAgenda . "\r\n";
+        }
+
+        // Generate the Excel file
+        $filename = 'visit_records.csv';
+        $headers = [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename=' . $filename,
+        ];
+
+        return Response::make($csv, 200, $headers);
     }
 }

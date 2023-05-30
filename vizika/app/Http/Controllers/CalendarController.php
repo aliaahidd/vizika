@@ -18,7 +18,8 @@ class CalendarController extends Controller
             $start = $klTime->toDateString(); // Get the date part in YYYY-MM-DD format
 
             $data = AppointmentInfo::select('id', 'appointmentPurpose as title', 'appointmentDate as start', 'appointmentTime')
-                ->get()
+            ->where('appointmentStatus', 'Attend')    
+            ->get()
                 ->map(function ($event) {
                     $event->start = $event->start . 'T' . $event->appointmentTime;
                     return $event;

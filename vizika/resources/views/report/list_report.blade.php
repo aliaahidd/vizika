@@ -73,9 +73,11 @@
         <div class="card-header pb-0">
             <div style="float: right; margin-bottom: 10px;">
                 @if($exportData)
-                <a href="{{ route('exportPDFAll', ['exportData' => $data]) }}" name="buttonGenerated" class="btn btn-primary"><i class="material-icons">print</i> Export PDF</a>
+                <a href="{{ route('exportPDFAll', ['exportData' => $data]) }}" class="btn btn-primary"><i class="material-icons">print</i> Export PDF</a>
+                <a href="{{ route('exportExcelAll', ['exportData' => $data]) }}" class="btn btn-primary"><i class="material-icons">print</i> Export Excel</a>
                 @else
-                <a href="{{ route('exportPDFGenerated', ['exportData' => $data, 'dateStart' => $dateStart, 'dateEnd' => $dateEnd]) }}" name="buttonGenerated" class="btn btn-primary"><i class="material-icons">print</i> Export PDF</a>
+                <a href="{{ route('exportPDFGenerated', ['exportData' => $data, 'dateStart' => $dateStart, 'dateEnd' => $dateEnd]) }}" class="btn btn-primary"><i class="material-icons">print</i> Export PDF</a>
+                <a href="{{ route('exportExcelGenerated', ['exportData' => $data, 'dateStart' => $dateStart, 'dateEnd' => $dateEnd]) }}" class="btn btn-primary"><i class="material-icons">print</i> Export Excel</a>
                 @endif
             </div>
         </div>

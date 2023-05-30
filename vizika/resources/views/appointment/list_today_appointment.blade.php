@@ -90,9 +90,46 @@
                             @endforeach
                         </tbody>
                     </table>
-
                     @endif
-                    <!-- FOR GUARD TO VIEW RECORD APPOINTNMENT LIST END -->
+                    <!-- FOR OFFICER TO VIEW RECORD APPOINTNMENT LIST END -->
+
+                    @if( auth()->user()->category== "SHEQ Officer")
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Visitor Name</th>
+                                <th>KANEKA Staff</th>
+                                <th>Purpose</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($appointmentGuard As $key=>$data)
+                            <tr id="row{{$data->id}}">
+                                <td>{{ $data->appointmentID }}</td>
+                                <td>{{ $data->cont_visit_name }}</td>
+                                <td>{{ $data->staff_name }}</td>
+                                <td>{{ $data->appointmentPurpose }}</td>
+                                <td>
+                                    <ul class="navbar-nav flex-row ml-auto ">
+                                        <li class="nav-item">
+                                            <a class="nav-link text-nowrap px-3" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                                                <span class="d-none d-md-inline-block"><i class="large material-icons">more_vert</i></span>
+                                            </a>
+                                            <div class="dropdown-menu dropdown-menu-small">
+                                                <a class="dropdown-item text-danger" href="{{ route('profile-visitor', [$data->contVisitID]) }}">
+                                                    <i class="material-icons text-danger">search</i> View </a>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                    @endif
+                    <!-- FOR OFFICER TO VIEW RECORD APPOINTNMENT LIST END -->
                 </div>
             </div>
         </div>

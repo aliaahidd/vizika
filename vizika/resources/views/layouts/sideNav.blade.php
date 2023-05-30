@@ -65,6 +65,22 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('appointment*') ? 'active' : '' }}" data-toggle="collapse" data-target="#appointmentSubMenu">
+                            <i class="material-icons">today</i>
+                            <span>Appointment</span>
+                        </a>
+                        <div class="collapse" id="appointmentSubMenu" style="margin-left: 20px">
+                            <ul class="nav flex-column">
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('appointment/today') ? 'active' : '' }}" href="{{ route('appointment/today') }}">Today's Appointment</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('historyappointment') ? 'active' : '' }}" href="{{ route('historyappointment') }}">Past Appointment</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('calendar*') ? 'active' : '' }}" href="{{ route('calendar') }}">
                             <i class="material-icons">event</i>
                             <span>Calendar</span>
