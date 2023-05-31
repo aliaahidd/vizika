@@ -56,7 +56,7 @@
     <div class="col-md-3">
         <div class="card" style="padding: 20px; height: 400px">
             <div style="margin: auto;">
-                <img src="/assets/{{$visitor->passportPhoto}}" width="200px">
+                <img src="/assets/avatar/{{$visitor->passportPhoto}}" width="200px">
             </div>
         </div>
     </div>

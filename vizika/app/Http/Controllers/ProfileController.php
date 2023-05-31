@@ -223,7 +223,7 @@ class ProfileController extends Controller
     public function contractordetail(Request $request)
     {
         $companylist = DB::table('companyinfo')
-            ->orderBy('id', 'desc')
+            ->orderBy('companyName', 'asc')
             ->get();
 
         return view('profile.contractor_detail', compact('companylist'));
@@ -232,9 +232,14 @@ class ProfileController extends Controller
     public function visitordetail(Request $request)
     {
         $companylist = DB::table('companyinfo')
-            ->orderBy('id', 'desc')
+            ->orderBy('companyName', 'asc')
             ->get();
 
         return view('profile.visitor_detail', compact('companylist'));
+    }
+
+    public function changepassword($id)
+    {
+        return view('profile.change_password');
     }
 }

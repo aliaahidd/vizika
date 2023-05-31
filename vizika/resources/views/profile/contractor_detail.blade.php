@@ -7,7 +7,7 @@
             <!-- form add proposal -->
             <form method="POST" action="{{ route('storecontractorinfo') }}" enctype="multipart/form-data">
                 @csrf
-                <div class="row">
+                <div class="row mb-">
                     <div class="col">
                         <div class="mb-3">
                             <label for="companyName" class="col-form-label text-md-end">{{ __('Company Name') }}</label>
@@ -64,6 +64,7 @@
                         </div>
                     </div>
                 </div>
+                
                 <input type="submit" name="SubmitProposal" class="btn btn-primary" id="proposalform" style="float: right;">
             </form>
         </div>

@@ -198,7 +198,10 @@
                     <ul class="navbar-nav border-left flex-row ml-auto ">
                         <li class="nav-item border-right dropdown">
                             <a class="nav-link dropdown-toggle text-nowrap px-3" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                                @if(Auth::user()->category == "Staff" || Auth::user()->category == "SHEQ Officer" || Auth::user()->category == "SHEQ Guard" || Auth::user()->category == "Contractor" || Auth::user()->category == "Visitor") 
                                 <img class="user-avatar rounded-circle mr-2" src="{{ asset('frontend') }}/images/avatar.jpg" alt="Avatar" width="30px" height="30px" style="vertical-align:baseline">
+                               
+                                @endif
                                 <span class="d-none d-md-inline-block"><strong>{{ Auth::user()->name }}</strong><br> {{Auth::user()->category}}</span>
                             </a>
                             <div class="dropdown-menu dropdown-menu-small">

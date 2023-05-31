@@ -48,9 +48,9 @@ Route::get('/Profile/{id}', [App\Http\Controllers\ProfileController::class, 'loa
 //display edit profile page (all user)
 Route::get('/Profile/Edit-Profile/{id}', [App\Http\Controllers\ProfileController::class, 'editprofile'])->name('editprofile');
 //query edit profile page (contractor)
-Route::put('updateprofile/{id}', [App\Http\Controllers\ProfileController::class, 'updateProfileContractor'])->name('updateProfileContractor');
+Route::put('updateprofilecontractor/{id}', [App\Http\Controllers\ProfileController::class, 'updateProfileContractor'])->name('updateProfileContractor');
 //query edit profile page (visitor)
-Route::put('updateprofile/{id}', [App\Http\Controllers\ProfileController::class, 'updateProfileVisitor'])->name('updateProfileVisitor');
+Route::put('updateprofilevisitor/{id}', [App\Http\Controllers\ProfileController::class, 'updateProfileVisitor'])->name('updateProfileVisitor');
 //display page contractor detail
 Route::get('/contractor-detail', [App\Http\Controllers\ProfileController::class, 'contractordetail'])->name('contractordetail');
 //display page contractor detail
@@ -59,6 +59,8 @@ Route::get('/visitor-detail', [App\Http\Controllers\ProfileController::class, 'v
 Route::post('/contractor-info', [App\Http\Controllers\ProfileController::class, 'storecontractorinfo'])->name('storecontractorinfo');
 //store additional visitor info
 Route::post('/visitor-info', [App\Http\Controllers\ProfileController::class, 'storevisitorinfo'])->name('storevisitorinfo');
+//change password
+Route::post('/Change-Password', [App\Http\Controllers\ProfileController::class, 'changepassword'])->name('changepassword');
 
 
 //APPOINTMENT
@@ -147,3 +149,6 @@ Route::get('/unblacklist/{id}', [App\Http\Controllers\BlacklistController::class
 Route::get('/Profile-Visitor/{id}', [App\Http\Controllers\BlacklistController::class, 'profilevisitor'])->name('profile-visitor');
 
 
+//BIOMETRIC
+//visitor list page
+Route::get('/visitor', [App\Http\Controllers\BlacklistController::class, 'visitor'])->name('visitor');

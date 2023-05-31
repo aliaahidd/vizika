@@ -65,6 +65,7 @@ class BriefingController extends Controller
             }
 
             return redirect()->back()->with('success', 'Sorry, you do not have permission to enroll');
+            
         } else if (Auth::user()->category == 'SHEQ Officer') {
             $briefinginfolist = DB::table('safetybriefinginfo')
                 ->orderBy('id', 'desc')

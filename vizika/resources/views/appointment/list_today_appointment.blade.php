@@ -313,7 +313,7 @@
                 $('#v-phoneNo').text(data.phoneNo);
                 $('#v-companyName').text(data.companyName);
                 $('#v-occupation').text(data.occupation);
-                $('#v-photo').attr('src', '/assets/' + data.passportPhoto);
+                $('#v-photo').attr('src', '/assets/avatar/' + data.passportPhoto);
 
                 var link = '{{ route("checkin-visitor", ":id") }}';
                 link = link.replace(':id', data.appointmentID);
@@ -369,7 +369,7 @@
                 $('#c-phoneNo').text(data.phoneNo);
                 $('#c-companyName').text(data.companyName);
                 $('#c-pass').text(data.passExpiryDate);
-                $('#c-photo').attr('src', '/assets/' + data.passportPhoto);
+                $('#c-photo').attr('src', '/assets/avatar/' + data.passportPhoto);
 
                 var link = '{{ route("checkin-contractor", ":id") }}';
                 link = link.replace(':id', data.appointmentID);

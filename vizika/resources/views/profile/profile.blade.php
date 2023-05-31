@@ -46,7 +46,7 @@
                 </div>
             </div>
 
-            <div class="row mt-4">
+            <div class="row mt-4 mb-3">
                 <div class="col-12">
                     <h5>Additional Information</h5>
                     <hr>
