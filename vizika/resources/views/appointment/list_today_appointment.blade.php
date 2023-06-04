@@ -81,11 +81,12 @@
                                 <td>{{ $data->appointmentPurpose }}</td>
 
                                 @if( $data->category == "Visitor")
-                                <td><a href="javascript:void(0)" class="btn btn-primary" id="show-visitor" style="color: white" data-url="{{ route('visitor.showV', $data->contVisitID) }}">View</a>
+                                <td><a class="btn btn-primary" style="color: white" href="{{ route('visitor.showV', $data->contVisitID) }}">View</a>
                                     @elseif( $data->category == "Contractor")
-                                <td><a href="javascript:void(0)" class="btn btn-primary" id="show-contractor" style="color: white" data-url="{{ route('contractor.showC', $data->contVisitID) }}">View</a>
-                                    @endif
+                                <td><a class="btn btn-primary" style="color: white" href="{{ route('contractor.showC', $data->contVisitID) }}">View</a>
                                 </td>
+                                @endif
+
                             </tr>
                             @endforeach
                         </tbody>

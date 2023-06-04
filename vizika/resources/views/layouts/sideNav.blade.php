@@ -134,7 +134,7 @@
                         </div>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('dashboard*') ? 'active' : '' }}" href="{{ route('dashboard') }}">
+                        <a class="nav-link {{ request()->routeIs('facialRecog*') ? 'active' : '' }}" href="{{ route('facialRecog') }}">
                             <i class="material-icons">fingerprint</i>
                             <span>Biometric</span>
                         </a>

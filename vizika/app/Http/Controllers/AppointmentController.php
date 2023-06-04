@@ -57,7 +57,8 @@ class AppointmentController extends Controller
             ->orderBy('appointmentinfo.id', 'desc')
             ->join('users as cont_visit_user', 'appointmentinfo.contVisitID', '=', 'cont_visit_user.id')
             ->join('users as staff_user', 'appointmentinfo.staffID', '=', 'staff_user.id')
-            ->select('appointmentinfo.*', 'appointmentinfo.id as appointmentID', 'cont_visit_user.*', 'cont_visit_user.name as cont_visit_name', 'staff_user.name as staff_name')
+            ->leftJoin('biometricinfo', 'biometricinfo.userID', '=', 'cont_visit_user.id')
+            ->select('appointmentinfo.*', 'appointmentinfo.id as appointmentID', 'cont_visit_user.*', 'cont_visit_user.id as contVisitID', 'cont_visit_user.name as cont_visit_name', 'staff_user.name as staff_name', 'biometricinfo.userID')
             ->where('appointmentDate', $today_date)
             ->where('appointmentStatus', 'Attend')
             ->get();
@@ -319,5 +320,43 @@ class AppointmentController extends Controller
             ->where('contVisitID', $id)
             ->first();
         return response()->json($visitor);
+    }
+
+    // visitor 
+    public function todayAppointmentVisitor($id)
+    {
+        $visitor = DB::table('appointmentinfo')
+            ->join('users', 'users.id', '=', 'appointmentinfo.contVisitID')
+            ->join('visitorinfo', 'visitorinfo.userID', '=', 'appointmentinfo.contVisitID')
+            ->select('appointmentinfo.*', 'users.*', 'visitorinfo.*', 'appointmentinfo.id as appointmentID')
+            ->where('contVisitID', $id)
+            ->first();
+
+        return view('appointment.today_appointment', [
+            'visitor' => $visitor,
+            'source' => 'visitor'
+        ]);
+    }
+
+    // contractor
+    public function todayAppointmentContractor($id)
+    {
+        $contractor = DB::table('appointmentinfo')
+            ->join('users', 'users.id', '=', 'appointmentinfo.contVisitID')
+            ->join('contractorinfo', 'contractorinfo.userID', '=', 'appointmentinfo.contVisitID')
+            ->select('appointmentInfo.*', 'users.*', 'contractorinfo.*', 'appointmentinfo.id as appointmentID')
+            ->where('contVisitID', $id)
+            ->first();
+
+        $biometric = DB::table('biometricinfo')
+            ->select('biometricinfo.id as biometricID')
+            ->where('userID', $id)
+            ->exists();
+
+        return view('appointment.today_appointment', [
+            'contractor' => $contractor,
+            'biometric' => $biometric,
+            'source' => 'contractor'
+        ]);
     }
 }

@@ -92,6 +92,11 @@ Route::get('/visitor/{id}', [App\Http\Controllers\AppointmentController::class, 
 //show modal contractor
 Route::get('/contractor/{id}', [App\Http\Controllers\AppointmentController::class, 'modalContractor'])->name('contractor.showC');
 
+//show modal visitor
+Route::get('/visitor/{id}', [App\Http\Controllers\AppointmentController::class, 'todayAppointmentVisitor'])->name('visitor.showV');
+//show modal contractor
+Route::get('/contractor/{id}', [App\Http\Controllers\AppointmentController::class, 'todayAppointmentContractor'])->name('contractor.showC');
+
 //RECORD VISIT
 //past record lisr
 Route::get('/record', [App\Http\Controllers\RecordController::class, 'record'])->name('record');
@@ -150,5 +155,13 @@ Route::get('/Profile-Visitor/{id}', [App\Http\Controllers\BlacklistController::c
 
 
 //BIOMETRIC
-//visitor list page
-Route::get('/visitor', [App\Http\Controllers\BlacklistController::class, 'visitor'])->name('visitor');
+//biometric facial recog
+Route::get('/Facial-Recognition', [App\Http\Controllers\BiometricController::class, 'facialRecog'])->name('facialRecog');
+//register biometric page
+Route::get('/Register-Biometric/{id}', [App\Http\Controllers\BiometricController::class, 'registerBiometric'])->name('registerBiometric');
+//save picture taken
+Route::post('/save-image', [App\Http\Controllers\BiometricController::class, 'saveImage'])->name('saveImage');
+//scan biometric page
+Route::get('/Scan-Biometric/{id}', [App\Http\Controllers\BiometricController::class, 'scanBiometric'])->name('scanBiometric');
+//compare faces
+Route::post('/compare_faces', [App\Http\Controllers\BiometricController::class, 'compareFaces'])->name('compareFaces');
