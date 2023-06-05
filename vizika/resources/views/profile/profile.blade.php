@@ -14,7 +14,7 @@
         <div class="card" style="padding: 20px;">
             <div class="form-row">
                 <div class="col-4">
-                    <img src="/assets/avatar/{{$contractor->passportPhoto}}" width="200px" style="float: left">
+                    <img src="/assets/{{Auth::user()->name}}/{{$contractor->passportPhoto}}" width="200px" style="float: left">
                 </div>
                 <div class="col-7">
                     <h5>Contact Details</h5>
@@ -91,7 +91,7 @@
         <div class="card" style="padding: 20px;">
             <div class="form-row">
                 <div class="col-4">
-                    <img src="/assets/avatar/{{$visitor->passportPhoto}}" width="200px" style="float: left">
+                    <img src="/assets/{{Auth::user()->name}}/{{$visitor->passportPhoto}}" width="200px" style="float: left">
                 </div>
                 <div class="col-7">
                     <h5>Contact Details</h5>

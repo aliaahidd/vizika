@@ -131,6 +131,17 @@ class AppointmentController extends Controller
                 ->with('message', 'Email is already exists.');
         }
 
+        $publicFolderPath = public_path('assets/' . $name);
+
+        // Create the folder
+        try {
+            if (!is_dir($publicFolderPath)) {
+                mkdir($publicFolderPath, 0755, true);
+            } 
+        } catch (\Exception $e) {
+            return "An error occurred: " . $e->getMessage();
+        }
+
         $data = array(
             'name' => $name,
             'email' => $email,

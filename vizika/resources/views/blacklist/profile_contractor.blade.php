@@ -46,7 +46,7 @@
         @if(request()->query('from') == 'active_users')
         <a class="btn btn-danger" style="color: white; float: right" id="blacklistBtn" data-toggle="modal" data-target="#yourModal"><i class="material-icons">block</i> Blacklist</a>
         @elseif(request()->query('from') == 'blacklist_users')
-        <a class="btn btn-success" style="color: white; float: right" id="unblacklistBtn" href="{{ route('unblacklist', $visitor->userID) }}"><i class="material-icons">block</i> Unblacklist</a>
+        <a class="btn btn-success" style="color: white; float: right" id="unblacklistBtn" href="{{ route('unblacklist', $contractor->userID) }}"><i class="material-icons">block</i> Unblacklist</a>
         @endif
     </div>
 </div>
@@ -56,7 +56,7 @@
     <div class="col-md-3">
         <div class="card" style="padding: 20px; height: 400px">
             <div style="margin: auto;">
-                <img src="/assets/{{$visitor->name}}/{{$visitor->passportPhoto}}" width="200px">
+                <img src="/assets/{{$contractor->name}}/{{$contractor->passportPhoto}}" width="200px">
             </div>
         </div>
     </div>
@@ -70,7 +70,7 @@
                         <label for="name">Name</label>
                     </div>
                     <div class="col">
-                        <label for="name">{{ $visitor->name }}</label>
+                        <label for="name">{{ $contractor->name }}</label>
                     </div>
                 </div>
                 <div class="row">
@@ -78,7 +78,7 @@
                         <label for="email">Email</label>
                     </div>
                     <div class="col">
-                        <label for="email">{{ $visitor->email }}</label>
+                        <label for="email">{{ $contractor->email }}</label>
                     </div>
                 </div>
                 <div class="row">
@@ -86,7 +86,7 @@
                         <label for="email">Phone Number</label>
                     </div>
                     <div class="col">
-                        <label for="email">{{ $visitor->phoneNo }}</label>
+                        <label for="email">{{ $contractor->phoneNo }}</label>
                     </div>
                 </div>
                 <br>
@@ -98,7 +98,7 @@
                         <label for="address">Address</label>
                     </div>
                     <div class="col">
-                        <label for="address">{{ $visitor->address }}</label>
+                        <label for="address">{{ $contractor->address }}</label>
                     </div>
                 </div>
                 <div class="row">
@@ -106,15 +106,15 @@
                         <label for="birthdate">Birth Date</label>
                     </div>
                     <div class="col">
-                        <label for="birthdate">{{ $visitor->birthDate }}</label>
+                        <label for="birthdate">{{ $contractor->birthDate }}</label>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-4">
-                        <label for="employeeID">Employee ID</label>
+                        <label for="employeeID">Pass Expiry Date</label>
                     </div>
                     <div class="col">
-                        <label for="employeeID">{{ $visitor->employeeID }}</label>
+                        <label for="employeeID">{{ $contractor->passExpiryDate }}</label>
                     </div>
                 </div>
                 <div class="row">
@@ -122,7 +122,7 @@
                         <label for="occupation">Occupation</label>
                     </div>
                     <div class="col">
-                        <label for="occupation">{{ $visitor->occupation }}</label>
+                        <label for="occupation">{{ $contractor->passExpiryDate }}</label>
                     </div>
                 </div>
             </div>
@@ -177,7 +177,7 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
                 </div>
 
-                <form method="post" action="{{ route('blacklist', $visitor->userID) }}">
+                <form method="post" action="{{ route('blacklist', $contractor->userID) }}">
                     @csrf
                     @method('post')
                     <div class="modal-body">

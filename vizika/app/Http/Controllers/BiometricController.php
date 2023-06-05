@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Models\BiometricInfo;
+use App\Models\ContractorInfo;
 
 class BiometricController extends Controller
 {
@@ -34,19 +35,22 @@ class BiometricController extends Controller
     {
         $userID = $request->input('userId'); // Retrieve the userID from the request body
 
+        $user = DB::table('users')->where('id', $userID)->first();
+        $name = $user->name; // Access the name property of the retrieved user object
+
         $imageData = $request->input('image');
 
         // Generate a unique file name
         $fileName = uniqid() . '.jpg';
 
         // Save the image file in the assets directory
-        $path = 'assets/biometric/' . $fileName;
+        $path = 'assets/' . $name . '/' . $fileName; // Add a separator (/) between name and filename
         file_put_contents(public_path($path), base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $imageData)));
 
         // Save the file name (path) to the database
         $image = new BiometricInfo();
         $image->userID = $userID;
-        $image->facialRecognition = $path;
+        $image->facialRecognition = $fileName;
         $image->save();
 
         return redirect()->route('choosevisitor');
@@ -73,9 +77,26 @@ class BiometricController extends Controller
 
         return view('biometric.scan_biometric', [
             'contractor' => $contractor,
+            'userID' => $contractor->userID,
             'biometric' => $biometric,
             'storedImagePaths' => $storedImagePaths,
             'source' => 'Contractor'
         ]);
+    }
+
+    public function getUserInformation($userID)
+    {
+        // Fetch the user's information from the database based on the provided name
+        $contractorInfo = DB::table('contractorinfo')
+            ->join('users', 'users.id', '=', 'contractorinfo.userID')
+            ->join('biometricinfo', 'biometricinfo.userID', '=', 'contractorinfo.userID')
+            ->where('contractorinfo.userID', $userID)
+            ->first();
+
+        if (!$contractorInfo) {
+            return response()->json(['error' => 'Contractor information not found'], 404);
+        }
+
+        return response()->json($contractorInfo);
     }
 }

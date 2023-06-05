@@ -59,12 +59,6 @@
 
                     @if( auth()->user()->category== "SHEQ Officer")
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('logvisitor*') ? 'active' : '' }}" href="{{ route('logvisitor') }}">
-                            <i class="material-icons">checklist</i>
-                            <span>Visitor Log</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('appointment*') ? 'active' : '' }}" data-toggle="collapse" data-target="#appointmentSubMenu">
                             <i class="material-icons">today</i>
                             <span>Appointment</span>
@@ -89,15 +83,15 @@
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('visitor*') ? 'active' : '' }}" data-toggle="collapse" data-target="#visitorSubMenu">
                             <i class="material-icons">badge</i>
-                            <span>Visitors</span>
+                            <span>Users</span>
                         </a>
                         <div class="collapse" id="visitorSubMenu" style="margin-left: 20px">
                             <ul class="nav flex-column">
                                 <li class="nav-item">
-                                    <a class="nav-link {{ request()->routeIs('visitor') ? 'active' : '' }}" href="{{ route('visitor') }}">Active Visitor</a>
+                                    <a class="nav-link {{ request()->routeIs('activeUser') ? 'active' : '' }}" href="{{ route('activeUser') }}">Active User</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link {{ request()->routeIs('blacklistlist') ? 'active' : '' }}" href="{{ route('blacklistlist') }}">Blacklist Visitor</a>
+                                    <a class="nav-link {{ request()->routeIs('blacklistlist') ? 'active' : '' }}" href="{{ route('blacklistlist') }}">Blacklist User</a>
                                 </li>
                             </ul>
                         </div>

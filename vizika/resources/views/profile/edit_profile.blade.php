@@ -37,7 +37,7 @@
                     <div class="col-4">
                         <br>
                         <input type="file" name="passportPhoto" class="form-control">
-                        <img src="/assets/avatar/{{$contractor->passportPhoto}}" width="200px" style="float: right">
+                        <img src="/assets/{{Auth::user()->name}}/{{$contractor->passportPhoto}}" width="200px" style="float: right">
                     </div>
                 </div>
 
@@ -93,7 +93,7 @@
                     <div class="col-4">
                         <br>
                         <input type="file" name="passportPhoto" class="form-control">
-                        <img src="/assets/avatar/{{$visitor->passportPhoto}}" height="300px" style="float: right">
+                        <img src="/assets/{{Auth::user()->name}}/{{$visitor->passportPhoto}}" height="300px" style="float: right">
                     </div>
                 </div>
 

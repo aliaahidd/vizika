@@ -143,7 +143,7 @@ Route::post('/calendarAjax', [App\Http\Controllers\CalendarController::class, 'c
 
 //BLACKLIST
 //visitor list page
-Route::get('/visitor', [App\Http\Controllers\BlacklistController::class, 'visitor'])->name('visitor');
+Route::get('/Active-User', [App\Http\Controllers\BlacklistController::class, 'activeUser'])->name('activeUser');
 //blacklist list page
 Route::get('/list-blacklist', [App\Http\Controllers\BlacklistController::class, 'blacklistlist'])->name('blacklistlist');
 //blacklist
@@ -152,6 +152,8 @@ Route::post('/blacklist/{id}', [App\Http\Controllers\BlacklistController::class,
 Route::get('/unblacklist/{id}', [App\Http\Controllers\BlacklistController::class, 'unblacklist'])->name('unblacklist');
 //profile visitor
 Route::get('/Profile-Visitor/{id}', [App\Http\Controllers\BlacklistController::class, 'profilevisitor'])->name('profile-visitor');
+//profile contractor
+Route::get('/Profile-Contractor/{id}', [App\Http\Controllers\BlacklistController::class, 'profilecontractor'])->name('profile-contractor');
 
 
 //BIOMETRIC
@@ -165,3 +167,6 @@ Route::post('/save-image', [App\Http\Controllers\BiometricController::class, 'sa
 Route::get('/Scan-Biometric/{id}', [App\Http\Controllers\BiometricController::class, 'scanBiometric'])->name('scanBiometric');
 //compare faces
 Route::post('/compare_faces', [App\Http\Controllers\BiometricController::class, 'compareFaces'])->name('compareFaces');
+//get data from scan image
+Route::get('/getPhoto/{userID}', [App\Http\Controllers\BiometricController::class, 'getUserInformation']);
+

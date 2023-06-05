@@ -63,7 +63,24 @@ class DashboardController extends Controller
             ->where('userID', $id)
             ->exists()
         ) {
-            return view('dashboard.Contractor');
+            // Set the timezone to Kuala Lumpur
+            $kl_timezone = 'Asia/Kuala_Lumpur';
+
+            // Get today's date in Kuala Lumpur timezone
+            $today_date = Carbon::now($kl_timezone)->toDateString();
+            $upcomingDate = Carbon::now($kl_timezone)->addDay();
+
+            //count total today appointment 
+            $totalTodayAppt = DB::table('appointmentinfo')->where('appointmentDate', $today_date)->where('contVisitID', $id)->count();
+            //count total upcoming appointment 
+            $totalUpcomingAppt = DB::table('appointmentinfo')->whereDate('appointmentDate', $upcomingDate)->where('contVisitID', $id)->count();
+            //count total past appointment 
+            $totalPastAppt = DB::table('visitrecord')->whereNotNull('checkOutDate')->where('contVisitID', $id)->count();
+
+            //today appointment data
+            $todayAppointment = DB::table('appointmentinfo')->where('appointmentDate', $today_date)->where('contVisitID', $id)->get();
+
+            return view('dashboard.Contractor', compact('totalTodayAppt', 'totalUpcomingAppt', 'totalPastAppt', 'todayAppointment'));
         } else {
             return redirect()->route('contractordetail');
         }
@@ -71,12 +88,18 @@ class DashboardController extends Controller
 
     public function guardDashboard()
     {
-
         // Set the timezone to Kuala Lumpur
         $kl_timezone = 'Asia/Kuala_Lumpur';
 
         // Get today's date in Kuala Lumpur timezone
         $today_date = Carbon::now($kl_timezone)->toDateString();
+
+        //count total appointment 
+        $totalAppointment = DB::table('appointmentinfo')->where('appointmentDate', $today_date)->count();
+        //count total check in 
+        $totalCheckIn = DB::table('visitrecord')->where('checkOutDate', NULL)->count();
+        //count total checkout 
+        $totalCheckOut = DB::table('visitrecord')->whereNotNull('checkOutDate')->count();
 
         $visitorlog = DB::table('visitrecord')
             ->join('users as cont_visit_user', 'visitrecord.contVisitID', '=', 'cont_visit_user.id')
@@ -85,7 +108,7 @@ class DashboardController extends Controller
             ->where('checkInDate', $today_date)
             ->get();
 
-        return view('dashboard.Guard', compact('visitorlog'));
+        return view('dashboard.Guard', compact('visitorlog', 'totalAppointment', 'totalCheckIn', 'totalCheckOut'));
     }
 
     public function officerDashboard()
@@ -98,12 +121,23 @@ class DashboardController extends Controller
 
         //count total visitor 
         $totalVisitor = DB::table('visitorinfo')->count();
-        //count total contractor
+        //count total contractor 
         $totalContractor = DB::table('contractorinfo')->count();
-        //count total today appointment
-        $totalTodayAppointment = DB::table('appointmentinfo')->where('appointmentDate', $today_date)->count();
-        //count total record visit
-        $totalVisitRecord = DB::table('visitrecord')->count();
+        //count total appointment 
+        $totalAppointment = DB::table('appointmentinfo')->where('appointmentDate', $today_date)->count();
+        //count total check in 
+        $totalCheckIn = DB::table('visitrecord')->where('checkOutDate', NULL)->count();
+        //count total checkout 
+        $totalCheckOut = DB::table('visitrecord')->whereNotNull('checkOutDate')->count();
+        //visitor log
+        $visitorlog = DB::table('visitrecord')
+            ->orderBy('visitrecord.id', 'desc')
+            ->join('users as cont_visit_user', 'visitrecord.contVisitID', '=', 'cont_visit_user.id')
+            ->join('users as staff_user', 'visitrecord.staffID', '=', 'staff_user.id')
+            ->select('visitrecord.*', 'visitrecord.id as recordID', 'cont_visit_user.*', 'cont_visit_user.name as cont_visit_name', 'staff_user.name as staff_name')
+            ->where('checkInDate', $today_date)
+            ->get();
+
         //count for line chart 7 days from today date
         $today = date('Y-m-d');
         $pastDate = date('Y-m-d', strtotime('-7 days'));
@@ -121,7 +155,7 @@ class DashboardController extends Controller
         // Sort the $totalAppointments array by the date keys in ascending order
         ksort($totalVisitLine);
 
-        return view('dashboard.Officer', compact('totalVisitor', 'totalContractor', 'totalTodayAppointment', 'totalVisitRecord', 'totalVisitLine'));
+        return view('dashboard.Officer', compact('totalVisitor', 'totalContractor', 'totalAppointment', 'totalCheckIn', 'totalCheckOut', 'totalVisitLine', 'visitorlog'));
     }
 
     public function staffDashboard()

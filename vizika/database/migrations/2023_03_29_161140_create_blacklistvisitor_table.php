@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('blacklistvisitor', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('visitorID');
+            $table->bigInteger('userID');
             $table->string('blacklistReason');
             $table->timestamps();
         });

@@ -26,27 +26,14 @@
         <div class="card">
             <div class="card-body">
                 <div class="row">
-                    <div class="col-5">
-                        <i class="material-icons md-48" id="iconsDashboard" style="background-color:lightblue">person</i>
+                    <div class="col-4">
+                        <div style="background-color: #ffc6c2; border-radius: 10px; display: flex; justify-content: center; align-items: center;">
+                            <i class="material-icons md-48" style="font-size: 70px; color: white; text-align: center">event</i>
+                        </div>
                     </div>
-                    <div class="col-7">
-                        <h1>{{ $totalVisitor }}</h1>
-                        <span>Total Visitor</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col">
-        <div class="card">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-5">
-                        <i class="material-icons md-48" id="iconsDashboard" style="background-color:lightblue">person</i>
-                    </div>
-                    <div class="col-7">
-                        <h1>{{ $totalContractor }}</h1>
-                        <span>Total Contractor</span>
+                    <div class="col-8">
+                        <h1>{{ $totalAppointment }}</h1>
+                        <span>Today Appointment</span>
                     </div>
                 </div>
             </div>
@@ -56,12 +43,14 @@
         <div class="card">
             <div class="card-body">
                 <div class="row">
-                    <div class="col-5">
-                        <i class="material-icons md-48" id="iconsDashboard" style="background-color:lightblue">event</i>
+                    <div class="col-4">
+                        <div style="background-color: #fae9da; border-radius: 10px; display: flex; justify-content: center; align-items: center;">
+                            <i class="material-icons md-48" style="font-size: 70px; color: white; text-align: center">event</i>
+                        </div>
                     </div>
-                    <div class="col-7">
-                        <h1>{{$totalTodayAppointment}}</h1>
-                        <span>Today's Appt.</span>
+                    <div class="col-8">
+                        <h1>{{ $totalCheckIn }}</h1>
+                        <span>Total Checkin</span>
                     </div>
                 </div>
             </div>
@@ -71,12 +60,14 @@
         <div class="card">
             <div class="card-body">
                 <div class="row">
-                    <div class="col-5">
-                        <i class="material-icons md-48" id="iconsDashboard" style="background-color:lightblue">event</i>
+                    <div class="col-4">
+                        <div style="background-color: #c3e0dd; border-radius: 10px; display: flex; justify-content: center; align-items: center;">
+                            <i class="material-icons md-48" style="font-size: 70px; color: white; text-align: center">event</i>
+                        </div>
                     </div>
-                    <div class="col-7">
-                        <h1>{{ $totalVisitRecord }}</h1>
-                        <span>Total Visit</span>
+                    <div class="col-8">
+                        <h1>{{ $totalCheckOut }}</h1>
+                        <span>Total Checkout</span>
                     </div>
                 </div>
             </div>
@@ -110,10 +101,73 @@
     </div>
 </div>
 
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header pb-0">
+                <div class="row">
+                </div>
+            </div>
+
+            <div class="card-body">
+                <div class="overflow-auto" style="overflow:hidden;">
+                    <div class="table-responsive">
+
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Visitor Name</th>
+                                    <th>KANEKA Staff</th>
+                                    <th>Purpose</th>
+                                    <th>Agenda</th>
+                                    <th>Check-In</th>
+                                    <th>Check-Out</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($visitorlog As $key=>$data)
+                                <tr id="row{{$data->id}}">
+                                    <td>{{ $data->id }}</td>
+                                    <td>{{ $data->cont_visit_name }}</td>
+                                    <td>{{ $data->staff_name }}</td>
+                                    <td>{{ $data->appointmentPurpose }}</td>
+                                    <td>{{ $data->appointmentAgenda }}</td>
+                                    <td>{{ $data->checkInDate }} {{ $data->checkInTime }} </td>
+                                    <td>{{ $data->checkOutDate }} {{ $data->checkOutTime }} </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 @endsection
-
+<script src="{{ asset('frontend') }}/js/jquery.dataTables.js"></script>
+<script src="{{ asset('frontend') }}/js/dataTables.bootstrap4.js"></script>
+<script src="//code.jquery.com/jquery-1.12.3.js"></script>
+<script src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script>
+    // to search the appointment 
+    $(document).ready(function() {
+        $('#dataTable').DataTable({
+            "order": [
+                [0, "asc"]
+            ],
+            "language": {
+                search: '<i class="fa fa-search" aria-hidden="true"></i>',
+                searchPlaceholder: 'Search record'
+            }
+        });
+    });
+</script>
 <script type="text/javascript">
     google.charts.load('current', {
         'packages': ['corechart']

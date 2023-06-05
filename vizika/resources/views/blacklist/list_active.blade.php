@@ -2,7 +2,7 @@
 
 @section('content')
 <h4>User List</h4>
-<h6>Blacklist User List</h6>
+<h6>Active User </h6>
 
 <!-- to display the alert message if the record has been deleted -->
 @if(session()->has('message'))
@@ -18,17 +18,16 @@
                 <nav class="">
                     <ul class="nav nav-tabs" id="myTab" role="tablist">
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('blacklistlist') && !request()->has('type') ? 'active' : '' }}" href="{{ route('blacklistlist') }}" role="tab" aria-selected="true">List Of Visitor</a>
+                            <a class="nav-link {{ request()->routeIs('activeUser') && !request()->has('type') ? 'active' : '' }}" href="{{ route('activeUser') }}" role="tab" aria-selected="true">List Of Visitor</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->has('type') && request()->get('type') === 'contractor' ? 'active' : '' }}" href="{{ route('blacklistlist', ['type' => 'contractor']) }}" role="tab" aria-selected="true">List Of Contractor</a>
+                            <a class="nav-link {{ request()->has('type') && request()->get('type') === 'contractor' ? 'active' : '' }}" href="{{ route('activeUser', ['type' => 'contractor']) }}" role="tab" aria-selected="true">List Of Contractor</a>
                         </li>
                     </ul>
                 </nav>
             </div>
         </div>
     </div>
-
     <div class="card-body">
         <div class="overflow-auto" style="overflow:auto;">
             <div class="table-responsive">
@@ -47,7 +46,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($blacklistcontractor as $key => $data)
+                        @foreach($contractorlist as $key => $data)
                         <tr id="row{{ $data->id }}">
                             <td>{{ $data->contractorID }}</td>
                             <td>{{ $data->name }}</td>
@@ -62,7 +61,7 @@
                                             <span class="d-none d-md-inline-block"><i class="large material-icons">more_vert</i></span>
                                         </a>
                                         <div class="dropdown-menu dropdown-menu-small">
-                                            <a class="dropdown-item text-danger" href="{{ route('profile-contractor', [$data->contractorID, 'from' => 'blacklist_users']) }}">
+                                            <a class="dropdown-item text-danger" href="{{ route('profile-contractor', [$data->contractorID, 'from' => 'active_users']) }}">
                                                 <i class="material-icons text-danger">search</i> View
                                             </a>
                                         </div>
@@ -87,7 +86,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($blacklistvisitor as $key => $data)
+                        @foreach($visitorlist as $key => $data)
                         <tr id="row{{ $data->id }}">
                             <td>{{ $data->visitorID }}</td>
                             <td>{{ $data->name }}</td>
@@ -102,7 +101,7 @@
                                             <span class="d-none d-md-inline-block"><i class="large material-icons">more_vert</i></span>
                                         </a>
                                         <div class="dropdown-menu dropdown-menu-small">
-                                            <a class="dropdown-item text-danger" href="{{ route('profile-visitor', [$data->visitorID, 'from' => 'balcklist_users']) }}">
+                                            <a class="dropdown-item text-danger" href="{{ route('profile-visitor', [$data->visitorID, 'from' => 'active_users']) }}">
                                                 <i class="material-icons text-danger">search</i> View
                                             </a>
                                         </div>
@@ -119,9 +118,10 @@
         </div>
     </div>
 </div>
+</div>
 
 
-<script src="{{ asset('frontend') }}/js/jquery.dataTables.js"></script>
+
 <script src="{{ asset('frontend') }}/js/jquery.dataTables.js"></script>
 <script src="{{ asset('frontend') }}/js/dataTables.bootstrap4.js"></script>
 <script src="//code.jquery.com/jquery-1.12.3.js"></script>

@@ -9,9 +9,9 @@
 </div>
 
 @if (session('success'))
-    <script>
-        window.alert('{{ session("success") }}');
-    </script>
+<script>
+    window.alert('{{ session("success") }}');
+</script>
 @endif
 
 <!-- Dashboard information start -->
@@ -21,11 +21,13 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-4">
-                        <i class="material-icons md-48" style="font-size: 50px; top: 10px">person</i>
+                        <div style="background-color: #ffc6c2; border-radius: 10px; display: flex; justify-content: center; align-items: center;">
+                            <i class="material-icons md-48" style="font-size: 70px; color: white; text-align: center">event</i>
+                        </div>
                     </div>
                     <div class="col-8">
-                        <h1>75</h1>
-                        <span>Total Visitor</span>
+                        <h1>{{ $totalTodayAppt }}</h1>
+                        <span>Today Appointment</span>
                     </div>
                 </div>
             </div>
@@ -36,11 +38,13 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-4">
-                        <i class="material-icons md-48" style="font-size: 50px; top: 10px">event</i>
+                        <div style="background-color: #fae9da; border-radius: 10px; display: flex; justify-content: center; align-items: center;">
+                            <i class="material-icons md-48" style="font-size: 70px; color: white; text-align: center">event</i>
+                        </div>
                     </div>
                     <div class="col-8">
-                        <h1>356</h1>
-                        <span>Total Appointment</span>
+                        <h1>{{ $totalUpcomingAppt }}</h1>
+                        <span>Total Upcoming Appointment</span>
                     </div>
                 </div>
             </div>
@@ -51,26 +55,13 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-4">
-                        <i class="material-icons md-48" style="font-size: 50px; top: 10px">event</i>
+                        <div style="background-color: #c3e0dd; border-radius: 10px; display: flex; justify-content: center; align-items: center;">
+                            <i class="material-icons md-48" style="font-size: 70px; color: white; text-align: center">event</i>
+                        </div>
                     </div>
                     <div class="col-8">
-                        <h1>20</h1>
-                        <span>Total Checkin</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col">
-        <div class="card">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-4">
-                        <i class="material-icons md-48" style="font-size: 50px; top: 10px">event</i>
-                    </div>
-                    <div class="col-8">
-                        <h1>25</h1>
-                        <span>Total Checkout</span>
+                        <h1>{{ $totalPastAppt }}</h1>
+                        <span>Total Past Appointment</span>
                     </div>
                 </div>
             </div>
@@ -81,33 +72,81 @@
 <!-- Dashboard information end -->
 
 <div class="row">
-    <div class="col">
+    <div class="col-12">
         <div class="card">
             <div class="card-header pb-0">
-                <h5>Total Visitor</h5>
+                <h5>Today Appointment</h5>
             </div>
             <div class="card-body">
-                <div id="checkin_chart" style="width: 175px; height: 200px; float: left"></div>
-                <div id="checkout_chart" style="width: 175px; height: 200px; float: left"></div>
-                <div id="today_visitor" style="width: 175px; height: 200px; float: left"></div>
+                <div class="overflow-auto" style="overflow:auto;">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Visitor Name</th>
+                                    <th>KANEKA Staff</th>
+                                    <th>Purpose</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($todayAppointment As $key=>$data)
+                                <tr id="row{{$data->id}}">
+                                    <td>{{ $data->appointmentID }}</td>
+                                    <td>{{ $data->cont_visit_name }}</td>
+                                    <td>{{ $data->staff_name }}</td>
+                                    <td>{{ $data->appointmentPurpose }}</td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
 
             </div>
         </div>
     </div>
-    <div class="col">
+    <!-- <div class="col-4">
         <div class="card">
             <div class="card-header pb-0">
                 <h5>Total Visitor</h5>
             </div>
             <div class="card-body">
-                <div id="total_visitor_data" style="width: 520px; height: 200px"></div>
             </div>
         </div>
-    </div>
+    </div> -->
 </div>
 
 
 @endsection
+<script src="{{ asset('frontend') }}/js/jquery.dataTables.js"></script>
+<script src="{{ asset('frontend') }}/js/dataTables.bootstrap4.js"></script>
+<script src="//code.jquery.com/jquery-1.12.3.js"></script>
+<script src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>
+
+<script>
+    // to search the appointment 
+    $(document).ready(function() {
+        $('#dataTable').DataTable({
+            "order": [
+                [0, "asc"]
+            ],
+            "language": {
+                search: '<i class="fa fa-search" aria-hidden="true"></i>',
+                searchPlaceholder: 'Search user'
+            }
+        });
+
+        // filter appointment
+        $('.dataTables_filter input[type="search"]').css({
+            'width': '300px',
+            'display': 'inline-block',
+            'font-size': '15px',
+            'font-weight': '400'
+        });
+    });
+</script>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
     google.charts.load('current', {

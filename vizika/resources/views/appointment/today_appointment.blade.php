@@ -53,7 +53,7 @@
             <div class="card" style="padding: 20px;">
                 <div class="form-row">
                     <div class="col-4" style="display: flex; justify-content: center;">
-                        <img src="/assets/avatar/{{$contractor->passportPhoto}}" height="200px">
+                        <img src="/assets/{{$contractor->name}}/{{$contractor->passportPhoto}}" height="200px">
                     </div>
                     <div class="col-7">
                         <h5>Contact Details</h5>

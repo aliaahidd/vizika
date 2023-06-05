@@ -11,7 +11,7 @@ class BlacklistVisitor extends Model
 
     protected $fillable = [
         'id',
-        'visitorID',
+        'userID',
         'blacklistReason',
     ];
 }

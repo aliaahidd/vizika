@@ -44,11 +44,13 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-4">
-                        <i class="material-icons md-48" style="font-size: 50px; top: 10px">person</i>
+                        <div style="background-color: #ffc6c2; border-radius: 10px; display: flex; justify-content: center; align-items: center;">
+                            <i class="material-icons md-48" style="font-size: 70px; color: white; text-align: center">event</i>
+                        </div>
                     </div>
                     <div class="col-8">
-                        <h1>75</h1>
-                        <span>Total Visitor</span>
+                        <h1>{{ $totalAppointment }}</h1>
+                        <span>Today Appointment</span>
                     </div>
                 </div>
             </div>
@@ -59,25 +61,12 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-4">
-                        <i class="material-icons md-48" style="font-size: 50px; top: 10px">event</i>
+                        <div style="background-color: #fae9da; border-radius: 10px; display: flex; justify-content: center; align-items: center;">
+                            <i class="material-icons md-48" style="font-size: 70px; color: white; text-align: center">event</i>
+                        </div>
                     </div>
                     <div class="col-8">
-                        <h1>356</h1>
-                        <span>Total Appointment</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col">
-        <div class="card">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-4">
-                        <i class="material-icons md-48" style="font-size: 50px; top: 10px">event</i>
-                    </div>
-                    <div class="col-8">
-                        <h1>20</h1>
+                        <h1>{{ $totalCheckIn }}</h1>
                         <span>Total Checkin</span>
                     </div>
                 </div>
@@ -89,10 +78,12 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-4">
-                        <i class="material-icons md-48" style="font-size: 50px; top: 10px">event</i>
+                        <div style="background-color: #c3e0dd; border-radius: 10px; display: flex; justify-content: center; align-items: center;">
+                            <i class="material-icons md-48" style="font-size: 70px; color: white; text-align: center">event</i>
+                        </div>
                     </div>
                     <div class="col-8">
-                        <h1>25</h1>
+                        <h1>{{ $totalCheckOut }}</h1>
                         <span>Total Checkout</span>
                     </div>
                 </div>
