@@ -137,7 +137,7 @@ class AppointmentController extends Controller
         try {
             if (!is_dir($publicFolderPath)) {
                 mkdir($publicFolderPath, 0755, true);
-            } 
+            }
         } catch (\Exception $e) {
             return "An error occurred: " . $e->getMessage();
         }
@@ -343,8 +343,14 @@ class AppointmentController extends Controller
             ->where('contVisitID', $id)
             ->first();
 
+        $biometric = DB::table('biometricinfo')
+            ->select('biometricinfo.id as biometricID')
+            ->where('userID', $id)
+            ->exists();
+
         return view('appointment.today_appointment', [
-            'visitor' => $visitor,
+            'usertype' => $visitor,
+            'biometric' => $biometric,
             'source' => 'visitor'
         ]);
     }
@@ -365,7 +371,7 @@ class AppointmentController extends Controller
             ->exists();
 
         return view('appointment.today_appointment', [
-            'contractor' => $contractor,
+            'usertype' => $contractor,
             'biometric' => $biometric,
             'source' => 'contractor'
         ]);

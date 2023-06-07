@@ -108,6 +108,7 @@
                         label: result.toString()
                     });
                     drawBox.draw(canvas);
+                    console.log('Result:', results);
 
                     if (result.similarity >= 0.3) {
                         console.log('Images matched');
@@ -139,41 +140,70 @@
 
     const userID = <?php echo json_encode($userID); ?>;
 
+    // function loadLabeledImages(userID) {
+    //     return axios
+    //         .get(`/getPhoto/${userID}`)
+    //         .then(response => {
+    //             const descriptions = [];
+    //             const passportImgURL = response.data.passportPhoto; // Assuming the response contains the URL of the passport photo
+    //             // const facialRecognitionImgURL = response.data.facialRecognition; // Assuming the response contains the URL of the facial recognition photo
+    //             const name = response.data.name;
+
+    //             console.log('userID:', userID);
+    //             console.log('name:', name);
+    //             console.log('passportImgURL:', passportImgURL);
+    //             // console.log('facialRecognitionImgURL:', facialRecognitionImgURL);
+
+    //             const encodedName = encodeURIComponent(name);
+    //             const passportImageURL = `http://127.0.0.1:8000/assets/${encodedName}/${passportImgURL}`;
+    //             // const facialRecognitionImageURL = `http://127.0.0.1:8000/assets/${encodedName}/${facialRecognitionImgURL}`;
+
+    //             console.log('passportImageURL:', passportImageURL);
+    //             // console.log('facialRecognitionImageURL:', facialRecognitionImageURL);
+
+    //             const loadPassportImg = faceapi.fetchImage(passportImageURL)
+    //                 .then(img => faceapi.detectSingleFace(img).withFaceLandmarks().withFaceDescriptor())
+    //                 .then(detections => {
+    //                     descriptions.push(detections.descriptor);
+    //                 });
+
+    //             // const loadFacialRecognitionImg = faceapi.fetchImage(facialRecognitionImageURL)
+    //             //     .then(img => faceapi.detectSingleFace(img).withFaceLandmarks().withFaceDescriptor())
+    //             //     .then(detections => {
+    //             //         descriptions.push(detections.descriptor);
+    //             //     });
+
+    //             return Promise.all([loadPassportImg])
+    //                 .then(() => {
+    //                     return new faceapi.LabeledFaceDescriptors(name, descriptions);
+    //                 });
+    //         })
+    //         .catch(error => {
+    //             console.error('Error fetching labeled images:', error);
+    //             return null;
+    //         });
+    // }
+
     function loadLabeledImages(userID) {
         return axios
             .get(`/getPhoto/${userID}`)
             .then(response => {
                 const descriptions = [];
-                const passportImgURL = response.data.passportPhoto; // Assuming the response contains the URL of the passport photo
-                const facialRecognitionImgURL = response.data.facialRecognition; // Assuming the response contains the URL of the facial recognition photo
+                const imgURL = response.data.facialRecognition; // Assuming the response contains the URL of the passport photo
                 const name = response.data.name;
-
                 console.log('userID:', userID);
                 console.log('name:', name);
-                console.log('passportImgURL:', passportImgURL);
-                console.log('facialRecognitionImgURL:', facialRecognitionImgURL);
+                console.log('imgURL:', imgURL);
 
                 const encodedName = encodeURIComponent(name);
-                const passportImageURL = `http://127.0.0.1:8000/assets/${encodedName}/${passportImgURL}`;
-                const facialRecognitionImageURL = `http://127.0.0.1:8000/assets/${encodedName}/${facialRecognitionImgURL}`;
+                const imageURL = `http://127.0.0.1:8000/assets/${encodedName}/${imgURL}`;
+                console.log('imageURL:', imageURL);
 
-                console.log('passportImageURL:', passportImageURL);
-                console.log('facialRecognitionImageURL:', facialRecognitionImageURL);
 
-                const loadPassportImg = faceapi.fetchImage(passportImageURL)
+                return faceapi.fetchImage(imageURL)
                     .then(img => faceapi.detectSingleFace(img).withFaceLandmarks().withFaceDescriptor())
                     .then(detections => {
                         descriptions.push(detections.descriptor);
-                    });
-
-                const loadFacialRecognitionImg = faceapi.fetchImage(facialRecognitionImageURL)
-                    .then(img => faceapi.detectSingleFace(img).withFaceLandmarks().withFaceDescriptor())
-                    .then(detections => {
-                        descriptions.push(detections.descriptor);
-                    });
-
-                return Promise.all([loadPassportImg, loadFacialRecognitionImg])
-                    .then(() => {
                         return new faceapi.LabeledFaceDescriptors(name, descriptions);
                     });
             })

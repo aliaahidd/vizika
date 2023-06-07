@@ -143,18 +143,6 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('appointment*') ? 'active' : '' }}" href="{{ route('appointment/createappointment') }}">
-                            <i class="material-icons">today</i>
-                            <span>Create Appointment (NEW)</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('appointment*') ? 'active' : '' }}" href="{{ route('appointment/createappointmentformold') }}">
-                            <i class="material-icons">today</i>
-                            <span>Create Appointment (OLD)</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('record*') ? 'active' : '' }}" href="{{ route('record') }}">
                             <i class="material-icons">today</i>
                             <span>Record History</span>

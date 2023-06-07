@@ -18,17 +18,23 @@ class BiometricController extends Controller
     public function registerBiometric($id)
     {
 
-        $contractor = DB::table('contractorinfo')
-            ->join('users', 'users.id', '=', 'contractorinfo.userID')
-            ->where('users.id', $id)
+        $user = DB::table('users')
+            ->where('id', $id)
             ->first();
 
-        $visitor = DB::table('visitorinfo')
-            ->join('users', 'users.id', '=', 'visitorinfo.userID')
-            ->where('users.id', $id)
-            ->first();
+        if ($user->category == "Contractor") {
+            $usertype = DB::table('contractorinfo')
+                ->join('users', 'users.id', '=', 'contractorinfo.userID')
+                ->where('users.id', $id)
+                ->first();
+        } else if ($user->category == "Visitor") {
+            $usertype = DB::table('visitorinfo')
+                ->join('users', 'users.id', '=', 'visitorinfo.userID')
+                ->where('users.id', $id)
+                ->first();
+        }
 
-        return view('biometric.register_biometric', compact('contractor', 'visitor'));
+        return view('biometric.register_biometric', compact('usertype'));
     }
 
     public function saveImage(Request $request)
@@ -60,12 +66,25 @@ class BiometricController extends Controller
 
     public function scanBiometric($id)
     {
-        $contractor = DB::table('appointmentinfo')
-            ->join('users', 'users.id', '=', 'appointmentinfo.contVisitID')
-            ->join('contractorinfo', 'contractorinfo.userID', '=', 'appointmentinfo.contVisitID')
-            ->select('appointmentInfo.*', 'users.*', 'contractorinfo.*', 'appointmentinfo.id as appointmentID')
-            ->where('contVisitID', $id)
+        $user = DB::table('users')
+            ->where('id', $id)
             ->first();
+
+        if ($user->category == "Contractor") {
+            $usertype = DB::table('appointmentinfo')
+                ->join('users', 'users.id', '=', 'appointmentinfo.contVisitID')
+                ->join('contractorinfo', 'contractorinfo.userID', '=', 'appointmentinfo.contVisitID')
+                ->select('appointmentInfo.*', 'users.*', 'contractorinfo.*', 'appointmentinfo.id as appointmentID')
+                ->where('contVisitID', $id)
+                ->first();
+        } else if ($user->category == "Visitor") {
+            $usertype = DB::table('appointmentinfo')
+                ->join('users', 'users.id', '=', 'appointmentinfo.contVisitID')
+                ->join('visitorinfo', 'visitorinfo.userID', '=', 'appointmentinfo.contVisitID')
+                ->select('appointmentInfo.*', 'users.*', 'visitorinfo.*', 'appointmentinfo.id as appointmentID')
+                ->where('contVisitID', $id)
+                ->first();
+        }
 
         $biometric = DB::table('biometricinfo')
             ->select('biometricinfo.id as biometricID')
@@ -76,8 +95,8 @@ class BiometricController extends Controller
         $storedImagePaths = DB::table('biometricinfo')->pluck('facialRecognition');
 
         return view('biometric.scan_biometric', [
-            'contractor' => $contractor,
-            'userID' => $contractor->userID,
+            'contractor' => $usertype,
+            'userID' => $usertype->userID,
             'biometric' => $biometric,
             'storedImagePaths' => $storedImagePaths,
             'source' => 'Contractor'
@@ -86,17 +105,29 @@ class BiometricController extends Controller
 
     public function getUserInformation($userID)
     {
-        // Fetch the user's information from the database based on the provided name
-        $contractorInfo = DB::table('contractorinfo')
-            ->join('users', 'users.id', '=', 'contractorinfo.userID')
-            ->join('biometricinfo', 'biometricinfo.userID', '=', 'contractorinfo.userID')
-            ->where('contractorinfo.userID', $userID)
+        $user = DB::table('users')
+            ->where('id', $userID)
             ->first();
 
-        if (!$contractorInfo) {
+        if ($user->category == "Contractor") {
+            // Fetch the user's information from the database based on the provided name
+            $usertype = DB::table('contractorinfo')
+                ->join('users', 'users.id', '=', 'contractorinfo.userID')
+                ->join('biometricinfo', 'biometricinfo.userID', '=', 'contractorinfo.userID')
+                ->where('contractorinfo.userID', $userID)
+                ->first();
+        } elseif ($user->category == "Visitor") {
+            $usertype = DB::table('visitorinfo')
+                ->join('users', 'users.id', '=', 'visitorinfo.userID')
+                ->join('biometricinfo', 'biometricinfo.userID', '=', 'visitorinfo.userID')
+                ->where('visitorinfo.userID', $userID)
+                ->first();
+        }
+
+        if (!$usertype) {
             return response()->json(['error' => 'Contractor information not found'], 404);
         }
 
-        return response()->json($contractorInfo);
+        return response()->json($usertype);
     }
 }

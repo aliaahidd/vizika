@@ -1,14 +1,16 @@
 @extends('layouts.sideNav')
 
 @section('content')
-<h4>Appointment</h4>
-<h6>Appointment / Create New Appointment</h6>
 
-<script src="{{ asset('frontend') }}/js/jquery.dataTables.js"></script>
-<script src="{{ asset('frontend') }}/js/dataTables.bootstrap4.js"></script>
-<script src="//code.jquery.com/jquery-1.12.3.js"></script>
-<script src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>
+<div class="page-header row no-gutters pb-4">
+    <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
+        <h1 class="page-title mb-3">Appointment</h1>
+        <h6><a href="{{ route('appointment') }}">List Appointment </a> /
+            <a>Create New Appointment</a>
+        </h6>
+    </div>
+</div>
+
 <style>
     #selectedList button {
         float: right;
@@ -133,6 +135,12 @@
         </div>
     </div>
 </div>
+
+<script src="{{ asset('frontend') }}/js/jquery.dataTables.js"></script>
+<script src="{{ asset('frontend') }}/js/dataTables.bootstrap4.js"></script>
+<script src="//code.jquery.com/jquery-1.12.3.js"></script>
+<script src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>
 <script type="text/javascript" src='https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.3.min.js'></script>
 <script type="text/javascript" src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.0.3/js/bootstrap.min.js'></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>

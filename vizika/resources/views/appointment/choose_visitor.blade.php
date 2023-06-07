@@ -1,37 +1,15 @@
 @extends('layouts.sideNav')
 
 @section('content')
-<h4>Visitor & Contractor</h4>
-<h6>List Visitor & Contractor</h6>
+<!-- Page Header -->
+<div class="page-header row no-gutters pb-4">
+    <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
+        <h1 class="page-title mb-3">Visitor & Contractor</h1>
+        <h6>List Visitor & Contractor</h6>
+    </div>
+</div>
 
-<script src="{{ asset('frontend') }}/js/jquery.dataTables.js"></script>
-<script src="{{ asset('frontend') }}/js/dataTables.bootstrap4.js"></script>
-<script src="//code.jquery.com/jquery-1.12.3.js"></script>
-<script src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>
 
-<script>
-    // to search the visitor contractor 
-    $(document).ready(function() {
-        $('#dataTable').DataTable({
-            "order": [
-                [0, "asc"]
-            ],
-            "language": {
-                search: '<i class="fa fa-search" aria-hidden="true"></i>',
-                searchPlaceholder: 'Search Visitor Contractor'
-            }
-        });
-
-        // filter visitor contractor 
-        $('.dataTables_filter input[type="search"]').css({
-            'width': '300px',
-            'display': 'inline-block',
-            'font-size': '15px',
-            'font-weight': '400'
-        });
-    });
-</script>
 
 <!-- to display the alert message if the record has been deleted -->
 @if(session()->has('message'))
@@ -89,6 +67,33 @@
 </div>
 
 <script src="{{ asset('frontend') }}/js/jquery.dataTables.js"></script>
+<script src="{{ asset('frontend') }}/js/dataTables.bootstrap4.js"></script>
+<script src="//code.jquery.com/jquery-1.12.3.js"></script>
+<script src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>
+
+<script>
+    // to search the visitor contractor 
+    $(document).ready(function() {
+        $('#dataTable').DataTable({
+            "order": [
+                [0, "asc"]
+            ],
+            "language": {
+                search: '<i class="fa fa-search" aria-hidden="true"></i>',
+                searchPlaceholder: 'Search Visitor Contractor'
+            }
+        });
+
+        // filter visitor contractor 
+        $('.dataTables_filter input[type="search"]').css({
+            'width': '300px',
+            'display': 'inline-block',
+            'font-size': '15px',
+            'font-weight': '400'
+        });
+    });
+</script>
 <Script>
 
 </script>

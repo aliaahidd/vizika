@@ -1,8 +1,12 @@
 @extends('layouts.sideNav')
 
 @section('content')
-<h4>User List</h4>
-<h6>Active User </h6>
+<div class="page-header row no-gutters pb-4">
+    <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
+        <h1 class="page-title mb-3">User List</h1>
+        <h6>Active User</h6>
+    </div>
+</div>
 
 <!-- to display the alert message if the record has been deleted -->
 @if(session()->has('message'))

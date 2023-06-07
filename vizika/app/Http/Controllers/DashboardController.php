@@ -48,7 +48,29 @@ class DashboardController extends Controller
             ->where('userID', $id)
             ->exists()
         ) {
-            return view('dashboard.Visitor');
+            // Set the timezone to Kuala Lumpur
+            $kl_timezone = 'Asia/Kuala_Lumpur';
+
+            // Get today's date in Kuala Lumpur timezone
+            $today_date = Carbon::now($kl_timezone)->toDateString();
+            $upcomingDate = Carbon::now($kl_timezone)->addDay();
+
+            //count total today appointment 
+            $totalTodayAppt = DB::table('appointmentinfo')->where('appointmentDate', $today_date)->where('contVisitID', $id)->count();
+            //count total upcoming appointment 
+            $totalUpcomingAppt = DB::table('appointmentinfo')->whereDate('appointmentDate', $upcomingDate)->where('contVisitID', $id)->count();
+            //count total past appointment 
+            $totalPastAppt = DB::table('visitrecord')->whereNotNull('checkOutDate')->where('contVisitID', $id)->count();
+
+            //today appointment data
+            $todayAppointment = DB::table('appointmentinfo')
+                ->join('users as cont_visit_user', 'appointmentinfo.contVisitID', '=', 'cont_visit_user.id')
+                ->join('users as staff_user', 'appointmentinfo.staffID', '=', 'staff_user.id')
+                ->select('appointmentinfo.*', 'appointmentinfo.id as appointmentID', 'cont_visit_user.*', 'cont_visit_user.id as contVisitID', 'cont_visit_user.name as cont_visit_name', 'staff_user.name as staff_name')
+                ->where('appointmentDate', $today_date)
+                ->where('staffID', $id)->get();
+
+            return view('dashboard.Visitor', compact('totalTodayAppt', 'totalUpcomingAppt', 'totalPastAppt', 'todayAppointment'));
         } else {
             return redirect()->route('visitordetail');
         }
@@ -78,7 +100,12 @@ class DashboardController extends Controller
             $totalPastAppt = DB::table('visitrecord')->whereNotNull('checkOutDate')->where('contVisitID', $id)->count();
 
             //today appointment data
-            $todayAppointment = DB::table('appointmentinfo')->where('appointmentDate', $today_date)->where('contVisitID', $id)->get();
+            $todayAppointment = DB::table('appointmentinfo')
+                ->join('users as cont_visit_user', 'appointmentinfo.contVisitID', '=', 'cont_visit_user.id')
+                ->join('users as staff_user', 'appointmentinfo.staffID', '=', 'staff_user.id')
+                ->select('appointmentinfo.*', 'appointmentinfo.id as appointmentID', 'cont_visit_user.*', 'cont_visit_user.id as contVisitID', 'cont_visit_user.name as cont_visit_name', 'staff_user.name as staff_name')
+                ->where('appointmentDate', $today_date)
+                ->where('staffID', $id)->get();
 
             return view('dashboard.Contractor', compact('totalTodayAppt', 'totalUpcomingAppt', 'totalPastAppt', 'todayAppointment'));
         } else {
@@ -160,6 +187,30 @@ class DashboardController extends Controller
 
     public function staffDashboard()
     {
-        return view('dashboard.Staff');
+        $id = Auth::user()->id;
+
+        // Set the timezone to Kuala Lumpur
+        $kl_timezone = 'Asia/Kuala_Lumpur';
+
+        // Get today's date in Kuala Lumpur timezone
+        $today_date = Carbon::now($kl_timezone)->toDateString();
+        $upcomingDate = Carbon::now($kl_timezone)->addDay();
+
+        //count total today appointment 
+        $totalTodayAppt = DB::table('appointmentinfo')->where('appointmentDate', $today_date)->where('staffID', $id)->count();
+        //count total upcoming appointment 
+        $totalUpcomingAppt = DB::table('appointmentinfo')->whereDate('appointmentDate', $upcomingDate)->where('staffID', $id)->groupBy('appointmentDate')->distinct()->count();
+        //count total past appointment 
+        $totalPastAppt = DB::table('visitrecord')->whereNotNull('checkOutDate')->where('staffID', $id)->count();
+
+        //today appointment data
+        $todayAppointment = DB::table('appointmentinfo')
+            ->join('users as cont_visit_user', 'appointmentinfo.contVisitID', '=', 'cont_visit_user.id')
+            ->join('users as staff_user', 'appointmentinfo.staffID', '=', 'staff_user.id')
+            ->select('appointmentinfo.*', 'appointmentinfo.id as appointmentID', 'cont_visit_user.*', 'cont_visit_user.id as contVisitID', 'cont_visit_user.name as cont_visit_name', 'staff_user.name as staff_name')
+            ->where('appointmentDate', $today_date)
+            ->where('staffID', $id)->get();
+
+        return view('dashboard.Staff', compact('totalTodayAppt', 'totalUpcomingAppt', 'totalPastAppt', 'todayAppointment'));
     }
 }

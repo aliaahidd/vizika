@@ -49,11 +49,11 @@
     <!-- display all from registration -->
     <div class="row justify-content-center">
         <div class="col-md-12">
-            @if ($contractor->category == 'Contractor')
+            @if ($usertype->category == 'Contractor')
             <div class="card" style="padding: 20px;">
                 <div class="form-row">
                     <div class="col-4" style="display: flex; justify-content: center;">
-                        <img src="/assets/{{$contractor->name}}/{{$contractor->passportPhoto}}" height="200px">
+                        <img src="/assets/{{$usertype->name}}/{{$usertype->passportPhoto}}" height="200px">
                     </div>
                     <div class="col-7">
                         <h5>Contact Details</h5>
@@ -63,7 +63,7 @@
                                 <label for="name">Name</label>
                             </div>
                             <div class="col">
-                                <label for="name">{{ $contractor->name }}</label>
+                                <label for="name">{{ $usertype->name }}</label>
                             </div>
                         </div>
                         <div class="row">
@@ -71,7 +71,7 @@
                                 <label for="email">Email</label>
                             </div>
                             <div class="col">
-                                <label for="email">{{ $contractor->email }}</label>
+                                <label for="email">{{ $usertype->email }}</label>
                             </div>
                         </div>
                         <div class="row">
@@ -79,7 +79,7 @@
                                 <label for="email">Phone Number</label>
                             </div>
                             <div class="col">
-                                <label for="email">{{ $contractor->phoneNo }}</label>
+                                <label for="email">{{ $usertype->phoneNo }}</label>
                             </div>
                         </div>
                         <div class="row">
@@ -89,10 +89,60 @@
                             <div class="col">
                                 @if ($biometric)
                                 <!-- Add a button to start the face recognition process -->
-                                <td><a href="{{ route('scanBiometric', $contractor->contVisitID) }}" class="btn btn-primary" style="color: white">Scan Face</a>
+                                <td><a href="{{ route('scanBiometric', $usertype->contVisitID) }}" class="btn btn-primary" style="color: white">Scan Face</a>
                                 </td>
                                 @else
-                                <td><a href="{{ route('registerBiometric', $contractor->contVisitID) }}" class="btn btn-primary">Register</a></td>
+                                <td><a href="{{ route('registerBiometric', $usertype->contVisitID) }}" class="btn btn-primary">Register</a></td>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @elseif ($usertype->category == 'Visitor')
+            <div class="card" style="padding: 20px;">
+                <div class="form-row">
+                    <div class="col-4" style="display: flex; justify-content: center;">
+                        <img src="/assets/{{$usertype->name}}/{{$usertype->passportPhoto}}" height="200px">
+                    </div>
+                    <div class="col-7">
+                        <h5>Contact Details</h5>
+                        <hr>
+                        <div class="row">
+                            <div class="col-4">
+                                <label for="name">Name</label>
+                            </div>
+                            <div class="col">
+                                <label for="name">{{ $usertype->name }}</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4">
+                                <label for="email">Email</label>
+                            </div>
+                            <div class="col">
+                                <label for="email">{{ $usertype->email }}</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4">
+                                <label for="email">Phone Number</label>
+                            </div>
+                            <div class="col">
+                                <label for="email">{{ $usertype->phoneNo }}</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4">
+                                <label for="faceRecog">Facial Recognition</label>
+                            </div>
+                            <div class="col">
+                                @if ($biometric)
+                                <!-- Add a button to start the face recognition process -->
+                                <td><a href="{{ route('scanBiometric', $usertype->contVisitID) }}" class="btn btn-primary" style="color: white">Scan Face</a>
+                                </td>
+                                @else
+                                <td><a href="{{ route('registerBiometric', $usertype->contVisitID) }}" class="btn btn-primary">Register</a></td>
                                 @endif
                             </div>
                         </div>

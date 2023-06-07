@@ -10,11 +10,11 @@
 <!-- display all from registration -->
 <div class="row justify-content-center">
     <div class="col-md-12">
-        @if ($contractor->category == 'Contractor')
+        @if ($usertype->category == 'Contractor')
         <div class="card" style="padding: 20px;">
             <div class="form-row">
                 <div class="col-4">
-                    <img src="/assets/{{$contractor->name}}/{{$contractor->passportPhoto}}" width="200px" style="float: left">
+                    <img src="/assets/{{$usertype->name}}/{{$usertype->passportPhoto}}" width="200px" style="float: left">
                 </div>
                 <div class="col-7">
                     <h5>Contact Details</h5>
@@ -24,7 +24,7 @@
                             <label for="name">Name</label>
                         </div>
                         <div class="col">
-                            <label for="name">{{ $contractor->name }}</label>
+                            <label for="name">{{ $usertype->name }}</label>
                         </div>
                     </div>
                     <div class="row">
@@ -32,7 +32,7 @@
                             <label for="email">Email</label>
                         </div>
                         <div class="col">
-                            <label for="email">{{ $contractor->email }}</label>
+                            <label for="email">{{ $usertype->email }}</label>
                         </div>
                     </div>
                     <div class="row">
@@ -40,18 +40,18 @@
                             <label for="email">Phone Number</label>
                         </div>
                         <div class="col">
-                            <label for="email">{{ $contractor->phoneNo }}</label>
+                            <label for="email">{{ $usertype->phoneNo }}</label>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        @elseif (Visitor->category == 'Visitor')
+        @elseif ($usertype->category == 'Visitor')
         <div class="card" style="padding: 20px;">
             <div class="form-row">
                 <div class="col-4">
-                    <img src="/assets/{{$visitor->name}}/{{$visitor->passportPhoto}}" width="200px" style="float: left">
+                    <img src="/assets/{{$usertype->name}}/{{$usertype->passportPhoto}}" width="200px" style="float: left">
                 </div>
                 <div class="col-7">
                     <h5>Contact Details</h5>
@@ -61,7 +61,7 @@
                             <label for="name">Name</label>
                         </div>
                         <div class="col">
-                            <label for="name">{{ $visitor->name }}</label>
+                            <label for="name">{{ $usertype->name }}</label>
                         </div>
                     </div>
                     <div class="row">
@@ -69,7 +69,7 @@
                             <label for="email">Email</label>
                         </div>
                         <div class="col">
-                            <label for="email">{{ $visitor->email }}</label>
+                            <label for="email">{{ $usertype->email }}</label>
                         </div>
                     </div>
                     <div class="row">
@@ -77,7 +77,7 @@
                             <label for="email">Phone Number</label>
                         </div>
                         <div class="col">
-                            <label for="email">{{ $visitor->phoneNo }}</label>
+                            <label for="email">{{ $usertype->phoneNo }}</label>
                         </div>
                     </div>
                 </div>

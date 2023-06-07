@@ -1,8 +1,14 @@
 @extends('layouts.sideNav')
 
 @section('content')
-<h4>Briefing</h4>
-<h6>Briefing / Create New Briefing</h6>
+<div class="page-header row no-gutters pb-4">
+    <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
+        <h1 class="page-title mb-3">Briefing</h1>
+        <h6><a href="{{ route('briefing') }}">List Briefing </a> /
+            <a>Create New Briefing</a>
+        </h6>
+    </div>
+</div>
 
 <!-- message box if the new briefing has been added -->
 @if(session()->has('message'))

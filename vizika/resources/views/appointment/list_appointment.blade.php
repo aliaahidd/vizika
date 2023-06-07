@@ -2,8 +2,13 @@
 
 @section('content')
 <meta name="csrf-token" content="{{ csrf_token() }}">
-<h4>Appointment</h4>
-<h6>Appointment List</h6>
+<div class="page-header row no-gutters">
+    <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
+        <h1 class="page-title mb-3">Appointment</h1>
+        <h6>List Appointment</h6>
+    </div>
+</div>
+
 @if( auth()->user()->category== "SHEQ Guard")
 <h6>
     <?php
@@ -13,35 +18,6 @@
 </h6>
 @endif
 
-<script src="{{ asset('frontend') }}/js/jquery.dataTables.js"></script>
-<script src="{{ asset('frontend') }}/js/dataTables.bootstrap4.js"></script>
-<script src="//code.jquery.com/jquery-1.12.3.js"></script>
-<script src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>
-
-<script>
-    // to search the appointment 
-    $(document).ready(function() {
-        $('#dataTable').DataTable({
-            "order": [
-                [0, "asc"]
-            ],
-            "language": {
-                search: '<i class="fa fa-search" aria-hidden="true"></i>',
-                searchPlaceholder: 'Search appointment'
-            }
-        });
-
-        // filter appointment
-        $('.dataTables_filter input[type="search"]').css({
-            'width': '300px',
-            'display': 'inline-block',
-            'font-size': '15px',
-            'font-weight': '400'
-        });
-    });
-</script>
-
 <body>
     <!-- to display the alert message if the record has been deleted -->
     @if(session()->has('message'))
@@ -50,10 +26,8 @@
     </div>
     @endif
 
-    <div class="card">
-        <div class="card-header pb-0">
-            <div class="row">
-                <!-- <div class=" {{  auth()->user()->category== 'Staff' ? 'col-lg-10 col-md-10 col-sm-10' : (request()->routeIs('appointment') ? 'col-lg-10 col-md-10 col-sm-10' : 'col-lg-12 col-md-12 col-sm-12') }}">
+    <div class="row mb-3">
+        <!-- <div class=" {{  auth()->user()->category== 'Staff' ? 'col-lg-10 col-md-10 col-sm-10' : (request()->routeIs('appointment') ? 'col-lg-10 col-md-10 col-sm-10' : 'col-lg-12 col-md-12 col-sm-12') }}">
                 <nav class="">
                     <ul class="nav nav-tabs" id="myTab" role="tablist">
                         <li class="nav-item">
@@ -66,24 +40,27 @@
                 </nav>
             </div> -->
 
-                <!-- if user == committee, then have add new appointment button  -->
-                @if( auth()->user()->category== "Staff")
+        <!-- if user == committee, then have add new appointment button  -->
+        @if( auth()->user()->category== "Staff")
 
-                @if(request()->routeIs('appointment'))
-                <div class="col-lg-2 col-md-2 col-sm-2" style="float: right;">
-                    <a class="btn btn-primary" style="float: right; width:100%;" role="button" href="{{ route('appointment/createappointment') }}">
-                        <i class="fas fa-plus"></i>&nbsp; Create Appointment</a>
-                </div>
-                @else
-                <div class="col-lg-2 col-md-2 col-sm-2" style="float: right;">
-                    <a class="btn btn-success" style="float: right; width:100%;" role="button" href="">
-                        <i class="fa fa-cog"></i>&nbsp; -</a>
-                </div>
-                @endif
+        @if(request()->routeIs('appointment'))
+        <div class="col-lg-12 col-md-12 col-sm-12" style="float: right;">
+            <a class="btn btn-primary col-2" style="float: right; width:100%;" role="button" href="{{ route('appointment/createappointment') }}">
+                <i class="fas fa-plus"></i>&nbsp; Create Appointment</a>
+        </div>
+        @else
+        <div class="col-lg-12 col-md-12 col-sm-12" style="float: right;">
+            <a class="btn btn-success" style="float: right; width:100%;" role="button" href="">
+                <i class="fa fa-cog"></i>&nbsp; -</a>
+        </div>
+        @endif
 
-                @endif
+        @endif
 
-            </div>
+    </div>
+    <div class="card">
+        <div class="card-header pb-0">
+
         </div>
 
         <div class="card-body">
@@ -184,3 +161,32 @@
     </div>
 </body>
 @endsection
+
+<script src="{{ asset('frontend') }}/js/jquery.dataTables.js"></script>
+<script src="{{ asset('frontend') }}/js/dataTables.bootstrap4.js"></script>
+<script src="//code.jquery.com/jquery-1.12.3.js"></script>
+<script src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>
+
+<script>
+    // to search the appointment 
+    $(document).ready(function() {
+        $('#dataTable').DataTable({
+            "order": [
+                [0, "asc"]
+            ],
+            "language": {
+                search: '<i class="fa fa-search" aria-hidden="true"></i>',
+                searchPlaceholder: 'Search appointment'
+            }
+        });
+
+        // filter appointment
+        $('.dataTables_filter input[type="search"]').css({
+            'width': '300px',
+            'display': 'inline-block',
+            'font-size': '15px',
+            'font-weight': '400'
+        });
+    });
+</script>

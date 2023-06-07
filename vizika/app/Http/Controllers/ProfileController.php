@@ -62,7 +62,7 @@ class ProfileController extends Controller
         if ($request->hasFile('passportPhoto')) {
             $name = Auth::user()->name;
             //unlink the old contractorinfo file from assets folder
-            $path = public_path() . '/assets/'. $name . $contractorinfo->passportPhoto;
+            $path = public_path() . '/assets/' . $name . $contractorinfo->passportPhoto;
             if (file_exists($path)) {
                 unlink($path);
             }
@@ -120,7 +120,7 @@ class ProfileController extends Controller
             $name = Auth::user()->name;
 
             //unlink the old visitorinfo file from assets folder
-            $path = public_path() . '/assets/' .$name . $visitorinfo->passportPhoto;
+            $path = public_path() . '/assets/' . $name . $visitorinfo->passportPhoto;
             if (file_exists($path)) {
                 unlink($path);
             }
@@ -169,7 +169,7 @@ class ProfileController extends Controller
         $filename = time() . '.' . $passportPhoto->getClientOriginalExtension();
 
         // to store the file by moving to assets folder
-        $passportPhoto->move('assets/'. $name, $filename);
+        $passportPhoto->move('assets/' . $name, $filename);
 
         // to rename the contractorinfo file
         $filename2 = time() . '.' . $validityPass->getClientOriginalExtension();
@@ -191,7 +191,7 @@ class ProfileController extends Controller
         // insert query
         DB::table('contractorinfo')->insert($data);
 
-        return view('dashboard.Contractor');
+        return redirect()->route('dashboardContractor');
     }
 
     public function storevisitorinfo(Request $request)
@@ -212,7 +212,7 @@ class ProfileController extends Controller
         $filename = time() . '.' . $passportPhoto->getClientOriginalExtension();
 
         // to store the file by moving to assets folder
-        $passportPhoto->move('assets/'. $name, $filename);
+        $passportPhoto->move('assets/' . $name, $filename);
 
         $data = array(
             'userID' => $id,
@@ -228,7 +228,7 @@ class ProfileController extends Controller
         // insert query
         DB::table('visitorinfo')->insert($data);
 
-        return view('dashboard.Visitor');
+        return redirect()->route('dashboardVisitor');
     }
 
     public function contractordetail(Request $request)
