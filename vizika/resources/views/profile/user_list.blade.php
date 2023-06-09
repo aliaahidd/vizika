@@ -24,7 +24,7 @@
             <!-- if user == committee, then have add new appointment button  -->
             @if( auth()->user()->category=="Staff")
             <div class="col-lg-2 col-md-2 col-sm-2" style="float: right;">
-                <a class="btn btn-primary" style="float: right; width:185px;" role="button" href="{{ route('appointment/registervisitorform') }}">
+                <a class="btn btn-primary" style="float: right; width:185px;" role="button" href="{{ route('registeruserform') }}">
                     <i class="fas fa-plus"></i>&nbsp; Register Visitor Contractor</a>
             </div>
             @endif

@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use App\Mail\SendEmail;
 use App\Models\AppointmentInfo;
 use App\Models\User;
@@ -66,18 +65,6 @@ class AppointmentController extends Controller
         return view('appointment.list_today_appointment', compact('appointmentGuard'));
     }
 
-    //choose visitor form page
-    public function choosevisitorform(Request $request)
-    {
-        $visitorlist = DB::table('users')
-            ->orderBy('name', 'asc')
-            ->where('category', 'Visitor')
-            ->orwhere('category', 'Contractor')
-            ->get();
-
-        return view('appointment.choose_visitor', compact('visitorlist'));
-    }
-
     //create appointment form page
     public function createappointmentform(Request $request)
     {
@@ -108,52 +95,6 @@ class AppointmentController extends Controller
             ->get();
 
         return view('appointment.create_appointment_old', compact('visitorlist', 'contractorlist'));
-    }
-
-    public function registervisitorform()
-    {
-        return view('appointment.register_visitor');
-    }
-
-    //register visitor (by staff)
-    public function registervisitor(Request $request)
-    {
-        // create visitor account 
-        // get user auth
-        $name = $request->input('name');
-        $email = $request->input('email');
-        $category = $request->input('category');
-
-        $Email = User::where('email', $email)->first();
-        if ($Email) {
-            return redirect()
-                ->route('appointment/registervisitorform')
-                ->with('message', 'Email is already exists.');
-        }
-
-        $publicFolderPath = public_path('assets/' . $name);
-
-        // Create the folder
-        try {
-            if (!is_dir($publicFolderPath)) {
-                mkdir($publicFolderPath, 0755, true);
-            }
-        } catch (\Exception $e) {
-            return "An error occurred: " . $e->getMessage();
-        }
-
-        $data = array(
-            'name' => $name,
-            'email' => $email,
-            'password' => Hash::make('visitor123'),
-            'category' => $category,
-        );
-
-        // insert query
-        DB::table('users')->insert($data);
-
-        sleep(1);
-        return redirect()->route('choosevisitor');
     }
 
     //store appointment details
@@ -340,17 +281,11 @@ class AppointmentController extends Controller
             ->join('users', 'users.id', '=', 'appointmentinfo.contVisitID')
             ->join('visitorinfo', 'visitorinfo.userID', '=', 'appointmentinfo.contVisitID')
             ->select('appointmentinfo.*', 'users.*', 'visitorinfo.*', 'appointmentinfo.id as appointmentID')
-            ->where('contVisitID', $id)
+            ->where('appointmentinfo.id', $id)
             ->first();
-
-        $biometric = DB::table('biometricinfo')
-            ->select('biometricinfo.id as biometricID')
-            ->where('userID', $id)
-            ->exists();
 
         return view('appointment.today_appointment', [
             'usertype' => $visitor,
-            'biometric' => $biometric,
             'source' => 'visitor'
         ]);
     }
@@ -362,17 +297,11 @@ class AppointmentController extends Controller
             ->join('users', 'users.id', '=', 'appointmentinfo.contVisitID')
             ->join('contractorinfo', 'contractorinfo.userID', '=', 'appointmentinfo.contVisitID')
             ->select('appointmentInfo.*', 'users.*', 'contractorinfo.*', 'appointmentinfo.id as appointmentID')
-            ->where('contVisitID', $id)
+            ->where('appointmentinfo.id', $id)
             ->first();
-
-        $biometric = DB::table('biometricinfo')
-            ->select('biometricinfo.id as biometricID')
-            ->where('userID', $id)
-            ->exists();
 
         return view('appointment.today_appointment', [
             'usertype' => $contractor,
-            'biometric' => $biometric,
             'source' => 'contractor'
         ]);
     }

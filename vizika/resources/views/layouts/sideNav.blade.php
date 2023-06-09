@@ -112,6 +112,12 @@
 
                     @if( auth()->user()->category== "SHEQ Guard")
                     <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('logvisitor*') ? 'active' : '' }}" href="{{ route('logvisitor') }}">
+                            <i class="material-icons">today</i>
+                            <span>Visitor Log</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('appointment*') ? 'active' : '' }}" data-toggle="collapse" data-target="#appointmentSubMenu">
                             <i class="material-icons">today</i>
                             <span>Appointment</span>
@@ -126,12 +132,6 @@
                                 </li>
                             </ul>
                         </div>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('facialRecog*') ? 'active' : '' }}" href="{{ route('facialRecog') }}">
-                            <i class="material-icons">fingerprint</i>
-                            <span>Biometric</span>
-                        </a>
                     </li>
                     @endif
 
@@ -149,7 +149,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('choosevisitor*') ? 'active' : '' }}" href="{{ route('choosevisitor') }}">
+                        <a class="nav-link {{ request()->routeIs('userlist*') ? 'active' : '' }}" href="{{ route('userlist') }}">
                             <i class="material-icons">today</i>
                             <span>Visitor & Contractor</span>
                         </a>
@@ -180,9 +180,9 @@
                     <ul class="navbar-nav border-left flex-row ml-auto ">
                         <li class="nav-item border-right dropdown">
                             <a class="nav-link dropdown-toggle text-nowrap px-3" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                                @if(Auth::user()->category == "Staff" || Auth::user()->category == "SHEQ Officer" || Auth::user()->category == "SHEQ Guard" || Auth::user()->category == "Contractor" || Auth::user()->category == "Visitor") 
+                                @if(Auth::user()->category == "Staff" || Auth::user()->category == "SHEQ Officer" || Auth::user()->category == "SHEQ Guard" || Auth::user()->category == "Contractor" || Auth::user()->category == "Visitor")
                                 <img class="user-avatar rounded-circle mr-2" src="{{ asset('frontend') }}/images/avatar.jpg" alt="Avatar" width="30px" height="30px" style="vertical-align:baseline">
-                               
+
                                 @endif
                                 <span class="d-none d-md-inline-block"><strong>{{ Auth::user()->name }}</strong><br> {{Auth::user()->category}}</span>
                             </a>

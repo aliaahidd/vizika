@@ -1,111 +1,43 @@
-@extends('layouts.sideNav')
+@extends('layouts.app')
 @section('content')
 
-<!-- Page Header -->
-<div class="page-header row no-gutters pb-4">
-    <div class="col-12 col-sm-4 text-center text-sm-left mb-0 d-flex">
-        <h1 class="page-title ml-3">Profile</h1>
-    </div>
-</div>
-<!-- display all from registration -->
-<div class="row justify-content-center">
-    <div class="col-md-12">
-        @if ($usertype->category == 'Contractor')
-        <div class="card" style="padding: 20px;">
-            <div class="form-row">
-                <div class="col-4">
-                    <img src="/assets/{{$usertype->name}}/{{$usertype->passportPhoto}}" width="200px" style="float: left">
-                </div>
-                <div class="col-7">
-                    <h5>Contact Details</h5>
-                    <hr>
-                    <div class="row">
-                        <div class="col-4">
-                            <label for="name">Name</label>
-                        </div>
-                        <div class="col">
-                            <label for="name">{{ $usertype->name }}</label>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-4">
-                            <label for="email">Email</label>
-                        </div>
-                        <div class="col">
-                            <label for="email">{{ $usertype->email }}</label>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-4">
-                            <label for="email">Phone Number</label>
-                        </div>
-                        <div class="col">
-                            <label for="email">{{ $usertype->phoneNo }}</label>
-                        </div>
-                    </div>
-                </div>
+<div class="container">
+    <ul class="steps">
+        <li class="step step--complete step--inactive">
+            <span class="step__icon"></span>
+            <span class="step__label">Step 1: User details</span>
+        </li>
+        <li class="step step--incomplete step--active">
+            <span class="step__icon"></span>
+            <span class="step__label">Step 2: Capture Picture</span>
+        </li>
+        <li class="step step--incomplete step--inactive">
+            <span class="step__icon"></span>
+            <span class="step__label">Step 3: Finish</span>
+        </li>
+    </ul>
+    <br>
+
+    <div class="card">
+        <div class="card-body">
+            <div class="row justify-content-center mt-3">
+                <!-- Display webcam stream -->
+                <video id="videoElement" width="640" height="480" autoplay></video>
             </div>
-        </div>
 
-        @elseif ($usertype->category == 'Visitor')
-        <div class="card" style="padding: 20px;">
-            <div class="form-row">
-                <div class="col-4">
-                    <img src="/assets/{{$usertype->name}}/{{$usertype->passportPhoto}}" width="200px" style="float: left">
-                </div>
-                <div class="col-7">
-                    <h5>Contact Details</h5>
-                    <hr>
-                    <div class="row">
-                        <div class="col-4">
-                            <label for="name">Name</label>
-                        </div>
-                        <div class="col">
-                            <label for="name">{{ $usertype->name }}</label>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-4">
-                            <label for="email">Email</label>
-                        </div>
-                        <div class="col">
-                            <label for="email">{{ $usertype->email }}</label>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-4">
-                            <label for="email">Phone Number</label>
-                        </div>
-                        <div class="col">
-                            <label for="email">{{ $usertype->phoneNo }}</label>
-                        </div>
-                    </div>
-                </div>
+            <div class="row justify-content-center mt-3">
+                <!-- Button to capture image -->
+                <button class="btn btn-primary" id="captureButton">Capture Image</button>
             </div>
-        </div>
-        @endif
-    </div>
-</div>
 
-<div class="card mt-3">
-    <div class="card-body">
-        <div class="row justify-content-center mt-3">
-            <!-- Display webcam stream -->
-            <video id="videoElement" width="640" height="480" autoplay></video>
-        </div>
-
-        <div class="row justify-content-center mt-3">
-            <!-- Button to capture image -->
-            <button class="btn btn-primary" id="captureButton">Capture Image</button>
-        </div>
-
-        <div class="row justify-content-center mt-3">
-            <!-- Canvas element to display the captured image -->
-            <canvas id="canvasElement"></canvas>
-        </div>
-        <div class="row justify-content-center mt-3">
-            <!-- Button to save  -->
-            <button class="btn btn-primary" id="saveButton" disabled>Save</button>
+            <div class="row justify-content-center mt-3">
+                <!-- Canvas element to display the captured image -->
+                <canvas id="canvasElement"></canvas>
+            </div>
+            <div class="row justify-content-center mt-3">
+                <!-- Button to save  -->
+                <button class="btn btn-primary" id="saveButton" disabled>Save</button>
+            </div>
         </div>
     </div>
 </div>
@@ -174,6 +106,9 @@
                             if (response.ok) {
                                 // Success message or further actions
                                 console.log('Image saved successfully');
+                                
+                                window.location.href = '/finish-form';
+
                             } else {
                                 throw new Error('Image save failed');
                             }
@@ -188,6 +123,145 @@
         .catch(error => {
             console.error('Error accessing webcam:', error);
         });
-
-    
 </script>
+
+<style>
+    @import "color-schemer";
+
+    /* Mixins */
+    /* Color Variables */
+    /* Theme Variables */
+    /* Animations */
+    @keyframes bounce {
+        0% {
+            transform: scale(1);
+        }
+
+        33% {
+            transform: scale(0.9);
+        }
+
+        66% {
+            transform: scale(1.1);
+        }
+
+        100% {
+            transform: scale(1);
+        }
+    }
+
+
+    /* Component Styles - Steps */
+    .steps {
+        display: flex;
+        width: 100%;
+        margin: 0;
+        padding: 0 0 2rem 0;
+        list-style: none;
+    }
+
+    .step {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        flex: 1;
+        position: relative;
+        pointer-events: none;
+    }
+
+    .step--active,
+    .step--complete {
+        cursor: pointer;
+        pointer-events: all;
+    }
+
+    .step:not(:last-child):before,
+    .step:not(:last-child):after {
+        display: block;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        height: 0.25rem;
+        content: '';
+        transform: translateY(-50%);
+        will-change: width;
+        z-index: -1;
+    }
+
+    .step:before {
+        width: 100%;
+        background-color: #b6b8ba;
+    }
+
+    .step:after {
+        width: 0;
+        background-color: #007bff;
+    }
+
+    .step--complete:after {
+        width: 100% !important;
+        opacity: 1;
+        transition: width 0.6s ease-in-out, opacity 0.6s ease-in-out;
+    }
+
+    .step__icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        width: 3rem;
+        height: 3rem;
+        background-color: #292627;
+        border: 0.25rem solid #b6b8ba;
+        border-radius: 50%;
+        color: transparent;
+        font-size: 2rem;
+    }
+
+    .step__icon:before {
+        display: block;
+        color: #fff;
+        content: '\2713';
+    }
+
+    .step--complete.step--active .step__icon {
+        color: #fff;
+        transition: background-color 0.3s ease-in-out, border-color 0.3s ease-in-out, color 0.3s ease-in-out;
+    }
+
+    .step--incomplete.step--active .step__icon {
+        border-color: #007bff;
+        transition-delay: 0.5s;
+    }
+
+    .step--complete .step__icon {
+        animation: bounce 0.5s ease-in-out;
+        background-color: #007bff;
+        border-color: #007bff;
+        color: #fff;
+    }
+
+    .step__label {
+        position: absolute;
+        bottom: -2rem;
+        left: 50%;
+        margin-top: 1rem;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        transform: translateX(-50%);
+    }
+
+    .step--incomplete.step--inactive .step__label {
+        color: #b6b8ba;
+    }
+
+    .step--incomplete.step--active .step__label {
+        color: #000;
+    }
+
+    .step--active .step__label {
+        transition: color 0.3s ease-in-out;
+        transition-delay: 0.5s;
+    }
+</style>

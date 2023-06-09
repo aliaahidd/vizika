@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('visitorinfo', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('userID');
-            $table->string('employeeID');
-            $table->string('companyName');
+            $table->bigInteger('companyID');
+            $table->string('employeeNo');
             $table->string('occupation');
             $table->string('phoneNo');
             $table->date('birthDate');

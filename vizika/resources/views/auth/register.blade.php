@@ -70,7 +70,6 @@
                                     <option value="SHEQ Officer">SHEQ Officer</option>
                                     <option value="SHEQ Guard">SHEQ Guard</option>
                                     <option value="Staff">Staff</option>
-                                    <option value="Contractor">Contractor</option>
                                 </select>
                                 @error('category')
                                 <span class="invalid-feedback" role="alert">

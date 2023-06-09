@@ -15,8 +15,9 @@ class BiometricController extends Controller
         return view('biometric.biometric');
     }
 
-    public function registerBiometric($id)
+    public function registerBiometric()
     {
+        $id = Auth::user()->id;
 
         $user = DB::table('users')
             ->where('id', $id)
@@ -39,7 +40,7 @@ class BiometricController extends Controller
 
     public function saveImage(Request $request)
     {
-        $userID = $request->input('userId'); // Retrieve the userID from the request body
+        $userID = Auth::user()->id;
 
         $user = DB::table('users')->where('id', $userID)->first();
         $name = $user->name; // Access the name property of the retrieved user object
@@ -59,15 +60,14 @@ class BiometricController extends Controller
         $image->facialRecognition = $fileName;
         $image->save();
 
-        return redirect()->route('choosevisitor');
-
         return response()->json(['message' => 'Image saved successfully']);
     }
 
     public function scanBiometric($id)
     {
-        $user = DB::table('users')
-            ->where('id', $id)
+        $user = DB::table('appointmentinfo')
+            ->join('users', 'users.id', '=', 'appointmentinfo.contVisitID')
+            ->where('appointmentinfo.id', $id)
             ->first();
 
         if ($user->category == "Contractor") {
@@ -75,14 +75,14 @@ class BiometricController extends Controller
                 ->join('users', 'users.id', '=', 'appointmentinfo.contVisitID')
                 ->join('contractorinfo', 'contractorinfo.userID', '=', 'appointmentinfo.contVisitID')
                 ->select('appointmentInfo.*', 'users.*', 'contractorinfo.*', 'appointmentinfo.id as appointmentID')
-                ->where('contVisitID', $id)
+                ->where('appointmentinfo.id', $id)
                 ->first();
         } else if ($user->category == "Visitor") {
             $usertype = DB::table('appointmentinfo')
                 ->join('users', 'users.id', '=', 'appointmentinfo.contVisitID')
                 ->join('visitorinfo', 'visitorinfo.userID', '=', 'appointmentinfo.contVisitID')
                 ->select('appointmentInfo.*', 'users.*', 'visitorinfo.*', 'appointmentinfo.id as appointmentID')
-                ->where('contVisitID', $id)
+                ->where('appointmentinfo.id', $id)
                 ->first();
         }
 
@@ -91,14 +91,11 @@ class BiometricController extends Controller
             ->where('userID', $id)
             ->exists();
 
-        // Retrieve stored image paths from the database
-        $storedImagePaths = DB::table('biometricinfo')->pluck('facialRecognition');
 
         return view('biometric.scan_biometric', [
-            'contractor' => $usertype,
+            'users' => $usertype,
             'userID' => $usertype->userID,
             'biometric' => $biometric,
-            'storedImagePaths' => $storedImagePaths,
             'source' => 'Contractor'
         ]);
     }

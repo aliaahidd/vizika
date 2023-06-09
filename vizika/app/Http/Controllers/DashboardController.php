@@ -97,7 +97,9 @@ class DashboardController extends Controller
             //count total upcoming appointment 
             $totalUpcomingAppt = DB::table('appointmentinfo')->whereDate('appointmentDate', $upcomingDate)->where('contVisitID', $id)->count();
             //count total past appointment 
-            $totalPastAppt = DB::table('visitrecord')->whereNotNull('checkOutDate')->where('contVisitID', $id)->count();
+            $totalPastAppt = DB::table('visitrecord')
+                ->join('appointmentinfo', 'appointmentinfo.id', '=', 'visitrecord.appointmentID')
+                ->whereNotNull('visitrecord.checkOutDate')->where('contVisitID', $id)->count();
 
             //today appointment data
             $todayAppointment = DB::table('appointmentinfo')
@@ -124,14 +126,19 @@ class DashboardController extends Controller
         //count total appointment 
         $totalAppointment = DB::table('appointmentinfo')->where('appointmentDate', $today_date)->count();
         //count total check in 
-        $totalCheckIn = DB::table('visitrecord')->where('checkOutDate', NULL)->count();
+        $totalCheckIn = DB::table('visitrecord')
+            ->join('appointmentinfo', 'appointmentinfo.id', '=', 'visitrecord.appointmentID')
+            ->where('visitrecord.checkOutDate', NULL)->count();
         //count total checkout 
-        $totalCheckOut = DB::table('visitrecord')->whereNotNull('checkOutDate')->count();
+        $totalCheckOut = DB::table('visitrecord')
+            ->join('appointmentinfo', 'appointmentinfo.id', '=', 'visitrecord.appointmentID')
+            ->whereNotNull('visitrecord.checkOutDate')->count();
 
         $visitorlog = DB::table('visitrecord')
-            ->join('users as cont_visit_user', 'visitrecord.contVisitID', '=', 'cont_visit_user.id')
-            ->join('users as staff_user', 'visitrecord.staffID', '=', 'staff_user.id')
-            ->select('visitrecord.*', 'visitrecord.id as recordID', 'cont_visit_user.*', 'cont_visit_user.name as cont_visit_name', 'staff_user.name as staff_name')
+            ->join('appointmentinfo', 'appointmentinfo.id', '=', 'visitrecord.appointmentID')
+            ->join('users as cont_visit_user', 'appointmentinfo.contVisitID', '=', 'cont_visit_user.id')
+            ->join('users as staff_user', 'appointmentinfo.staffID', '=', 'staff_user.id')
+            ->select('visitrecord.*', 'visitrecord.id as recordID', 'cont_visit_user.*', 'cont_visit_user.name as cont_visit_name', 'staff_user.name as staff_name', 'appointmentinfo.*')
             ->where('checkInDate', $today_date)
             ->get();
 
@@ -159,9 +166,10 @@ class DashboardController extends Controller
         //visitor log
         $visitorlog = DB::table('visitrecord')
             ->orderBy('visitrecord.id', 'desc')
-            ->join('users as cont_visit_user', 'visitrecord.contVisitID', '=', 'cont_visit_user.id')
-            ->join('users as staff_user', 'visitrecord.staffID', '=', 'staff_user.id')
-            ->select('visitrecord.*', 'visitrecord.id as recordID', 'cont_visit_user.*', 'cont_visit_user.name as cont_visit_name', 'staff_user.name as staff_name')
+            ->join('appointmentinfo', 'appointmentinfo.id', '=', 'visitrecord.appointmentID')
+            ->join('users as cont_visit_user', 'appointmentinfo.contVisitID', '=', 'cont_visit_user.id')
+            ->join('users as staff_user', 'appointmentinfo.staffID', '=', 'staff_user.id')
+            ->select('visitrecord.*', 'visitrecord.id as recordID', 'cont_visit_user.*', 'appointmentinfo.*', 'cont_visit_user.name as cont_visit_name', 'staff_user.name as staff_name')
             ->where('checkInDate', $today_date)
             ->get();
 
@@ -201,7 +209,9 @@ class DashboardController extends Controller
         //count total upcoming appointment 
         $totalUpcomingAppt = DB::table('appointmentinfo')->whereDate('appointmentDate', $upcomingDate)->where('staffID', $id)->groupBy('appointmentDate')->distinct()->count();
         //count total past appointment 
-        $totalPastAppt = DB::table('visitrecord')->whereNotNull('checkOutDate')->where('staffID', $id)->count();
+        $totalPastAppt = DB::table('visitrecord')
+            ->join('appointmentinfo', 'appointmentinfo.id', '=', 'visitrecord.appointmentID')
+            ->whereNotNull('visitrecord.checkOutDate')->where('staffID', $id)->count();
 
         //today appointment data
         $todayAppointment = DB::table('appointmentinfo')

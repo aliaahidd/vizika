@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::create('contractorinfo', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('userID');
-            $table->string('companyName');
+            $table->bigInteger('companyID');
+            $table->string('employeeNo');
             $table->string('phoneNo');
             $table->date('passExpiryDate');
             $table->date('birthDate');

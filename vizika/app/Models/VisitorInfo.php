@@ -12,7 +12,7 @@ class VisitorInfo extends Model
     protected $fillable = [
         'id',
         'userID',
-        'employeeID',
+        'employeeNo',
         'companyName',
         'occupation',
         'phoneNo',

@@ -145,10 +145,10 @@
                     </div>
                     <div class="row">
                         <div class="col-4">
-                            <label for="employeeID">Employee ID</label>
+                            <label for="employeeNo">Employee ID</label>
                         </div>
                         <div class="col">
-                            <label for="employeeID">{{ $visitor->employeeID }}</label>
+                            <label for="employeeNo">{{ $visitor->employeeNo }}</label>
                         </div>
                     </div>
                     <div class="row">

@@ -56,9 +56,9 @@
                                 <td>{{ $data->appointmentPurpose }}</td>
 
                                 @if( $data->category == "Visitor")
-                                <td><a class="btn btn-primary" style="color: white" href="{{ route('visitor.showV', $data->contVisitID) }}">View</a>
+                                <td><a class="btn btn-primary" style="color: white" href="{{ route('visitor.showV', $data->appointmentID) }}">View</a>
                                     @elseif( $data->category == "Contractor")
-                                <td><a class="btn btn-primary" style="color: white" href="{{ route('contractor.showC', $data->contVisitID) }}">View</a>
+                                <td><a class="btn btn-primary" style="color: white" href="{{ route('contractor.showC', $data->appointmentID) }}">View</a>
                                 </td>
                                 @endif
 
@@ -119,7 +119,7 @@
                         <h5 class="modal-title" id="exampleModalLabel">Profile</h5>
                         <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
                     </div>
-                    <form method="post" action="{{ route('checkin-contractor', ':id') }}" id="contractor-form">
+                    <form method="post" action="{{ route('checkinuser', ':id') }}" id="contractor-form">
                         @csrf
                         @method('post')
                         <div class="modal-body">
@@ -198,7 +198,7 @@
                         <h5 class="modal-title" id="exampleModalLabel">Profile</h5>
                         <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
                     </div>
-                    <form method="post" action="{{ route('checkin-contractor', ':id') }}" id="visitor-form">
+                    <form method="post" action="{{ route('checkinuser', ':id') }}" id="visitor-form">
                         @csrf
                         @method('post')
                         <div class="modal-body">
@@ -318,7 +318,7 @@
                 $('#v-occupation').text(data.occupation);
                 $('#v-photo').attr('src', '/assets/avatar/' + data.passportPhoto);
 
-                var link = '{{ route("checkin-visitor", ":id") }}';
+                var link = '{{ route("checkinuser", ":id") }}';
                 link = link.replace(':id', data.appointmentID);
                 $('#v-link').attr('href', link);
                 $('#v-link').attr('data-appointment-id', data.appointmentID);
@@ -339,7 +339,7 @@
             }
 
             var appointmentID = $('#v-link').attr('data-appointment-id');
-            var formAction = "{{ route('checkin-visitor', ':id') }}";
+            var formAction = "{{ route('checkinuser', ':id') }}";
             formAction = formAction.replace(':id', appointmentID);
             $('#visitor-form').attr('action', formAction);
             // create a hidden input element dynamically
@@ -374,7 +374,7 @@
                 $('#c-pass').text(data.passExpiryDate);
                 $('#c-photo').attr('src', '/assets/avatar/' + data.passportPhoto);
 
-                var link = '{{ route("checkin-contractor", ":id") }}';
+                var link = '{{ route("checkinuser", ":id") }}';
                 link = link.replace(':id', data.appointmentID);
                 $('#c-link').attr('href', link);
                 $('#c-link').attr('data-appointment-id', data.appointmentID);
@@ -396,7 +396,7 @@
             }
 
             var appointmentID = $('#c-link').attr('data-appointment-id');
-            var formAction = "{{ route('checkin-contractor', ':id') }}";
+            var formAction = "{{ route('checkinuser', ':id') }}";
             formAction = formAction.replace(':id', appointmentID);
             $('#contractor-form').attr('action', formAction);
             // create a hidden input element dynamically

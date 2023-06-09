@@ -4,7 +4,7 @@
 <div class="page-header row no-gutters pb-4">
     <div class="col-12 col-sm-12 text-center text-sm-left mb-0">
         <h1 class="page-title mb-3">Visitor & Contractor</h1>
-        <h6><a href="{{ route('choosevisitor') }}">List Visitor & Contractor</a> /
+        <h6><a href="{{ route('userlist') }}">List Visitor & Contractor</a> /
             <a>Create New Visitor & Contractor</a>
         </h6>
     </div>

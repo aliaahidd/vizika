@@ -27,6 +27,9 @@ Route::get('/', function () {
 });
 
 Auth::routes();
+Route::get('/login-user', function () {
+    return view('auth.login_user');
+})->name('loginuser');
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home'); //nama kat url link / nama function / nama panggil kat interface
 Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'loadDashboard'])->name('dashboard');
@@ -47,6 +50,12 @@ Route::get('/Dashboard-Staff', [App\Http\Controllers\DashboardController::class,
 Route::get('/Profile/{id}', [App\Http\Controllers\ProfileController::class, 'loadProfile'])->name('profile');
 //display edit profile page (all user)
 Route::get('/Profile/Edit-Profile/{id}', [App\Http\Controllers\ProfileController::class, 'editprofile'])->name('editprofile');
+//choose visitor page load
+Route::get('/User-List', [App\Http\Controllers\ProfileController::class, 'userlist'])->name('userlist');
+//register visitor page load
+Route::get('/register-user', [App\Http\Controllers\ProfileController::class, 'registeruserform'])->name('registeruserform');
+//register visitor (insert)
+Route::post('/register-visitor', [App\Http\Controllers\ProfileController::class, 'registervisitor'])->name('registervisitor');
 //query edit profile page (contractor)
 Route::put('updateprofilecontractor/{id}', [App\Http\Controllers\ProfileController::class, 'updateProfileContractor'])->name('updateProfileContractor');
 //query edit profile page (visitor)
@@ -72,25 +81,18 @@ Route::get('/appointment-today', [App\Http\Controllers\AppointmentController::cl
 Route::post('/set-appointment', [App\Http\Controllers\AppointmentController::class, 'storeappointment'])->name('storeappointment');
 //query insert appointment multiple 
 Route::post('/set-appointment-multiple', [App\Http\Controllers\AppointmentController::class, 'storeappointmentmultiple'])->name('storeappointmentmultiple');
-
-//choose visitor page load
-Route::get('/appointment/choose-visitor', [App\Http\Controllers\AppointmentController::class, 'choosevisitorform'])->name('choosevisitor');
 //create appointment page load
 Route::get('/appointment/create-appointment', [App\Http\Controllers\AppointmentController::class, 'createappointmentform'])->name('appointment/createappointment');
 //create appointment page load
 Route::get('/appointment/create-appointment-old', [App\Http\Controllers\AppointmentController::class, 'createappointmentformold'])->name('appointment/createappointmentformold');
-//register visitor page load
-Route::get('/appointment/register-visitor', [App\Http\Controllers\AppointmentController::class, 'registervisitorform'])->name('appointment/registervisitorform');
-//register visitor (insert)
-Route::post('/register-visitor', [App\Http\Controllers\AppointmentController::class, 'registervisitor'])->name('registervisitor');
 //route to the aattend the visit
 Route::get('/Attend-visit/{id}', [App\Http\Controllers\AppointmentController::class, 'attendvisit'])->name('attendvisit');
 //route to the not aattend the visit
 Route::get('/Not-attend-visit/{id}', [App\Http\Controllers\AppointmentController::class, 'notattendvisit'])->name('notattendvisit');
-//show modal visitor
-Route::get('/visitor/{id}', [App\Http\Controllers\AppointmentController::class, 'modalVisitor'])->name('visitor.showV');
-//show modal contractor
-Route::get('/contractor/{id}', [App\Http\Controllers\AppointmentController::class, 'modalContractor'])->name('contractor.showC');
+// //show modal visitor
+// Route::get('/visitor/{id}', [App\Http\Controllers\AppointmentController::class, 'modalVisitor'])->name('visitor.showV');
+// //show modal contractor
+// Route::get('/contractor/{id}', [App\Http\Controllers\AppointmentController::class, 'modalContractor'])->name('contractor.showC');
 
 //show modal visitor
 Route::get('/visitor/{id}', [App\Http\Controllers\AppointmentController::class, 'todayAppointmentVisitor'])->name('visitor.showV');
@@ -104,10 +106,8 @@ Route::get('/record', [App\Http\Controllers\RecordController::class, 'record'])-
 Route::get('/Appointment-History', [App\Http\Controllers\RecordController::class, 'historyappointment'])->name('historyappointment');
 //visitor log
 Route::get('/Visitor-Log', [App\Http\Controllers\RecordController::class, 'visitorlog'])->name('logvisitor');
-//show modal visitor
-Route::post('/checkin-visitor/{id}', [App\Http\Controllers\RecordController::class, 'checkinvisitor'])->name('checkin-visitor');
-//show modal visitor
-Route::post('/checkin-contractor/{id}', [App\Http\Controllers\RecordController::class, 'checkincontractor'])->name('checkin-contractor');
+//checkin user
+Route::post('/checkin-user/{id}', [App\Http\Controllers\RecordController::class, 'checkinuser'])->name('checkinuser');
 //checkout
 Route::get('/checkout/{id}', [App\Http\Controllers\RecordController::class, 'checkout'])->name('checkout');
 
@@ -160,7 +160,7 @@ Route::get('/Profile-Contractor/{id}', [App\Http\Controllers\BlacklistController
 //biometric facial recog
 Route::get('/Facial-Recognition', [App\Http\Controllers\BiometricController::class, 'facialRecog'])->name('facialRecog');
 //register biometric page
-Route::get('/Register-Biometric/{id}', [App\Http\Controllers\BiometricController::class, 'registerBiometric'])->name('registerBiometric');
+Route::get('/Register-Biometric', [App\Http\Controllers\BiometricController::class, 'registerBiometric'])->name('registerBiometric');
 //save picture taken
 Route::post('/save-image', [App\Http\Controllers\BiometricController::class, 'saveImage'])->name('saveImage');
 //scan biometric page
@@ -170,3 +170,8 @@ Route::post('/compare_faces', [App\Http\Controllers\BiometricController::class, 
 //get data from scan image
 Route::get('/getPhoto/{userID}', [App\Http\Controllers\BiometricController::class, 'getUserInformation']);
 
+//FINISH FORM
+//get data from scan image
+Route::get('/finish-form', function () {
+    return view('layouts.finishform');
+})->name('finishform');

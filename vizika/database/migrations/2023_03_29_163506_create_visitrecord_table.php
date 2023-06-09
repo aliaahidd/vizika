@@ -13,10 +13,7 @@ return new class extends Migration
     {
         Schema::create('visitrecord', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('staffID');
-            $table->bigInteger('contVisitID');
-            $table->string('appointmentPurpose');
-            $table->string('appointmentAgenda');
+            $table->bigInteger('appointmentID');
             $table->string('passNo');
             $table->date('checkInDate');
             $table->time('checkInTime');

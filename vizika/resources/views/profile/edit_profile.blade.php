@@ -44,7 +44,12 @@
                 <div class="form-group">
                     <br>
                     <label for="companyName">Company Name</label>
-                    <input type="text" class="form-control" id="companyName" name="companyName" value="{{ $contractor->companyName }}">
+                    <select id="companyID" class="form-control" name="companyID" required>
+                        <option value="{{ $contractor->companyID }}">{{ $contractor->companyName }}</option>
+                        @foreach ($companylist as $data)
+                        <option value="{{ $data->id }}">{{ $data->companyName }}</option>
+                        @endforeach
+                    </select>
                 </div>
                 <div class="form-group">
                     <br>
@@ -64,7 +69,7 @@
                     <label for="address">Validity Pass Photo</label>
                     <input type="file" class="form-control" id="validityPass" name="validityPassImg">
                     <br>
-                    <img src="/assets/pass/{{$contractor->validityPassPhoto}}" width="250px"> 
+                    <img src="/assets/pass/{{$contractor->validityPassPhoto}}" width="250px">
                 </div>
                 <button type="submit" class="btn btn-primary mr-2">Update</button>
                 <a href="{{ route('dashboard') }}" class="btn btn-danger">Cancel</a>
@@ -99,13 +104,18 @@
 
                 <div class="form-group">
                     <br>
-                    <label for="companyName">Company Name</label>
-                    <input type="text" class="form-control" id="companyName" name="companyName" value="{{ $visitor->companyName }}">
+                    <label for="companyID">Company Name</label>
+                    <select id="companyID" class="form-control" name="companyID" required>
+                        <option value="{{ $visitor->companyID }}">{{ $visitor->companyName }}</option>
+                        @foreach ($companylist as $data)
+                        <option value="{{ $data->id }}">{{ $data->companyName }}</option>
+                        @endforeach
+                    </select>
                 </div>
                 <div class="form-group">
                     <br>
-                    <label for="employeeID">Employee ID</label>
-                    <input type="text" class="form-control" id="employeeID" name="employeeID" value="{{ $visitor->employeeID }}">
+                    <label for="employeeNo">Employee ID</label>
+                    <input type="text" class="form-control" id="employeeNo" name="employeeNo" value="{{ $visitor->employeeNo }}">
                 </div>
                 <div class="form-group">
                     <br>

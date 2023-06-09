@@ -6,6 +6,8 @@ use App\Models\ContractorInfo;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash;
 use App\Models\VisitorInfo;
 use Illuminate\Http\Request;
 
@@ -32,25 +34,92 @@ class ProfileController extends Controller
     {
         $id = Auth::user()->id;
 
+        $companylist = DB::table('companyinfo')
+            ->orderBy('companyName', 'asc')
+            ->get();
+
         $contractor = DB::table('contractorinfo')
             ->join('users', 'users.id', '=', 'contractorinfo.userID')
+            ->join('companyinfo', 'companyinfo.id', '=', 'contractorinfo.companyID')
             ->select([
                 'users.id AS sessionID',
-                'contractorinfo.id AS contID', 'users.*', 'contractorinfo.*'
+                'companyinfo.id AS companyID',
+                'contractorinfo.id AS contID', 'users.*', 'contractorinfo.*', 'companyinfo.*'
             ])
             ->where('users.id', $id)
             ->first();
 
         $visitor = DB::table('visitorinfo')
             ->join('users', 'users.id', '=', 'visitorinfo.userID')
+            ->join('companyinfo', 'companyinfo.id', '=', 'visitorinfo.companyID')
             ->select([
                 'users.id AS sessionID',
-                'visitorinfo.id AS visitID', 'users.*', 'visitorinfo.*'
+                'companyinfo.id AS companyID',
+                'visitorinfo.id AS visitID', 'users.*', 'visitorinfo.*', 'companyinfo.*'
             ])
             ->where('users.id', $id)
             ->first();
 
-        return view('profile.edit_profile', compact('contractor', 'visitor'));
+        return view('profile.edit_profile', compact('contractor', 'visitor', 'companylist'));
+    }
+
+    //choose visitor form page
+    public function userlist(Request $request)
+    {
+        $visitorlist = DB::table('users')
+            ->orderBy('name', 'asc')
+            ->where('category', 'Visitor')
+            ->orwhere('category', 'Contractor')
+            ->get();
+
+        return view('profile.user_list', compact('visitorlist'));
+    }
+
+    public function registeruserform()
+    {
+        return view('profile.register_visitor');
+    }
+
+    //register visitor (by staff)
+    public function registervisitor(Request $request)
+    {
+        // create visitor account 
+        // get user auth
+        $name = $request->input('name');
+        $email = $request->input('email');
+        $category = $request->input('category');
+        $password = Str::random(10);
+
+        $Email = User::where('email', $email)->first();
+        if ($Email) {
+            return redirect()
+                ->route('registeruserform')
+                ->with('message', 'Email is already exists.');
+        }
+
+        $publicFolderPath = public_path('assets/' . $name);
+
+        // Create the folder
+        try {
+            if (!is_dir($publicFolderPath)) {
+                mkdir($publicFolderPath, 0755, true);
+            }
+        } catch (\Exception $e) {
+            return "An error occurred: " . $e->getMessage();
+        }
+
+        $data = array(
+            'name' => $name,
+            'email' => $email,
+            'password' => Hash::make('visitor123'),
+            'category' => $category,
+        );
+
+        // insert query
+        DB::table('users')->insert($data);
+
+        sleep(1);
+        return redirect()->route('userlist');
     }
 
     public function updateProfileContractor(Request $request, $id)
@@ -97,7 +166,7 @@ class ProfileController extends Controller
             $contractorinfo->validityPassPhoto = $filename2;
         }
 
-        $contractorinfo->companyName = $request->input('companyName');
+        $contractorinfo->companyID = $request->input('companyID');
         $contractorinfo->phoneNo = $request->input('phoneNo');
         $contractorinfo->passExpiryDate = $request->input('passExpiryDate');
         $contractorinfo->birthDate = $request->input('birthDate');
@@ -137,9 +206,9 @@ class ProfileController extends Controller
             $visitorinfo->passportPhoto = $filename;
         }
 
-        $visitorinfo->companyName = $request->input('companyName');
+        $visitorinfo->companyID = $request->input('companyID');
         $visitorinfo->phoneNo = $request->input('phoneNo');
-        $visitorinfo->employeeID = $request->input('employeeID');
+        $visitorinfo->employeeNo = $request->input('employeeNo');
         $visitorinfo->occupation = $request->input('occupation');
         $visitorinfo->birthDate = $request->input('birthDate');
         $visitorinfo->address = $request->input('address');
@@ -155,7 +224,8 @@ class ProfileController extends Controller
     {
         // get user auth
         $id = Auth::user()->id;
-        $companyName = $request->input('companyName');
+        $companyID = $request->input('companyID');
+        $employeeNo = $request->input('employeeNo');
         $phonenumber = $request->input('phoneNo');
         $expiryDate = $request->input('validityPass');
         $birthDate = $request->input('birthDate');
@@ -179,7 +249,8 @@ class ProfileController extends Controller
 
         $data = array(
             'userID' => $id,
-            'companyName' => $companyName,
+            'employeeNo' => $employeeNo,
+            'companyID' => $companyID,
             'phoneNo' => $phonenumber,
             'passExpiryDate' => $expiryDate,
             'birthDate' => $birthDate,
@@ -191,15 +262,15 @@ class ProfileController extends Controller
         // insert query
         DB::table('contractorinfo')->insert($data);
 
-        return redirect()->route('dashboardContractor');
+        return redirect()->route('registerBiometric');
     }
 
     public function storevisitorinfo(Request $request)
     {
         // get user auth
         $id = Auth::user()->id;
-        $employeeID = $request->input('employeeID');
-        $companyName = $request->input('companyName');
+        $employeeNo = $request->input('employeeNo');
+        $companyID = $request->input('companyID');
         $occupation = $request->input('occupation');
         $phonenumber = $request->input('phoneNo');
         $birthDate = $request->input('birthDate');
@@ -216,8 +287,8 @@ class ProfileController extends Controller
 
         $data = array(
             'userID' => $id,
-            'employeeID' => $employeeID,
-            'companyName' => $companyName,
+            'employeeNo' => $employeeNo,
+            'companyID' => $companyID,
             'occupation' => $occupation,
             'phoneNo' => $phonenumber,
             'birthDate' => $birthDate,
@@ -228,7 +299,7 @@ class ProfileController extends Controller
         // insert query
         DB::table('visitorinfo')->insert($data);
 
-        return redirect()->route('dashboardVisitor');
+        return redirect()->route('registerBiometric');
     }
 
     public function contractordetail(Request $request)

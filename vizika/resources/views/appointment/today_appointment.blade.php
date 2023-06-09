@@ -87,13 +87,9 @@
                                 <label for="faceRecog">Facial Recognition</label>
                             </div>
                             <div class="col">
-                                @if ($biometric)
                                 <!-- Add a button to start the face recognition process -->
-                                <td><a href="{{ route('scanBiometric', $usertype->contVisitID) }}" class="btn btn-primary" style="color: white">Scan Face</a>
+                                <td><a href="{{ route('scanBiometric', $usertype->appointmentID) }}" class="btn btn-primary" style="color: white">Scan Face</a>
                                 </td>
-                                @else
-                                <td><a href="{{ route('registerBiometric', $usertype->contVisitID) }}" class="btn btn-primary">Register</a></td>
-                                @endif
                             </div>
                         </div>
                     </div>
@@ -137,13 +133,9 @@
                                 <label for="faceRecog">Facial Recognition</label>
                             </div>
                             <div class="col">
-                                @if ($biometric)
                                 <!-- Add a button to start the face recognition process -->
-                                <td><a href="{{ route('scanBiometric', $usertype->contVisitID) }}" class="btn btn-primary" style="color: white">Scan Face</a>
+                                <td><a href="{{ route('scanBiometric', $usertype->appointmentID) }}" class="btn btn-primary" style="color: white">Scan Face</a>
                                 </td>
-                                @else
-                                <td><a href="{{ route('registerBiometric', $usertype->contVisitID) }}" class="btn btn-primary">Register</a></td>
-                                @endif
                             </div>
                         </div>
                     </div>
@@ -176,7 +168,7 @@
                 $('#v-occupation').text(data.occupation);
                 $('#v-photo').attr('src', '/assets/avatar/' + data.passportPhoto);
 
-                var link = '{{ route("checkin-visitor", ":id") }}';
+                var link = '{{ route("checkinuser", ":id") }}';
                 link = link.replace(':id', data.appointmentID);
                 $('#v-link').attr('href', link);
                 $('#v-link').attr('data-appointment-id', data.appointmentID);
@@ -197,7 +189,7 @@
             }
 
             var appointmentID = $('#v-link').attr('data-appointment-id');
-            var formAction = "{{ route('checkin-visitor', ':id') }}";
+            var formAction = "{{ route('checkinuser', ':id') }}";
             formAction = formAction.replace(':id', appointmentID);
             $('#visitor-form').attr('action', formAction);
             // create a hidden input element dynamically
@@ -232,7 +224,7 @@
                 $('#c-pass').text(data.passExpiryDate);
                 $('#c-photo').attr('src', '/assets/avatar/' + data.passportPhoto);
 
-                var link = '{{ route("checkin-contractor", ":id") }}';
+                var link = '{{ route("checkinuser", ":id") }}';
                 link = link.replace(':id', data.appointmentID);
                 $('#c-link').attr('href', link);
                 $('#c-link').attr('data-appointment-id', data.appointmentID);
@@ -254,7 +246,7 @@
             }
 
             var appointmentID = $('#c-link').attr('data-appointment-id');
-            var formAction = "{{ route('checkin-contractor', ':id') }}";
+            var formAction = "{{ route('checkinuser', ':id') }}";
             formAction = formAction.replace(':id', appointmentID);
             $('#contractor-form').attr('action', formAction);
             // create a hidden input element dynamically

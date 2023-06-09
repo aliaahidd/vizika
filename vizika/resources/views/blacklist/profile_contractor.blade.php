@@ -111,10 +111,10 @@
                 </div>
                 <div class="row">
                     <div class="col-4">
-                        <label for="employeeID">Pass Expiry Date</label>
+                        <label for="employeeNo">Pass Expiry Date</label>
                     </div>
                     <div class="col">
-                        <label for="employeeID">{{ $contractor->passExpiryDate }}</label>
+                        <label for="employeeNo">{{ $contractor->passExpiryDate }}</label>
                     </div>
                 </div>
                 <div class="row">
@@ -208,7 +208,7 @@
                 }
 
                 var appointmentID = $('#v-link').attr('data-appointment-id');
-                var formAction = "{{ route('checkin-visitor', ':id') }}";
+                var formAction = "{{ route('checkinuser', ':id') }}";
                 formAction = formAction.replace(':id', appointmentID);
                 $('form').attr('action', formAction);
 

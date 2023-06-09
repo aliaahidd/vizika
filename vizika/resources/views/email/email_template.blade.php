@@ -10,7 +10,7 @@
     <br>Time : <strong> {{ $data['appointmentTime'] }} </strong>
 </p>
 
-<p>Website Link: <a href="http://127.0.0.1:8000/login">Click this</a></p>
+<p>Website Link: <a href="http://127.0.0.1:8000/login-user">Click this</a></p>
 
 <p>If you are the first timer, your account has been created.</p>
 <p>Email: {{ $data['email'] }}

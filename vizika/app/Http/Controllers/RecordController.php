@@ -43,16 +43,17 @@ class RecordController extends Controller
     {
         $historyappointment = DB::table('visitrecord')
             ->orderBy('visitrecord.id', 'desc')
-            ->join('users as cont_visit_user', 'visitrecord.contVisitID', '=', 'cont_visit_user.id')
-            ->join('users as staff_user', 'visitrecord.staffID', '=', 'staff_user.id')
-            ->select('visitrecord.*', 'cont_visit_user.*', 'cont_visit_user.name as cont_visit_name', 'staff_user.name as staff_name')
+            ->join('appointmentinfo', 'appointmentinfo.id', '=', 'visitrecord.appointmentID')
+            ->join('users as cont_visit_user', 'appointmentinfo.contVisitID', '=', 'cont_visit_user.id')
+            ->join('users as staff_user', 'appointmentinfo.staffID', '=', 'staff_user.id')
+            ->select('visitrecord.*', 'cont_visit_user.*', 'cont_visit_user.name as cont_visit_name', 'staff_user.name as staff_name', 'appointmentinfo.*')
             ->whereNotNull('checkOutDate')
             ->get();
 
         return view('record.past_appointment', compact('historyappointment'));
     }
 
-    public function checkinvisitor(Request $request, $id)
+    public function checkinuser(Request $request, $id)
     {
         // Set the timezone to Kuala Lumpur
         $kl_timezone = 'Asia/Kuala_Lumpur';
@@ -60,67 +61,12 @@ class RecordController extends Controller
         // Get today's date in Kuala Lumpur timezone
         $today_date = Carbon::now($kl_timezone)->toDateString();
         $time_now = Carbon::now($kl_timezone)->toTimeString();
-
-        $appointment = DB::table('appointmentinfo')
-            ->where('id', $id)
-            ->first();
-
-        $staffID = $appointment->staffID;
-        $contVisitID = $appointment->contVisitID;
-        $purpose = $appointment->appointmentPurpose;
-        $agenda = $appointment->appointmentAgenda;
 
         // request pass number from ajax
-        $passNumber = $request->input('passNoV');
+        $passNumber = $request->input('passNo');
 
         $dataquery = array(
-            'staffID'             =>  $staffID,
-            'contVisitID'         =>  $contVisitID,
-            'appointmentPurpose'  =>  $purpose,
-            'appointmentAgenda'   =>  $agenda,
-            'passNo'              =>  $passNumber,            
-            'checkInDate'         =>  $today_date,
-            'checkInTime'         =>  $time_now,
-        );
-        // insert query appointment
-        DB::table('visitrecord')->insert($dataquery);
-
-        //delete appointment record
-        $appointmentinfo = AppointmentInfo::find($id);
-        if ($appointmentinfo) {
-            // If the record exists, delete it
-            $appointmentinfo->delete();
-        }
-
-        return redirect()->route('dashboardGuard');
-    }
-
-    public function checkincontractor(Request $request, $id)
-    {
-        // Set the timezone to Kuala Lumpur
-        $kl_timezone = 'Asia/Kuala_Lumpur';
-
-        // Get today's date in Kuala Lumpur timezone
-        $today_date = Carbon::now($kl_timezone)->toDateString();
-        $time_now = Carbon::now($kl_timezone)->toTimeString();
-
-        $appointment = DB::table('appointmentinfo')
-            ->where('id', $id)
-            ->first();
-
-        $staffID = $appointment->staffID;
-        $contVisitID = $appointment->contVisitID;
-        $purpose = $appointment->appointmentPurpose;
-        $agenda = $appointment->appointmentAgenda;
-
-        //request pass number from ajax
-        $passNumber = $request->input('passNoC');
-
-        $dataquery = array(
-            'staffID'             =>  $staffID,
-            'contVisitID'         =>  $contVisitID,
-            'appointmentPurpose'  =>  $purpose,
-            'appointmentAgenda'   =>  $agenda,
+            'appointmentID'         =>  $id,
             'passNo'              =>  $passNumber,
             'checkInDate'         =>  $today_date,
             'checkInTime'         =>  $time_now,
@@ -128,18 +74,32 @@ class RecordController extends Controller
         // insert query appointment
         DB::table('visitrecord')->insert($dataquery);
 
-        //delete appointment record
-        $appointmentinfo = AppointmentInfo::find($id);
-        if ($appointmentinfo) {
-            // If the record exists, delete it
-            $appointmentinfo->delete();
-        } else {
-            // Record doesn't exist, handle the case accordingly
-            return redirect()->back()->with('error', 'Appointment record not found.');
-        }
-
         return redirect()->route('dashboardGuard');
     }
+
+    // public function checkincontractor(Request $request, $id)
+    // {
+    //     // Set the timezone to Kuala Lumpur
+    //     $kl_timezone = 'Asia/Kuala_Lumpur';
+
+    //     // Get today's date in Kuala Lumpur timezone
+    //     $today_date = Carbon::now($kl_timezone)->toDateString();
+    //     $time_now = Carbon::now($kl_timezone)->toTimeString();
+
+    //     //request pass number from ajax
+    //     $passNumber = $request->input('passNoC');
+
+    //     $dataquery = array(
+    //         'appointmentID'       =>  $id,
+    //         'passNo'              =>  $passNumber,
+    //         'checkInDate'         =>  $today_date,
+    //         'checkInTime'         =>  $time_now,
+    //     );
+    //     // insert query appointment
+    //     DB::table('visitrecord')->insert($dataquery);
+
+    //     return redirect()->route('dashboardGuard');
+    // }
 
     public function checkout($id)
     {
@@ -171,11 +131,12 @@ class RecordController extends Controller
         $today_date = Carbon::now($kl_timezone)->toDateString();
 
         $visitorlog = DB::table('visitrecord')
-            ->orderBy('visitrecord.id', 'desc')
-            ->join('users as cont_visit_user', 'visitrecord.contVisitID', '=', 'cont_visit_user.id')
-            ->join('users as staff_user', 'visitrecord.staffID', '=', 'staff_user.id')
-            ->select('visitrecord.*', 'visitrecord.id as recordID', 'cont_visit_user.*', 'cont_visit_user.name as cont_visit_name', 'staff_user.name as staff_name')
+            ->join('appointmentinfo', 'appointmentinfo.id', '=', 'visitrecord.appointmentID')
+            ->join('users as cont_visit_user', 'appointmentinfo.contVisitID', '=', 'cont_visit_user.id')
+            ->join('users as staff_user', 'appointmentinfo.staffID', '=', 'staff_user.id')
+            ->select('visitrecord.*', 'visitrecord.id as recordID', 'cont_visit_user.*', 'appointmentinfo.*', 'cont_visit_user.name as cont_visit_name', 'staff_user.name as staff_name')
             ->where('checkInDate', $today_date)
+            ->orderBy('visitrecord.id', 'desc')
             ->get();
 
         return view('record.visitorlog', compact('visitorlog'));
