@@ -14,7 +14,7 @@
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
 
-    <link rel="icon" href="{{ URL::asset('favicon.ico') }}" type="image/x-icon" />
+    <link rel="icon" href="{{ URL::asset('logo-vizika.png') }}" type="image/x-icon" />
 
     <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">

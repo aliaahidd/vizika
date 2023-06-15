@@ -60,7 +60,9 @@ class DashboardController extends Controller
             //count total upcoming appointment 
             $totalUpcomingAppt = DB::table('appointmentinfo')->whereDate('appointmentDate', $upcomingDate)->where('contVisitID', $id)->count();
             //count total past appointment 
-            $totalPastAppt = DB::table('visitrecord')->whereNotNull('checkOutDate')->where('contVisitID', $id)->count();
+            $totalPastAppt = DB::table('visitrecord')
+                ->join('appointmentinfo', 'appointmentinfo.id', '=', 'visitrecord.appointmentID')
+                ->whereNotNull('visitrecord.checkOutDate')->where('contVisitID', $id)->count();
 
             //today appointment data
             $todayAppointment = DB::table('appointmentinfo')
@@ -68,7 +70,7 @@ class DashboardController extends Controller
                 ->join('users as staff_user', 'appointmentinfo.staffID', '=', 'staff_user.id')
                 ->select('appointmentinfo.*', 'appointmentinfo.id as appointmentID', 'cont_visit_user.*', 'cont_visit_user.id as contVisitID', 'cont_visit_user.name as cont_visit_name', 'staff_user.name as staff_name')
                 ->where('appointmentDate', $today_date)
-                ->where('staffID', $id)->get();
+                ->where('contVisitID', $id)->get();
 
             return view('dashboard.Visitor', compact('totalTodayAppt', 'totalUpcomingAppt', 'totalPastAppt', 'todayAppointment'));
         } else {
@@ -107,7 +109,7 @@ class DashboardController extends Controller
                 ->join('users as staff_user', 'appointmentinfo.staffID', '=', 'staff_user.id')
                 ->select('appointmentinfo.*', 'appointmentinfo.id as appointmentID', 'cont_visit_user.*', 'cont_visit_user.id as contVisitID', 'cont_visit_user.name as cont_visit_name', 'staff_user.name as staff_name')
                 ->where('appointmentDate', $today_date)
-                ->where('staffID', $id)->get();
+                ->where('contVisitID', $id)->get();
 
             return view('dashboard.Contractor', compact('totalTodayAppt', 'totalUpcomingAppt', 'totalPastAppt', 'todayAppointment'));
         } else {

@@ -3,8 +3,15 @@
 
 <!-- Page Header -->
 <div class="page-header row no-gutters pb-4">
-    <div class="col-12 col-sm-4 text-center text-sm-left mb-0 d-flex">
-        <h1 class="page-title ml-3">Profile</h1>
+    <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
+        <h1 class="page-title mb-3">User</h1>
+        @if(request()->query('from') == 'active_users')
+        <h6><a href="{{ route('useractive') }}">Active User</a> /
+            @elseif(request()->query('from') == 'blacklist_users')
+            <h6><a href="{{ route('userblacklist') }}">Blacklist User</a> /
+                @endif
+                <a>Profile Contractor</a>
+            </h6>
     </div>
 </div>
 
@@ -54,14 +61,18 @@
 <!-- display all from registration -->
 <div class="row justify-content-center">
     <div class="col-md-3">
-        <div class="card" style="padding: 20px; height: 400px">
-            <div style="margin: auto;">
-                <img src="/assets/{{$contractor->name}}/{{$contractor->passportPhoto}}" width="200px">
+        <div class="card" style="padding: 20px; height: 450px">
+            <div class=" col-12">
+                <h5>Passport Photo</h5>
+                <hr>
+                <div style="margin: auto;">
+                    <img src="/assets/{{$contractor->name}}/{{$contractor->passportPhoto}}" width="200px">
+                </div>
             </div>
         </div>
     </div>
     <div class="col-md-9">
-        <div class="card" style="padding: 20px; height: 400px">
+        <div class="card" style="padding: 20px; height: 450px">
             <div class=" col-12">
                 <h5>Contact Details</h5>
                 <hr>
@@ -95,6 +106,30 @@
                 <hr>
                 <div class="row">
                     <div class="col-4">
+                        <label for="companyName">Company Name</label>
+                    </div>
+                    <div class="col">
+                        <label for="companyName">{{ $contractor->companyName }}</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-4">
+                        <label for="employeeNo">Employee Number</label>
+                    </div>
+                    <div class="col">
+                        <label for="employeeNo">{{ $contractor->employeeNo }}</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-4">
+                        <label for="expiryPass">Pass Expiry Date</label>
+                    </div>
+                    <div class="col">
+                        <label for="expiryPass">{{ $contractor->passExpiryDate }} <a data-toggle="modal" data-target="#viewPassModal" style="color: blue;" id="viewPass">View Pass</a></label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-4">
                         <label for="address">Address</label>
                     </div>
                     <div class="col">
@@ -107,22 +142,6 @@
                     </div>
                     <div class="col">
                         <label for="birthdate">{{ $contractor->birthDate }}</label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-4">
-                        <label for="employeeNo">Pass Expiry Date</label>
-                    </div>
-                    <div class="col">
-                        <label for="employeeNo">{{ $contractor->passExpiryDate }}</label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-4">
-                        <label for="occupation">Occupation</label>
-                    </div>
-                    <div class="col">
-                        <label for="occupation">{{ $contractor->passExpiryDate }}</label>
                     </div>
                 </div>
             </div>
@@ -141,22 +160,22 @@
                             <th>ID</th>
                             <th>Visitor Name</th>
                             <th>KANEKA Staff</th>
-                            <th>Check-In</th>
-                            <th>Check-Out</th>
                             <th>Purpose</th>
                             <th>Agenda</th>
+                            <th>Check-In</th>
+                            <th>Check-Out</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach($pastrecord As $key=>$data)
                         <tr id="row{{$data->id}}">
-                            <td>{{ $data->id }}</td>
+                            <td>{{ $data->recordID }}</td>
                             <td>{{ $data->cont_visit_name }}</td>
                             <td>{{ $data->staff_name }}</td>
-                            <td>{{ $data->checkInDate }} {{ $data->checkInTime }} </td>
-                            <td>{{ $data->checkOutDate }} {{ $data->checkOutTime }} </td>
                             <td>{{ $data->appointmentPurpose }}</td>
                             <td>{{ $data->appointmentAgenda }}</td>
+                            <td>{{ $data->checkInDate }} {{ $data->checkInTime }} </td>
+                            <td>{{ $data->checkOutDate }} {{ $data->checkOutTime }} </td>
                         </tr>
                         @endforeach
                     </tbody>
@@ -188,6 +207,25 @@
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </div>
                 </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="viewPassModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="myModalLabel">Validity Pass Photo</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="justify-content-center text-center">
+                        <img src="/assets/pass/{{$contractor->validityPassPhoto}}" width="400px">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
             </div>
         </div>
     </div>

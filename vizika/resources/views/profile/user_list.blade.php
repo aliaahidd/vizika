@@ -18,17 +18,18 @@
 </div>
 @endif
 
-<div class="card">
-    <div class="card-header pb-0">
-        <div class="row">
+<div class="row mb-3">
             <!-- if user == committee, then have add new appointment button  -->
             @if( auth()->user()->category=="Staff")
-            <div class="col-lg-2 col-md-2 col-sm-2" style="float: right;">
-                <a class="btn btn-primary" style="float: right; width:185px;" role="button" href="{{ route('registeruserform') }}">
-                    <i class="fas fa-plus"></i>&nbsp; Register Visitor Contractor</a>
+            <div class="col-lg-12 col-md-12 col-sm-12" style="float: right;">
+                <a class="btn btn-primary col-2" style="float: right; width:140px;" role="button" href="{{ route('registeruserform') }}">
+                    <i class="fas fa-plus"></i>&nbsp; Register User</a>
             </div>
             @endif
         </div>
+
+<div class="card">
+    <div class="card-header pb-0">
     </div>
 
     <div class="card-body">

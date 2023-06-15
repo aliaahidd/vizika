@@ -73,7 +73,7 @@
                         </div>
                     </div>
 
-                    <input type="submit" name="SubmitProposal" class="btn btn-primary" id="proposalform" style="float: right;">
+                    <input type="submit" name="SubmitProposal" class="btn btn-primary" id="proposalform" style="float: right;" value="Next">
                 </form>
             </div>
         </div>

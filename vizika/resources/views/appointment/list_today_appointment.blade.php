@@ -8,7 +8,7 @@
         <h6>List Appointment</h6>
     </div>
 </div>
-@if( auth()->user()->category== "SHEQ Guard")
+@if( auth()->user()->category== "SHEQ Guard" || auth()->user()->category== "SHEQ Officer")
 <h6>
     <?php
     date_default_timezone_set("Asia/Kuala_Lumpur");
@@ -77,7 +77,7 @@
                                 <th>Visitor Name</th>
                                 <th>KANEKA Staff</th>
                                 <th>Purpose</th>
-                                <th>Action</th>
+                                <th>Appointment Time</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -87,19 +87,7 @@
                                 <td>{{ $data->cont_visit_name }}</td>
                                 <td>{{ $data->staff_name }}</td>
                                 <td>{{ $data->appointmentPurpose }}</td>
-                                <td>
-                                    <ul class="navbar-nav flex-row ml-auto ">
-                                        <li class="nav-item">
-                                            <a class="nav-link text-nowrap px-3" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                                                <span class="d-none d-md-inline-block"><i class="large material-icons">more_vert</i></span>
-                                            </a>
-                                            <div class="dropdown-menu dropdown-menu-small">
-                                                <a class="dropdown-item text-danger" href="{{ route('profile-visitor', [$data->contVisitID]) }}">
-                                                    <i class="material-icons text-danger">search</i> View </a>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </td>
+                                <td>{{ $data->appointmentTime }}</td>
                             </tr>
                             @endforeach
                         </tbody>

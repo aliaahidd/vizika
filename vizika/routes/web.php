@@ -69,7 +69,11 @@ Route::post('/contractor-info', [App\Http\Controllers\ProfileController::class, 
 //store additional visitor info
 Route::post('/visitor-info', [App\Http\Controllers\ProfileController::class, 'storevisitorinfo'])->name('storevisitorinfo');
 //change password
-Route::post('/Change-Password', [App\Http\Controllers\ProfileController::class, 'changepassword'])->name('changepassword');
+Route::get('/Change-Password', [App\Http\Controllers\ProfileController::class, 'changepassword'])->name('changepassword');
+//staff list 
+Route::get('/Staff-List', [App\Http\Controllers\ProfileController::class, 'stafflist'])->name('stafflist');
+//staff list 
+Route::delete('/deletestaff/{id}', [App\Http\Controllers\ProfileController::class, 'deletestaff'])->name('deletestaff');
 
 
 //APPOINTMENT
@@ -113,13 +117,21 @@ Route::get('/checkout/{id}', [App\Http\Controllers\RecordController::class, 'che
 
 //SAFTEY BRIEFING
 //safety briefing list 
-Route::get('/briefing', [App\Http\Controllers\BriefingController::class, 'briefing'])->name('briefing');
+Route::get('/Briefing-List', [App\Http\Controllers\BriefingController::class, 'briefing'])->name('briefing');
+// session list 
+Route::get('/Biefing/Briefing-Session/{id}', [App\Http\Controllers\BriefingController::class, 'briefingsession'])->name('briefingsession');
 //create briefing info 
-Route::get('/briefing/create-briefing-info', [App\Http\Controllers\BriefingController::class, 'createbriefinginfo'])->name('briefing/createbriefinginfo');
+Route::get('/Briefing/create-briefing-info', [App\Http\Controllers\BriefingController::class, 'createbriefinginfo'])->name('briefing/createbriefinginfo');
 // store briefing info
 Route::post('/set-briefing', [App\Http\Controllers\BriefingController::class, 'storebriefinginfo'])->name('storebriefinginfo');
 //enroll briefing session
 Route::get('/briefingsession/{id}', [App\Http\Controllers\BriefingController::class, 'enrollbriefing'])->name('enrollbriefing');
+//update validity pass date
+Route::get('/Update-Validity-Pass/{id}', [App\Http\Controllers\BriefingController::class, 'updatepassdate'])->name('updatepassdate');
+//delete the participant record
+Route::get('/Delete-participant/{id}', [App\Http\Controllers\BriefingController::class, 'deleterecord'])->name('deleterecord');
+//delete the briefing session
+Route::delete('/deletebriefingsession/{id}', [App\Http\Controllers\BriefingController::class, 'deletebriefingsession'])->name('deletebriefingsession');
 
 //REPORT
 //report list
@@ -143,9 +155,9 @@ Route::post('/calendarAjax', [App\Http\Controllers\CalendarController::class, 'c
 
 //BLACKLIST
 //visitor list page
-Route::get('/Active-User', [App\Http\Controllers\BlacklistController::class, 'activeUser'])->name('activeUser');
+Route::get('/Active-User', [App\Http\Controllers\BlacklistController::class, 'activeUser'])->name('useractive');
 //blacklist list page
-Route::get('/list-blacklist', [App\Http\Controllers\BlacklistController::class, 'blacklistlist'])->name('blacklistlist');
+Route::get('/list-blacklist', [App\Http\Controllers\BlacklistController::class, 'blacklistlist'])->name('userblacklist');
 //blacklist
 Route::post('/blacklist/{id}', [App\Http\Controllers\BlacklistController::class, 'blacklist'])->name('blacklist');
 //blacklist

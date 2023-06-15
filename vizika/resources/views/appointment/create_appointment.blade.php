@@ -283,13 +283,14 @@
             nameCell.textContent = name;
 
             const deleteCell = document.createElement("td");
-            const deleteButton = document.createElement("button");
-            deleteButton.textContent = "Delete";
-            deleteButton.classList.add("btn", "btn-danger");
-            deleteButton.addEventListener("click", () => {
+            const deleteIcon = document.createElement("i");
+            deleteIcon.classList.add("material-icons");
+            deleteIcon.textContent = "delete";
+            deleteIcon.style.color = "red"; // Add CSS style directly
+            deleteIcon.addEventListener("click", () => {
                 removeSelectedName(name);
             });
-            deleteCell.appendChild(deleteButton);
+            deleteCell.appendChild(deleteIcon);
 
             // Add cells to the row
             row.appendChild(numberCell);

@@ -81,7 +81,7 @@
     <div class="col-9">
         <div class="card">
             <div class="card-header pb-0">
-                <h5>Total Visit</h5>
+                <h5>Total Visit for Past 7 Days</h5>
             </div>
             <div class="card-body">
                 <div id="total_visitor_data" style="width: 100%; height: 100%"></div>
@@ -91,7 +91,7 @@
     <div class="col-3">
         <div class="card">
             <div class="card-header pb-0">
-                <h5>Total Visitor</h5>
+                <h5>User type</h5>
             </div>
             <div class="card-body">
                 <div id="visitortype"></div>

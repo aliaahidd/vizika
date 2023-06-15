@@ -34,7 +34,7 @@
 
         @if(request()->routeIs('briefing'))
         <div class="col-lg-12 col-md-12 col-sm-12" style="float: right;">
-            <a class="btn btn-primary col-2" style="float: right; width:100%;" role="button" href="{{ route('briefing/createbriefinginfo') }}">
+            <a class="btn btn-primary col-2" style="float: right; width:150px;" role="button" href="{{ route('briefing/createbriefinginfo') }}">
                 <i class="fas fa-plus"></i>&nbsp; Create Briefing</a>
         </div>
         @else
@@ -63,7 +63,11 @@
                                 <th>Date</th>
                                 <th>Time Start</th>
                                 <th>Time End</th>
-                                <th>Participant</th>
+                                <th>Max Participant</th>
+                                <th>Enrolled Participant</th>
+                                <th>Status</th>
+                                <th>Action</th>
+
                             </tr>
                         </thead>
                         <tbody>
@@ -74,6 +78,26 @@
                                 <td>{{ $data->briefingTimeStart }}</td>
                                 <td>{{ $data->briefingTimeEnd }}</td>
                                 <td>{{ $data->maxParticipant }}</td>
+                                <td>{{ $data->totalParticipants }}</td>
+                                <td>
+                                    @if ($data->enrollmentOpen)
+                                    <div style="background-color: #d9f3ea; border-radius: 10px; display: flex; justify-content: center; align-items: center; margin: auto;">
+                                        <label style="color: #0bb37a; text-align: center; font-weight: bold" class="mb-1 mt-1">Not full</label>
+                                    </div>
+                                    @else
+                                    <div style="background-color: #ffe6e6; border-radius: 10px; display: flex; justify-content: center; align-items: center; margin: auto;">
+                                        <label style="color: #ff5b5b; text-align: center; font-weight: bold" class="mb-1 mt-1">Full</label>
+                                    </div>
+                                    @endif
+                                </td>
+                                <td>
+                                    @if ($data->totalParticipants === 0)
+                                    <a onclick="deleteItem(this)" data-id="{{ $data->id }}" data-name="{{ $data->briefingDate }}" class="btn btn-danger" style="justify-content: center; align-items: center; margin: auto; color: white">Delete</a>
+                                    @else
+                                    <a href="{{ route('briefingsession', $data->id )}}" class="btn btn-primary" style="justify-content: center; align-items: center; margin: auto; color: white">View</a>
+                                    @endif
+                                </td>
+
                             </tr>
                             @endforeach
                         </tbody>
@@ -85,7 +109,7 @@
                     <div class="container">
                         <div class="row justify-content-md-center">
                             <div class="col d-flex justify-content-center">
-                                <h2>You already enroll in safety briefing</h2>
+                                <h2>You have already enrolled in the safety briefing</h2>
                             </div>
                         </div>
                         <br>
@@ -191,5 +215,67 @@
             dataTable.column(3).search('^' + year + '-', true, false).draw();
         });
     });
+</script>
+<script>
+    function deleteItem(e) {
+        let id = e.getAttribute('data-id');
+        let name = e.getAttribute('data-name');
+
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+                confirmButton: 'btn btn-success ml-1',
+                cancelButton: 'btn btn-danger mr-1'
+            },
+            buttonsStyling: false
+        });
+
+        swalWithBootstrapButtons.fire({
+            title: 'Are you sure to delete this briefing session?',
+            html: "Date: " + name + "<br> You won't be able to revert this!",
+            text: "",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'No, cancel!',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.value) {
+                if (result.isConfirmed) {
+
+                    $.ajax({
+                        type: 'DELETE',
+                        url: '{{url("/deletebriefingsession")}}/' + id,
+                        data: {
+                            "_token": "{{ csrf_token() }}",
+                        },
+                        success: function(data) {
+                            if (data.success) {
+                                swalWithBootstrapButtons.fire(
+                                    'Deleted!',
+                                    'Briefing session has been deleted.',
+                                    "success"
+                                );
+
+                                $("#row" + id).remove(); // you can add name div to remove
+                            }
+
+
+                        }
+                    });
+
+                }
+
+            } else if (
+                result.dismiss === Swal.DismissReason.cancel
+            ) {
+                // swalWithBootstrapButtons.fire(
+                //     'Cancelled',
+                //     'Your imaginary file is safe :)',
+                //     'error'
+                // );
+            }
+        });
+
+    }
 </script>
 @endsection

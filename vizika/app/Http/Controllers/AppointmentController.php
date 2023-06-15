@@ -280,7 +280,8 @@ class AppointmentController extends Controller
         $visitor = DB::table('appointmentinfo')
             ->join('users', 'users.id', '=', 'appointmentinfo.contVisitID')
             ->join('visitorinfo', 'visitorinfo.userID', '=', 'appointmentinfo.contVisitID')
-            ->select('appointmentinfo.*', 'users.*', 'visitorinfo.*', 'appointmentinfo.id as appointmentID')
+            ->join('companyinfo', 'companyinfo.id', '=', 'contractorinfo.companyID')
+            ->select('appointmentinfo.*', 'users.*', 'visitorinfo.*', 'companyinfo.*', 'appointmentinfo.id as appointmentID')
             ->where('appointmentinfo.id', $id)
             ->first();
 
@@ -296,7 +297,8 @@ class AppointmentController extends Controller
         $contractor = DB::table('appointmentinfo')
             ->join('users', 'users.id', '=', 'appointmentinfo.contVisitID')
             ->join('contractorinfo', 'contractorinfo.userID', '=', 'appointmentinfo.contVisitID')
-            ->select('appointmentInfo.*', 'users.*', 'contractorinfo.*', 'appointmentinfo.id as appointmentID')
+            ->join('companyinfo', 'companyinfo.id', '=', 'contractorinfo.companyID')
+            ->select('appointmentInfo.*', 'users.*', 'contractorinfo.*', 'companyinfo.*', 'appointmentinfo.id as appointmentID')
             ->where('appointmentinfo.id', $id)
             ->first();
 

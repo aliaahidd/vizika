@@ -3,7 +3,7 @@
 @section('content')
 <div class="page-header row no-gutters pb-4">
     <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
-        <h1 class="page-title mb-3">User List</h1>
+        <h1 class="page-title mb-3">Users</h1>
         <h6>List Blacklist</h6>
     </div>
 </div>
@@ -22,10 +22,10 @@
                 <nav class="">
                     <ul class="nav nav-tabs" id="myTab" role="tablist">
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('blacklistlist') && !request()->has('type') ? 'active' : '' }}" href="{{ route('blacklistlist') }}" role="tab" aria-selected="true">List Of Visitor</a>
+                            <a class="nav-link {{ request()->routeIs('userblacklist') && !request()->has('type') ? 'active' : '' }}" href="{{ route('userblacklist') }}" role="tab" aria-selected="true">List Of Visitor</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->has('type') && request()->get('type') === 'contractor' ? 'active' : '' }}" href="{{ route('blacklistlist', ['type' => 'contractor']) }}" role="tab" aria-selected="true">List Of Contractor</a>
+                            <a class="nav-link {{ request()->has('type') && request()->get('type') === 'contractor' ? 'active' : '' }}" href="{{ route('userblacklist', ['type' => 'contractor']) }}" role="tab" aria-selected="true">List Of Contractor</a>
                         </li>
                     </ul>
                 </nav>

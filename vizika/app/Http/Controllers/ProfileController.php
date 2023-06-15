@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ContractorInfo;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
+use App\Models\User;
+use App\Models\ContractorInfo;
 use App\Models\VisitorInfo;
+use App\Models\AppointmentInfo;
+use App\Models\VisitRecord;
 use Illuminate\Http\Request;
 
 class ProfileController extends Controller
@@ -27,7 +29,11 @@ class ProfileController extends Controller
             ->where('users.id', $id)
             ->first();
 
-        return view('profile.profile', compact('contractor', 'visitor'));
+        $user = DB::table('users')
+            ->where('id', $id)
+            ->first();
+
+        return view('profile.profile', compact('contractor', 'visitor', 'user'));
     }
 
     public function editprofile($id)
@@ -318,6 +324,34 @@ class ProfileController extends Controller
             ->get();
 
         return view('profile.visitor_detail', compact('companylist'));
+    }
+
+    public function stafflist()
+    {
+        $stafflist = DB::table('users')
+            ->where('category', 'Staff')
+            ->orderBy('name', 'asc')
+            ->get();
+
+        return view('profile.staff_list', compact('stafflist'));
+    }
+
+    public function deleteStaff(Request $request, $id)
+    {
+        if ($request->ajax()) {
+            User::where('id', '=', $id)->delete();
+
+            // Get the appointment IDs associated with the staff
+            $appointmentIds = AppointmentInfo::where('staffID', '=', $id)->pluck('id');
+
+            // Delete VisitRecord records based on the appointment IDs
+            VisitRecord::whereIn('appointmentID', $appointmentIds)->delete();
+
+            // Delete AppointmentInfo records
+            AppointmentInfo::where('staffID', '=', $id)->delete();
+
+            return response()->json(array('success' => true));
+        }
     }
 
     public function changepassword($id)

@@ -84,11 +84,12 @@ class BlacklistController extends Controller
             ->first();
 
         $pastrecord = DB::table('visitrecord')
-            ->orderBy('visitrecord.id', 'desc')
-            ->join('users as cont_visit_user', 'visitrecord.contVisitID', '=', 'cont_visit_user.id')
-            ->join('users as staff_user', 'visitrecord.staffID', '=', 'staff_user.id')
-            ->select('visitrecord.*', 'cont_visit_user.*', 'cont_visit_user.name as cont_visit_name', 'staff_user.name as staff_name')
+            ->join('appointmentinfo', 'appointmentinfo.id', '=', 'visitrecord.appointmentID')
+            ->join('users as cont_visit_user', 'appointmentinfo.contVisitID', '=', 'cont_visit_user.id')
+            ->join('users as staff_user', 'appointmentinfo.staffID', '=', 'staff_user.id')
+            ->select('visitrecord.*', 'cont_visit_user.*', 'appointmentinfo.*', 'cont_visit_user.name as cont_visit_name', 'staff_user.name as staff_name', 'visitrecord.id as recordID')
             ->where('cont_visit_user.id', $id)
+            ->orderBy('visitrecord.id', 'desc')
             ->get();
 
         return view('blacklist.profile_visitor', compact('visitor', 'pastrecord'));
@@ -97,20 +98,22 @@ class BlacklistController extends Controller
     public function profilecontractor($id)
     {
         $contractor = DB::table('contractorinfo')
+        ->join('companyinfo', 'companyinfo.id', '=', 'contractorinfo.companyID')
             ->join('users', 'users.id', '=', 'contractorinfo.userID')
             ->select([
                 'users.id AS userID',
-                'contractorinfo.id AS cID', 'users.*', 'contractorinfo.*'
+                'contractorinfo.id AS cID', 'users.*', 'contractorinfo.*', 'companyinfo.*',
             ])
             ->where('users.id', $id)
             ->first();
 
         $pastrecord = DB::table('visitrecord')
-            ->orderBy('visitrecord.id', 'desc')
-            ->join('users as cont_visit_user', 'visitrecord.contVisitID', '=', 'cont_visit_user.id')
-            ->join('users as staff_user', 'visitrecord.staffID', '=', 'staff_user.id')
-            ->select('visitrecord.*', 'cont_visit_user.*', 'cont_visit_user.name as cont_visit_name', 'staff_user.name as staff_name')
+            ->join('appointmentinfo', 'appointmentinfo.id', '=', 'visitrecord.appointmentID')
+            ->join('users as cont_visit_user', 'appointmentinfo.contVisitID', '=', 'cont_visit_user.id')
+            ->join('users as staff_user', 'appointmentinfo.staffID', '=', 'staff_user.id')
+            ->select('visitrecord.*', 'cont_visit_user.*', 'appointmentinfo.*', 'cont_visit_user.name as cont_visit_name', 'staff_user.name as staff_name', 'visitrecord.id as recordID')
             ->where('cont_visit_user.id', $id)
+            ->orderBy('visitrecord.id', 'desc')
             ->get();
 
         return view('blacklist.profile_contractor', compact('contractor', 'pastrecord'));
@@ -131,7 +134,7 @@ class BlacklistController extends Controller
         DB::table('blacklistvisitor')->insert($data);
 
 
-        return redirect()->route('blacklistlist');
+        return redirect()->route('userblacklist');
     }
 
     public function unblacklist($id)
@@ -147,6 +150,6 @@ class BlacklistController extends Controller
                 ->delete();
         }
 
-        return redirect()->route('activeUser');
+        return redirect()->route('useractive');
     }
 }

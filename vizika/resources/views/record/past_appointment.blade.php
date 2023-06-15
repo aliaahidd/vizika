@@ -78,10 +78,9 @@
                                 <th>ID</th>
                                 <th>Visitor Name</th>
                                 <th>KANEKA Staff</th>
+                                <th>Purpose</th>
                                 <th>Check-In</th>
                                 <th>Check-Out</th>
-                                <th>Purpose</th>
-                                <th>Agenda</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -90,10 +89,9 @@
                                 <td>{{ $data->id }}</td>
                                 <td>{{ $data->cont_visit_name }}</td>
                                 <td>{{ $data->staff_name }}</td>
+                                <td>{{ $data->appointmentPurpose }}</td>
                                 <td>{{ $data->checkInDate }} {{ $data->checkInTime }} </td>
                                 <td>{{ $data->checkOutDate }} {{ $data->checkOutTime }} </td>
-                                <td>{{ $data->appointmentPurpose }}</td>
-                                <td>{{ $data->appointmentAgenda }}</td>
                             </tr>
                             @endforeach
                         </tbody>

@@ -78,18 +78,20 @@
                             <thead>
                                 <tr>
                                     <th>ID</th>
+                                    <th>Appointment Time</th>
                                     <th>Visitor Name</th>
-                                    <th>KANEKA Staff</th>
                                     <th>Purpose</th>
+                                    <th>Agenda</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach($todayAppointment As $key=>$data)
                                 <tr id="row{{$data->id}}">
                                     <td>{{ $data->appointmentID }}</td>
+                                    <td>{{ $data->appointmentTime }}</td>
                                     <td>{{ $data->cont_visit_name }}</td>
-                                    <td>{{ $data->staff_name }}</td>
                                     <td>{{ $data->appointmentPurpose }}</td>
+                                    <td>{{ $data->appointmentAgenda }}</td>
                                 </tr>
                                 @endforeach
                             </tbody>

@@ -23,11 +23,12 @@ class RecordController extends Controller
         $today_date = Carbon::now($kl_timezone)->toDateString();
 
         $recordliststaff = DB::table('visitrecord')
-            ->orderBy('visitrecord.id', 'desc')
-            ->join('users as cont_visit_user', 'visitrecord.contVisitID', '=', 'cont_visit_user.id')
-            ->join('users as staff_user', 'visitrecord.staffID', '=', 'staff_user.id')
+            ->join('appointmentinfo', 'appointmentinfo.id', '=', 'visitrecord.appointmentID')
+            ->join('users as cont_visit_user', 'appointmentinfo.contVisitID', '=', 'cont_visit_user.id')
+            ->join('users as staff_user', 'appointmentinfo.staffID', '=', 'staff_user.id')
             ->select('visitrecord.*', 'cont_visit_user.*', 'cont_visit_user.name as cont_visit_name', 'staff_user.name as staff_name')
             ->where('staffID', 'staff_user.id')
+            ->orderBy('visitrecord.id', 'desc')
             ->get();
 
         $filteryear = DB::table('visitrecord')

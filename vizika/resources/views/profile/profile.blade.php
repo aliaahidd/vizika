@@ -163,6 +163,63 @@
             </div>
             <a class="btn btn-primary" href="{{ route('editprofile', $visitor->id ) }}">Edit Profile</a>
         </div>
+
+        @elseif (Auth::user()->category == 'Staff' || Auth::user()->category == 'SHEQ Officer' || Auth::user()->category == 'SHEQ Guard')
+        <div class="card" style="padding: 20px;">
+            <div class="form-row">
+                <div class="col-7">
+                    <h5>Profile details</h5>
+                    <hr>
+                    <div class="row">
+                        <div class="col-4">
+                            <label for="name">Name</label>
+                        </div>
+                        <div class="col">
+                            <label for="name">{{ $user->name }}</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4">
+                            <label for="email">Email</label>
+                        </div>
+                        <div class="col">
+                            <label for="email">{{ $user->email }}</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- <div class="form-row mt-5">
+                <div class="col-7">
+                    <h5>Change Password</h5>
+                    <hr>
+                    <div class="row mb-3">
+                        <div class="col-4">
+                            <label for="currentpassword">Current Password</label>
+                        </div>
+                        <div class="col">
+                            <input type="password" name="newpassword" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-4">
+                            <label for="newpassword">New Password</label>
+                        </div>
+                        <div class="col">
+                            <input type="password" name="newpassword" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-4">
+                            <label for="confirmpassword">Confirm Password</label>
+                        </div>
+                        <div class="col">
+                            <input type="password" name="newpassword" class="form-control">
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+        </div>
         @endif
     </div>
 </div>

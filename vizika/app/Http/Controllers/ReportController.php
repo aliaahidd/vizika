@@ -24,11 +24,12 @@ class ReportController extends Controller
         $data = 'AllReport';
 
         $reportlist = DB::table('visitrecord')
-            ->orderBy('visitrecord.id', 'desc')
-            ->join('users as cont_visit_user', 'visitrecord.contVisitID', '=', 'cont_visit_user.id')
-            ->join('users as staff_user', 'visitrecord.staffID', '=', 'staff_user.id')
-            ->select('visitrecord.*', 'cont_visit_user.*', 'cont_visit_user.name as cont_visit_name', 'staff_user.name as staff_name')
+            ->join('appointmentinfo', 'appointmentinfo.id', '=', 'visitrecord.appointmentID')
+            ->join('users as cont_visit_user', 'appointmentinfo.contVisitID', '=', 'cont_visit_user.id')
+            ->join('users as staff_user', 'appointmentinfo.staffID', '=', 'staff_user.id')
+            ->select('visitrecord.*', 'cont_visit_user.*', 'appointmentinfo.*', 'cont_visit_user.name as cont_visit_name', 'staff_user.name as staff_name')
             ->whereNotNull('visitrecord.checkOutDate')
+            ->orderBy('visitrecord.id', 'desc')
             ->get();
 
         return view('report.list_report', compact('reportlist'))->with('data', $data)->with('exportData', true);
@@ -50,9 +51,10 @@ class ReportController extends Controller
 
         $reportlist = DB::table('visitrecord')
             ->orderBy('visitrecord.id', 'desc')
-            ->join('users as cont_visit_user', 'visitrecord.contVisitID', '=', 'cont_visit_user.id')
-            ->join('users as staff_user', 'visitrecord.staffID', '=', 'staff_user.id')
-            ->select('visitrecord.*', 'cont_visit_user.*', 'cont_visit_user.name as cont_visit_name', 'staff_user.name as staff_name')
+            ->join('appointmentinfo', 'appointmentinfo.id', '=', 'visitrecord.appointmentID')
+            ->join('users as cont_visit_user', 'appointmentinfo.contVisitID', '=', 'cont_visit_user.id')
+            ->join('users as staff_user', 'appointmentinfo.staffID', '=', 'staff_user.id')
+            ->select('visitrecord.*', 'cont_visit_user.*', 'appointmentinfo.*', 'cont_visit_user.name as cont_visit_name', 'staff_user.name as staff_name')
             ->whereBetween('checkInDate', [$dateStart, $dateEnd])
             ->get();
 
@@ -68,9 +70,10 @@ class ReportController extends Controller
                 // Query for generated report
                 $data = DB::table('visitrecord')
                     ->orderBy('visitrecord.id', 'desc')
-                    ->join('users as cont_visit_user', 'visitrecord.contVisitID', '=', 'cont_visit_user.id')
-                    ->join('users as staff_user', 'visitrecord.staffID', '=', 'staff_user.id')
-                    ->select('visitrecord.*', 'cont_visit_user.*', 'cont_visit_user.name as cont_visit_name', 'staff_user.name as staff_name')
+                    ->join('appointmentinfo', 'appointmentinfo.id', '=', 'visitrecord.appointmentID')
+                    ->join('users as cont_visit_user', 'appointmentinfo.contVisitID', '=', 'cont_visit_user.id')
+                    ->join('users as staff_user', 'appointmentinfo.staffID', '=', 'staff_user.id')
+                    ->select('visitrecord.*', 'cont_visit_user.*', 'appointmentinfo.*', 'cont_visit_user.name as cont_visit_name', 'staff_user.name as staff_name')
                     ->whereBetween('checkInDate', [$dateStart, $dateEnd])
                     ->get();
             } else {
@@ -137,9 +140,10 @@ class ReportController extends Controller
                 // Query for all report
                 $data = DB::table('visitrecord')
                     ->orderBy('visitrecord.id', 'desc')
-                    ->join('users as cont_visit_user', 'visitrecord.contVisitID', '=', 'cont_visit_user.id')
-                    ->join('users as staff_user', 'visitrecord.staffID', '=', 'staff_user.id')
-                    ->select('visitrecord.*', 'cont_visit_user.*', 'cont_visit_user.name as cont_visit_name', 'staff_user.name as staff_name')
+                    ->join('appointmentinfo', 'appointmentinfo.id', '=', 'visitrecord.appointmentID')
+                    ->join('users as cont_visit_user', 'appointmentinfo.contVisitID', '=', 'cont_visit_user.id')
+                    ->join('users as staff_user', 'appointmentinfo.staffID', '=', 'staff_user.id')
+                    ->select('visitrecord.*', 'cont_visit_user.*', 'appointmentinfo.*', 'cont_visit_user.name as cont_visit_name', 'staff_user.name as staff_name')
                     ->get();
             } else {
                 // Handle other cases if needed
@@ -204,9 +208,10 @@ class ReportController extends Controller
                 // Query for all report
                 $data = DB::table('visitrecord')
                     ->orderBy('visitrecord.id', 'desc')
-                    ->join('users as cont_visit_user', 'visitrecord.contVisitID', '=', 'cont_visit_user.id')
-                    ->join('users as staff_user', 'visitrecord.staffID', '=', 'staff_user.id')
-                    ->select('visitrecord.*', 'cont_visit_user.*', 'cont_visit_user.name as cont_visit_name', 'staff_user.name as staff_name')
+                    ->join('appointmentinfo', 'appointmentinfo.id', '=', 'visitrecord.appointmentID')
+                    ->join('users as cont_visit_user', 'appointmentinfo.contVisitID', '=', 'cont_visit_user.id')
+                    ->join('users as staff_user', 'appointmentinfo.staffID', '=', 'staff_user.id')
+                    ->select('visitrecord.*', 'cont_visit_user.*', 'appointmentinfo.*', 'cont_visit_user.name as cont_visit_name', 'staff_user.name as staff_name')
                     ->get();
             } else {
                 // Handle other cases if needed
@@ -248,9 +253,10 @@ class ReportController extends Controller
                 // Query for generated report
                 $data = DB::table('visitrecord')
                     ->orderBy('visitrecord.id', 'desc')
-                    ->join('users as cont_visit_user', 'visitrecord.contVisitID', '=', 'cont_visit_user.id')
-                    ->join('users as staff_user', 'visitrecord.staffID', '=', 'staff_user.id')
-                    ->select('visitrecord.*', 'cont_visit_user.*', 'cont_visit_user.name as cont_visit_name', 'staff_user.name as staff_name')
+                    ->join('appointmentinfo', 'appointmentinfo.id', '=', 'visitrecord.appointmentID')
+                    ->join('users as cont_visit_user', 'appointmentinfo.contVisitID', '=', 'cont_visit_user.id')
+                    ->join('users as staff_user', 'appointmentinfo.staffID', '=', 'staff_user.id')
+                    ->select('visitrecord.*', 'cont_visit_user.*', 'appointmentinfo.*', 'cont_visit_user.name as cont_visit_name', 'staff_user.name as staff_name')
                     ->whereBetween('checkInDate', [$dateStart, $dateEnd])
                     ->get();
             } else {

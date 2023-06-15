@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BriefingSession;
+use App\Models\ContractorInfo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -44,32 +46,47 @@ class BriefingController extends Controller
                         ->orderBy('id', 'desc')
                         ->get();
 
-                        foreach ($briefinginfolist as $briefingInfo) {
-                            $enrollmentOpen = true;
-                        
-                            $totalParticipant = DB::table('briefingsession')
-                                ->where('briefingID', $briefingInfo->id)
-                                ->distinct('contractorID')
-                                ->count('contractorID');
-                        
-                            if ($totalParticipant >= $briefingInfo->maxParticipant) {
-                                $enrollmentOpen = false;
-                            }
-                        
-                            $briefingInfo->totalParticipants = $totalParticipant;
-                            $briefingInfo->enrollmentOpen = $enrollmentOpen;
+                    foreach ($briefinginfolist as $briefingInfo) {
+                        $enrollmentOpen = true;
+
+                        $totalParticipant = DB::table('briefingsession')
+                            ->where('briefingID', $briefingInfo->id)
+                            ->distinct('contractorID')
+                            ->count('contractorID');
+
+                        if ($totalParticipant >= $briefingInfo->maxParticipant) {
+                            $enrollmentOpen = false;
                         }
+
+                        $briefingInfo->totalParticipants = $totalParticipant;
+                        $briefingInfo->enrollmentOpen = $enrollmentOpen;
+                    }
 
                     return view('briefing.list_briefing', compact('briefinginfolist', 'totalParticipant', 'alreadyenroll'));
                 }
             }
 
             return redirect()->back()->with('success', 'Sorry, you do not have permission to enroll');
-            
         } else if (Auth::user()->category == 'SHEQ Officer') {
             $briefinginfolist = DB::table('safetybriefinginfo')
                 ->orderBy('id', 'desc')
                 ->get();
+
+            foreach ($briefinginfolist as $briefingInfo) {
+                $enrollmentOpen = true;
+
+                $totalParticipant = DB::table('briefingsession')
+                    ->where('briefingID', $briefingInfo->id)
+                    ->distinct('contractorID')
+                    ->count('contractorID');
+
+                if ($totalParticipant >= $briefingInfo->maxParticipant) {
+                    $enrollmentOpen = false;
+                }
+
+                $briefingInfo->totalParticipants = $totalParticipant;
+                $briefingInfo->enrollmentOpen = $enrollmentOpen;
+            }
 
             //count total current participants foe each session 
             $totalParticipant = DB::table('briefingsession')
@@ -79,6 +96,23 @@ class BriefingController extends Controller
 
             return view('briefing.list_briefing', compact('briefinginfolist', 'totalParticipant'));
         }
+    }
+
+    public function briefingsession($id)
+    {
+        $sessionlist = DB::table('briefingsession')
+            ->join('safetybriefinginfo', 'safetybriefinginfo.id', '=', 'briefingsession.briefingID')
+            ->join('contractorinfo', 'contractorinfo.id', '=', 'briefingsession.contractorID')
+            ->join('users', 'users.id', '=', 'contractorinfo.userID')
+            ->select('briefingsession.*', 'briefingsession.contractorID as contractorID', 'users.*', 'contractorinfo.*')
+            ->where('briefingsession.briefingID', $id)
+            ->get();
+
+        $briefinginfo = DB::table('safetybriefinginfo')
+            ->where('id', $id)
+            ->first();
+
+        return view('briefing.list_session', compact('sessionlist', 'briefinginfo'));
     }
 
     public function createbriefinginfo()
@@ -126,7 +160,6 @@ class BriefingController extends Controller
         $data = array(
             'briefingID' => $id,
             'contractorID' => $userID,
-            'totalParticipant' => 0,
         );
 
         // insert query
@@ -134,5 +167,33 @@ class BriefingController extends Controller
 
         sleep(1);
         return redirect()->route('briefing');
+    }
+
+    public function updatepassdate($id)
+    {
+        $currentDate = Carbon::today();
+        $sixMonthsAfter = $currentDate->addMonths(6);
+
+        $contractorinfo = ContractorInfo::find($id);
+        $contractorinfo->passExpiryDate = $sixMonthsAfter;
+
+        // upadate query in the database
+        $contractorinfo->update();
+
+        // Delete briefingsession records
+        BriefingSession::where('contractorID', '=', $id)->delete();
+
+        // display message box in the same page
+        return redirect()->route('briefing');
+    }
+
+    public function deletebriefingsession(Request $request, $id)
+    {
+        if ($request->ajax()) {
+            // Delete briefinginfo records
+            SafetyBriefingInfo::where('id', '=', $id)->delete();
+
+            return response()->json(array('success' => true));
+        }
     }
 }

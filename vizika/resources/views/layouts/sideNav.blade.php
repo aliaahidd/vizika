@@ -33,7 +33,7 @@
                 <ul class="nav flex-column">
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('dashboard*') ? 'active' : '' }}" href="{{ route('dashboard') }}">
-                            <i class="material-icons">info</i>
+                            <i class="material-icons">equalizer</i>
                             <span>Dashboard</span>
                         </a>
                     </li>
@@ -81,17 +81,17 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('visitor*') ? 'active' : '' }}" data-toggle="collapse" data-target="#visitorSubMenu">
-                            <i class="material-icons">badge</i>
+                        <a class="nav-link {{ request()->routeIs('user*') ? 'active' : '' }}" data-toggle="collapse" data-target="#visitorSubMenu">
+                            <i class="material-icons">person</i>
                             <span>Users</span>
                         </a>
                         <div class="collapse" id="visitorSubMenu" style="margin-left: 20px">
                             <ul class="nav flex-column">
                                 <li class="nav-item">
-                                    <a class="nav-link {{ request()->routeIs('activeUser') ? 'active' : '' }}" href="{{ route('activeUser') }}">Active User</a>
+                                    <a class="nav-link {{ request()->routeIs('useractive') ? 'active' : '' }}" href="{{ route('useractive') }}">Active User</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link {{ request()->routeIs('blacklistlist') ? 'active' : '' }}" href="{{ route('blacklistlist') }}">Blacklist User</a>
+                                    <a class="nav-link {{ request()->routeIs('userblacklist') ? 'active' : '' }}" href="{{ route('userblacklist') }}">Blacklist User</a>
                                 </li>
                             </ul>
                         </div>
@@ -113,13 +113,13 @@
                     @if( auth()->user()->category== "SHEQ Guard")
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('logvisitor*') ? 'active' : '' }}" href="{{ route('logvisitor') }}">
-                            <i class="material-icons">today</i>
+                            <i class="material-icons">book</i>
                             <span>Visitor Log</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('appointment*') ? 'active' : '' }}" data-toggle="collapse" data-target="#appointmentSubMenu">
-                            <i class="material-icons">today</i>
+                            <i class="material-icons">event</i>
                             <span>Appointment</span>
                         </a>
                         <div class="collapse" id="appointmentSubMenu" style="margin-left: 20px">
@@ -150,7 +150,7 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('userlist*') ? 'active' : '' }}" href="{{ route('userlist') }}">
-                            <i class="material-icons">today</i>
+                            <i class="material-icons">person</i>
                             <span>Visitor & Contractor</span>
                         </a>
                     </li>
@@ -180,9 +180,12 @@
                     <ul class="navbar-nav border-left flex-row ml-auto ">
                         <li class="nav-item border-right dropdown">
                             <a class="nav-link dropdown-toggle text-nowrap px-3" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                                @if(Auth::user()->category == "Staff" || Auth::user()->category == "SHEQ Officer" || Auth::user()->category == "SHEQ Guard" || Auth::user()->category == "Contractor" || Auth::user()->category == "Visitor")
+                                @if(Auth::user()->category == "Staff" || Auth::user()->category == "SHEQ Officer" || Auth::user()->category == "SHEQ Guard")
                                 <img class="user-avatar rounded-circle mr-2" src="{{ asset('frontend') }}/images/avatar.jpg" alt="Avatar" width="30px" height="30px" style="vertical-align:baseline">
-
+                                @elseif(Auth::user()->category == "Contractor")
+                                <img class="user-avatar rounded-circle mr-2" src="/assets/{{Auth::user()->name}}/{{Auth::user()->contractor->passportPhoto}}" alt="Avatar" height="30px" width="30px" style="vertical-align:baseline; border: 1px solid #000000; ">
+                                @elseif(Auth::user()->category == "Visitor")
+                                <img class="user-avatar rounded-circle mr-2" src="/assets/{{Auth::user()->name}}/{{Auth::user()->visitor->passportPhoto}}" alt="Avatar" height="30px" width="30px" style="vertical-align:baseline; border: 1px solid #000000; ">
                                 @endif
                                 <span class="d-none d-md-inline-block"><strong>{{ Auth::user()->name }}</strong><br> {{Auth::user()->category}}</span>
                             </a>

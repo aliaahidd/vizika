@@ -42,4 +42,14 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function contractor()
+    {
+        return $this->hasOne(ContractorInfo::class, 'userID');
+    }
+
+    public function visitor()
+    {
+        return $this->hasOne(VisitorInfo::class, 'userID');
+    }
 }

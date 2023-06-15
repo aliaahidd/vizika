@@ -46,103 +46,183 @@
             <h1 class="page-title ml-3">Profile</h1>
         </div>
     </div>
-    <!-- display all from registration -->
     <div class="row justify-content-center">
-        <div class="col-md-12">
-            @if ($usertype->category == 'Contractor')
-            <div class="card" style="padding: 20px;">
-                <div class="form-row">
-                    <div class="col-4" style="display: flex; justify-content: center;">
-                        <img src="/assets/{{$usertype->name}}/{{$usertype->passportPhoto}}" height="200px">
-                    </div>
-                    <div class="col-7">
-                        <h5>Contact Details</h5>
-                        <hr>
-                        <div class="row">
-                            <div class="col-4">
-                                <label for="name">Name</label>
-                            </div>
-                            <div class="col">
-                                <label for="name">{{ $usertype->name }}</label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-4">
-                                <label for="email">Email</label>
-                            </div>
-                            <div class="col">
-                                <label for="email">{{ $usertype->email }}</label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-4">
-                                <label for="email">Phone Number</label>
-                            </div>
-                            <div class="col">
-                                <label for="email">{{ $usertype->phoneNo }}</label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-4">
-                                <label for="faceRecog">Facial Recognition</label>
-                            </div>
-                            <div class="col">
-                                <!-- Add a button to start the face recognition process -->
-                                <td><a href="{{ route('scanBiometric', $usertype->appointmentID) }}" class="btn btn-primary" style="color: white">Scan Face</a>
-                                </td>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            @elseif ($usertype->category == 'Visitor')
-            <div class="card" style="padding: 20px;">
-                <div class="form-row">
-                    <div class="col-4" style="display: flex; justify-content: center;">
-                        <img src="/assets/{{$usertype->name}}/{{$usertype->passportPhoto}}" height="200px">
-                    </div>
-                    <div class="col-7">
-                        <h5>Contact Details</h5>
-                        <hr>
-                        <div class="row">
-                            <div class="col-4">
-                                <label for="name">Name</label>
-                            </div>
-                            <div class="col">
-                                <label for="name">{{ $usertype->name }}</label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-4">
-                                <label for="email">Email</label>
-                            </div>
-                            <div class="col">
-                                <label for="email">{{ $usertype->email }}</label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-4">
-                                <label for="email">Phone Number</label>
-                            </div>
-                            <div class="col">
-                                <label for="email">{{ $usertype->phoneNo }}</label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-4">
-                                <label for="faceRecog">Facial Recognition</label>
-                            </div>
-                            <div class="col">
-                                <!-- Add a button to start the face recognition process -->
-                                <td><a href="{{ route('scanBiometric', $usertype->appointmentID) }}" class="btn btn-primary" style="color: white">Scan Face</a>
-                                </td>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="col">
+            @if($usertype->category == 'Contractor')
+            <a href="{{ route('scanBiometric', $usertype->appointmentID) }}" class="btn btn-primary" style="color: white; float: right">Scan Face</a>
+            @elseif($usertype->category == 'Visitor')
+            <a href="{{ route('scanBiometric', $usertype->appointmentID) }}" class="btn btn-primary" style="color: white; float: right">Scan Face</a>
             @endif
         </div>
+    </div>
+    <br>
+    <!-- display all from registration -->
+    <div class="row justify-content-center">
+        @if ($usertype->category == 'Contractor')
+        <div class="col-md-3">
+            <div class="card" style="padding: 20px; height: 450px">
+                <div class=" col-12">
+                    <h5>Passport Photo</h5>
+                    <hr>
+                    <div style="margin: auto;">
+                        <img src="/assets/{{$usertype->name}}/{{$usertype->passportPhoto}}" width="200px">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="card" style="padding: 20px; height: 450px">
+                <div class=" col-12">
+                    <h5>Contact Details</h5>
+                    <hr>
+                    <div class="row">
+                        <div class="col-4">
+                            <label for="name">Name</label>
+                        </div>
+                        <div class="col">
+                            <label for="name">{{ $usertype->name }}</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4">
+                            <label for="email">Email</label>
+                        </div>
+                        <div class="col">
+                            <label for="email">{{ $usertype->email }}</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4">
+                            <label for="email">Phone Number</label>
+                        </div>
+                        <div class="col">
+                            <label for="email">{{ $usertype->phoneNo }}</label>
+                        </div>
+                    </div>
+                    <br>
+
+                    <h5>Additional Information</h5>
+                    <hr>
+                    <div class="row">
+                        <div class="col-4">
+                            <label for="companyName">Company Name</label>
+                        </div>
+                        <div class="col">
+                            <label for="companyName">{{ $usertype->companyName }}</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4">
+                            <label for="employeeNo">Employee Number</label>
+                        </div>
+                        <div class="col">
+                            <label for="employeeNo">{{ $usertype->employeeNo }}</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4">
+                            <label for="employeeNo">Pass Expiry Date</label>
+                        </div>
+                        <div class="col">
+                            <label for="employeeNo">{{ $usertype->passExpiryDate }}</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4">
+                            <label for="address">Address</label>
+                        </div>
+                        <div class="col">
+                            <label for="address">{{ $usertype->address }}</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4">
+                            <label for="birthdate">Birth Date</label>
+                        </div>
+                        <div class="col">
+                            <label for="birthdate">{{ $usertype->birthDate }}</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @elseif ($usertype->category == 'Visitor')
+        <div class="col-md-3">
+            <div class="card" style="padding: 20px; height: 400px">
+                <div style="margin: auto;">
+                    <img src="/assets/{{$usertype->name}}/{{$usertype->passportPhoto}}" width="200px">
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="card" style="padding: 20px; height: 400px">
+                <div class=" col-12">
+                    <h5>Contact Details</h5>
+                    <hr>
+                    <div class="row">
+                        <div class="col-4">
+                            <label for="name">Name</label>
+                        </div>
+                        <div class="col">
+                            <label for="name">{{ $usertype->name }}</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4">
+                            <label for="email">Email</label>
+                        </div>
+                        <div class="col">
+                            <label for="email">{{ $usertype->email }}</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4">
+                            <label for="email">Phone Number</label>
+                        </div>
+                        <div class="col">
+                            <label for="email">{{ $usertype->phoneNo }}</label>
+                        </div>
+                    </div>
+                    <br>
+
+                    <h5>Additional Information</h5>
+                    <hr>
+                    <div class="row">
+                        <div class="col-4">
+                            <label for="address">Address</label>
+                        </div>
+                        <div class="col">
+                            <label for="address">{{ $usertype->address }}</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4">
+                            <label for="birthdate">Birth Date</label>
+                        </div>
+                        <div class="col">
+                            <label for="birthdate">{{ $usertype->birthDate }}</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4">
+                            <label for="employeeNo">Employee ID</label>
+                        </div>
+                        <div class="col">
+                            <label for="employeeNo">{{ $usertype->employeeNo }}</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4">
+                            <label for="occupation">Occupation</label>
+                        </div>
+                        <div class="col">
+                            <label for="occupation">{{ $usertype->occupation }}</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @endif
     </div>
 </body>
 <!-- CSRF Token -->

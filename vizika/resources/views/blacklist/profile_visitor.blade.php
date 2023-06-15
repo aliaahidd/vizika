@@ -3,8 +3,15 @@
 
 <!-- Page Header -->
 <div class="page-header row no-gutters pb-4">
-    <div class="col-12 col-sm-4 text-center text-sm-left mb-0 d-flex">
-        <h1 class="page-title ml-3">Profile</h1>
+    <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
+        <h1 class="page-title mb-3">User</h1>
+        @if(request()->query('from') == 'active_users')
+        <h6><a href="{{ route('useractive') }}">Active User</a> /
+            @elseif(request()->query('from') == 'blacklist_users')
+            <h6><a href="{{ route('userblacklist') }}">Blacklist User</a> /
+                @endif
+                <a>Profile Visitor</a>
+            </h6>
     </div>
 </div>
 
@@ -141,22 +148,22 @@
                             <th>ID</th>
                             <th>Visitor Name</th>
                             <th>KANEKA Staff</th>
-                            <th>Check-In</th>
-                            <th>Check-Out</th>
                             <th>Purpose</th>
                             <th>Agenda</th>
+                            <th>Check-In</th>
+                            <th>Check-Out</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach($pastrecord As $key=>$data)
                         <tr id="row{{$data->id}}">
-                            <td>{{ $data->id }}</td>
+                            <td>{{ $data->recordID }}</td>
                             <td>{{ $data->cont_visit_name }}</td>
                             <td>{{ $data->staff_name }}</td>
-                            <td>{{ $data->checkInDate }} {{ $data->checkInTime }} </td>
-                            <td>{{ $data->checkOutDate }} {{ $data->checkOutTime }} </td>
                             <td>{{ $data->appointmentPurpose }}</td>
                             <td>{{ $data->appointmentAgenda }}</td>
+                            <td>{{ $data->checkInDate }} {{ $data->checkInTime }} </td>
+                            <td>{{ $data->checkOutDate }} {{ $data->checkOutTime }} </td>
                         </tr>
                         @endforeach
                     </tbody>

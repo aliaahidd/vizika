@@ -45,7 +45,7 @@
 
         @if(request()->routeIs('appointment'))
         <div class="col-lg-12 col-md-12 col-sm-12" style="float: right;">
-            <a class="btn btn-primary col-2" style="float: right; width:100%;" role="button" href="{{ route('appointment/createappointment') }}">
+            <a class="btn btn-primary col-2" style="float: right; width:170px;" role="button" href="{{ route('appointment/createappointment') }}">
                 <i class="fas fa-plus"></i>&nbsp; Create Appointment</a>
         </div>
         @else
@@ -93,13 +93,19 @@
                                     <div class="btn-group">
                                         <!-- if status == pending then color status = blue -->
                                         @if($data->appointmentStatus =='Pending')
-                                        <p style="color: #007bff">{{ $data->appointmentStatus }}</p>
+                                        <div style="background-color: #dff0fa; border-radius: 10px; display: flex; justify-content: center; align-items: center; margin: auto; width: 100px">
+                                            <label style=" color: #2d9cdb; text-align: center; font-weight: bold" class="mb-1 mt-1">{{ $data->appointmentStatus }}</label>
+                                        </div>
                                         <!-- if status == pending then color status = green -->
                                         @elseif($data->appointmentStatus =='Attend')
-                                        <p style="color: green">{{ $data->appointmentStatus }}</p>
+                                        <div style="background-color: #d9f3ea; border-radius: 10px; display: flex; justify-content: center; align-items: center; margin: auto; width: 100px">
+                                            <label style=" color: #0bb37a; text-align: center; font-weight: bold" class="mb-1 mt-1">{{ $data->appointmentStatus }}</label>
+                                        </div>
                                         <!-- if status == pending then color status = red -->
                                         @elseif($data->appointmentStatus =='Not Attend')
-                                        <p style="color: red">{{ $data->appointmentStatus }}</p>
+                                        <div style="background-color: #ffe6e6; border-radius: 10px; display: flex; justify-content: center; align-items: center; margin: auto; width: 100px">
+                                            <label style=" color: #ff5b5b; text-align: center; font-weight: bold" class="mb-1 mt-1">{{ $data->appointmentStatus }}</label>
+                                        </div>
                                         @endif
                                     </div>
                                 </td>
@@ -126,7 +132,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($appointmentVisitor As $key=>$data)
+                            @foreach($appointmentVisitor as $key => $data)
                             <tr id="row{{$data->id}}">
                                 <td>{{ $data->id }}</td>
                                 <td>{{ $data->appointmentDate }}</td>
@@ -136,22 +142,24 @@
                                 <td>{{ $data->name }}</td>
                                 <td>
                                     <div class="btn-group">
-                                        <!-- if status == pending then color status = blue -->
                                         @if($data->appointmentStatus =='Pending')
                                         <a class="btn btn-success" style="color: white" href="{{ route('attendvisit', $data->appointmentID) }}">Attend</a>&nbsp
                                         <a class="btn btn-danger" style="color: white" href="{{ route('notattendvisit', $data->appointmentID) }}">Not Attend</a>
-                                        <!-- if status == pending then color status = green -->
                                         @elseif($data->appointmentStatus =='Attend')
-                                        <p style="color: green">{{ $data->appointmentStatus }}</p>
-                                        <!-- if status == pending then color status = red -->
+                                        <div style="background-color: #d9f3ea; border-radius: 10px; display: flex; justify-content: center; align-items: center; margin: auto; width: 100px">
+                                            <label style="color: #0bb37a; text-align: center; font-weight: bold" class="mb-1 mt-1">{{ $data->appointmentStatus }}</label>
+                                        </div>
                                         @elseif($data->appointmentStatus =='Not Attend')
-                                        <p style="color: red">{{ $data->appointmentStatus }}</p>
+                                        <div style="background-color: #ffe6e6; border-radius: 10px; display: flex; justify-content: center; align-items: center; margin: auto; width: 100px">
+                                            <label style="color: #ff5b5b; text-align: center; font-weight: bold" class="mb-1 mt-1">{{ $data->appointmentStatus }}</label>
+                                        </div>
                                         @endif
                                     </div>
                                 </td>
                             </tr>
                             @endforeach
                         </tbody>
+
                     </table>
                     @endif
                     <!-- FOR VISITOR TO VIEW RECORD APPOINTNMENT LIST END -->
