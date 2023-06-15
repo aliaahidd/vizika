@@ -28,6 +28,6 @@ class CalendarController extends Controller
             return response()->json($data);
         }
 
-        return view('Calendar.calendar');
+        return view('calendar.calendar');
     }
 }

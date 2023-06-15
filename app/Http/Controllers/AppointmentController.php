@@ -81,22 +81,6 @@ class AppointmentController extends Controller
         return view('appointment.create_appointment', compact('visitorlist', 'contractorlist'));
     }
 
-    //create appointment form page
-    public function createappointmentformold(Request $request)
-    {
-        $visitorlist = DB::table('users')
-            ->orderBy('name', 'asc')
-            ->where('category', 'Visitor')
-            ->get();
-
-        $contractorlist = DB::table('users')
-            ->orderBy('name', 'asc')
-            ->where('category', 'Contractor')
-            ->get();
-
-        return view('appointment.create_appointment_old', compact('visitorlist', 'contractorlist'));
-    }
-
     //store appointment details
     public function storeappointment(Request $request)
     {

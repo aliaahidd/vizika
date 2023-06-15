@@ -72,7 +72,7 @@ class DashboardController extends Controller
                 ->where('appointmentDate', $today_date)
                 ->where('contVisitID', $id)->get();
 
-            return view('dashboard.Visitor', compact('totalTodayAppt', 'totalUpcomingAppt', 'totalPastAppt', 'todayAppointment'));
+            return view('dashboard.visitor', compact('totalTodayAppt', 'totalUpcomingAppt', 'totalPastAppt', 'todayAppointment'));
         } else {
             return redirect()->route('visitordetail');
         }
@@ -111,7 +111,7 @@ class DashboardController extends Controller
                 ->where('appointmentDate', $today_date)
                 ->where('contVisitID', $id)->get();
 
-            return view('dashboard.Contractor', compact('totalTodayAppt', 'totalUpcomingAppt', 'totalPastAppt', 'todayAppointment'));
+            return view('dashboard.contractor', compact('totalTodayAppt', 'totalUpcomingAppt', 'totalPastAppt', 'todayAppointment'));
         } else {
             return redirect()->route('contractordetail');
         }
@@ -144,7 +144,7 @@ class DashboardController extends Controller
             ->where('checkInDate', $today_date)
             ->get();
 
-        return view('dashboard.Guard', compact('visitorlog', 'totalAppointment', 'totalCheckIn', 'totalCheckOut'));
+        return view('dashboard.guard', compact('visitorlog', 'totalAppointment', 'totalCheckIn', 'totalCheckOut'));
     }
 
     public function officerDashboard()
@@ -223,6 +223,6 @@ class DashboardController extends Controller
             ->where('appointmentDate', $today_date)
             ->where('staffID', $id)->get();
 
-        return view('dashboard.Staff', compact('totalTodayAppt', 'totalUpcomingAppt', 'totalPastAppt', 'todayAppointment'));
+        return view('dashboard.staff', compact('totalTodayAppt', 'totalUpcomingAppt', 'totalPastAppt', 'todayAppointment'));
     }
 }
