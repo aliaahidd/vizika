@@ -25,7 +25,7 @@
 @endif
 
 <div class="row">
-    <div class="col-12" id="cardCol">
+    <div class="col-md-12 col-12" id="cardCol">
         <div class="card">
             <div class="card-body">
                 <!-- form create new appointment -->
@@ -125,7 +125,7 @@
 
         </div>
     </div>
-    <div class="col-4" id="listNameCard" style="display:none;">
+    <div class="col-md-4 col-12" id="listNameCard" style="display:none;">
         <div class="card">
             <div class="card-body">
                 <h5>List Name</h5>
@@ -226,7 +226,7 @@
 
     function addToSelectedList() {
         // change col from 12 to 8 
-        $('#cardCol').removeClass('col-12').addClass('col-8');
+        $('#cardCol').removeClass('col-md-12 col-12').addClass('col-md-8 col-8');
         // to display the hidden card
         const selectedCard = document.getElementById('listNameCard');
         selectedCard.style.display = 'block';

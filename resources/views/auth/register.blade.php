@@ -89,10 +89,10 @@
                         </div>
 
                         <br>
-                        <div class="row mb-0">
+                        <div class="row mt-4">
                             <div class="col-md-8 offset-md-4">
-                                <label for="register">Have an account?</label>
-                                <a class="btn btn-link" href="{{ route('login') }}">
+                                <label for="register" style="font-weight:normal;">Have an account?</label>
+                                <a style="font-weight:normal;" href="{{ route('login') }}">
                                     {{ __('Login') }}
                                 </a>
                             </div>

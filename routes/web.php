@@ -53,7 +53,7 @@ Route::get('/Profile/Edit-Profile/{id}', [App\Http\Controllers\ProfileController
 //choose visitor page load
 Route::get('/User-List', [App\Http\Controllers\ProfileController::class, 'userlist'])->name('userlist');
 //register visitor page load
-Route::get('/register-user', [App\Http\Controllers\ProfileController::class, 'registeruserform'])->name('registeruserform');
+Route::get('/Register-User', [App\Http\Controllers\ProfileController::class, 'registeruserform'])->name('registeruserform');
 //register visitor (insert)
 Route::post('/register-visitor', [App\Http\Controllers\ProfileController::class, 'registervisitor'])->name('registervisitor');
 //query edit profile page (contractor)
@@ -61,9 +61,9 @@ Route::put('updateprofilecontractor/{id}', [App\Http\Controllers\ProfileControll
 //query edit profile page (visitor)
 Route::put('updateprofilevisitor/{id}', [App\Http\Controllers\ProfileController::class, 'updateProfileVisitor'])->name('updateProfileVisitor');
 //display page contractor detail
-Route::get('/contractor-detail', [App\Http\Controllers\ProfileController::class, 'contractordetail'])->name('contractordetail');
+Route::get('/Contractor-Detail', [App\Http\Controllers\ProfileController::class, 'contractordetail'])->name('contractordetail');
 //display page contractor detail
-Route::get('/visitor-detail', [App\Http\Controllers\ProfileController::class, 'visitordetail'])->name('visitordetail');
+Route::get('/Visitor-Detail', [App\Http\Controllers\ProfileController::class, 'visitordetail'])->name('visitordetail');
 //store additional contractor info
 Route::post('/contractor-info', [App\Http\Controllers\ProfileController::class, 'storecontractorinfo'])->name('storecontractorinfo');
 //store additional visitor info
@@ -78,17 +78,13 @@ Route::delete('/deletestaff/{id}', [App\Http\Controllers\ProfileController::clas
 
 //APPOINTMENT
 //appointment page
-Route::get('/appointment', [App\Http\Controllers\AppointmentController::class, 'appointment'])->name('appointment');
+Route::get('/Appointment', [App\Http\Controllers\AppointmentController::class, 'appointment'])->name('appointment');
 //appointment page
-Route::get('/appointment-today', [App\Http\Controllers\AppointmentController::class, 'appointmenttoday'])->name('appointment/today');
-//query insert appointment
-Route::post('/set-appointment', [App\Http\Controllers\AppointmentController::class, 'storeappointment'])->name('storeappointment');
+Route::get('/Appointment-Today', [App\Http\Controllers\AppointmentController::class, 'appointmenttoday'])->name('appointment/today');
 //query insert appointment multiple 
 Route::post('/set-appointment-multiple', [App\Http\Controllers\AppointmentController::class, 'storeappointmentmultiple'])->name('storeappointmentmultiple');
 //create appointment page load
-Route::get('/appointment/create-appointment', [App\Http\Controllers\AppointmentController::class, 'createappointmentform'])->name('appointment/createappointment');
-//create appointment page load
-Route::get('/appointment/create-appointment-old', [App\Http\Controllers\AppointmentController::class, 'createappointmentformold'])->name('appointment/createappointmentformold');
+Route::get('/Appointment/Create-appointment', [App\Http\Controllers\AppointmentController::class, 'createappointmentform'])->name('appointment/createappointment');
 //route to the aattend the visit
 Route::get('/Attend-visit/{id}', [App\Http\Controllers\AppointmentController::class, 'attendvisit'])->name('attendvisit');
 //route to the not aattend the visit
@@ -105,7 +101,7 @@ Route::get('/contractor/{id}', [App\Http\Controllers\AppointmentController::clas
 
 //RECORD VISIT
 //past record lisr
-Route::get('/record', [App\Http\Controllers\RecordController::class, 'record'])->name('record');
+Route::get('/Record', [App\Http\Controllers\RecordController::class, 'record'])->name('record');
 //past appointment history page
 Route::get('/Appointment-History', [App\Http\Controllers\RecordController::class, 'historyappointment'])->name('historyappointment');
 //visitor log
@@ -121,7 +117,7 @@ Route::get('/Briefing-List', [App\Http\Controllers\BriefingController::class, 'b
 // session list 
 Route::get('/Biefing/Briefing-Session/{id}', [App\Http\Controllers\BriefingController::class, 'briefingsession'])->name('briefingsession');
 //create briefing info 
-Route::get('/Briefing/create-briefing-info', [App\Http\Controllers\BriefingController::class, 'createbriefinginfo'])->name('briefing/createbriefinginfo');
+Route::get('/Briefing/Create-Briefing-Info', [App\Http\Controllers\BriefingController::class, 'createbriefinginfo'])->name('briefing/createbriefinginfo');
 // store briefing info
 Route::post('/set-briefing', [App\Http\Controllers\BriefingController::class, 'storebriefinginfo'])->name('storebriefinginfo');
 //enroll briefing session
@@ -135,7 +131,7 @@ Route::delete('/deletebriefingsession/{id}', [App\Http\Controllers\BriefingContr
 
 //REPORT
 //report list
-Route::get('/report', [App\Http\Controllers\ReportController::class, 'report'])->name('report');
+Route::get('/Report', [App\Http\Controllers\ReportController::class, 'report'])->name('report');
 //generatereport
 Route::get('/Report-Generated', [App\Http\Controllers\ReportController::class, 'generatereport'])->name('generatereport');
 //export pdf 
@@ -149,7 +145,7 @@ Route::get('/export-excel-generated/{exportData}/{dateStart}/{dateEnd}', [App\Ht
 
 //CALENDAR
 //display calendar
-Route::get('/calendar', [App\Http\Controllers\CalendarController::class, 'calendar'])->name('calendar');
+Route::get('/Calendar', [App\Http\Controllers\CalendarController::class, 'calendar'])->name('calendar');
 // calendar ajax
 Route::post('/calendarAjax', [App\Http\Controllers\CalendarController::class, 'calendarAjax'])->name('calendarAjax');
 
@@ -167,6 +163,13 @@ Route::get('/Profile-Visitor/{id}', [App\Http\Controllers\BlacklistController::c
 //profile contractor
 Route::get('/Profile-Contractor/{id}', [App\Http\Controllers\BlacklistController::class, 'profilecontractor'])->name('profile-contractor');
 
+//COMPANY
+//company list
+Route::get('/Company', [App\Http\Controllers\CompanyController::class, 'company'])->name('company');
+//query insert appointment multiple 
+Route::post('/storecompanyinfo', [App\Http\Controllers\CompanyController::class, 'storecompanyinfo'])->name('storecompanyinfo');
+//create appointment page load
+Route::get('/Company/Create-company', [App\Http\Controllers\CompanyController::class, 'createcompany'])->name('createcompany');
 
 //BIOMETRIC
 //biometric facial recog
@@ -177,8 +180,6 @@ Route::get('/Register-Biometric', [App\Http\Controllers\BiometricController::cla
 Route::post('/save-image', [App\Http\Controllers\BiometricController::class, 'saveImage'])->name('saveImage');
 //scan biometric page
 Route::get('/Scan-Biometric/{id}', [App\Http\Controllers\BiometricController::class, 'scanBiometric'])->name('scanBiometric');
-//compare faces
-Route::post('/compare_faces', [App\Http\Controllers\BiometricController::class, 'compareFaces'])->name('compareFaces');
 //get data from scan image
 Route::get('/getPhoto/{userID}', [App\Http\Controllers\BiometricController::class, 'getUserInformation']);
 

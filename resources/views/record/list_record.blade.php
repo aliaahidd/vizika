@@ -70,35 +70,6 @@
 
         <div class="card-body">
             <div class="overflow-auto" style="overflow:hidden;">
-                <div class="row" style="margin-bottom: 10px;">
-                    <div class="col-12">
-                        <div class="btn-group submitter-group float-right">
-                            <div class="input-group-prepend">
-                                <div class="input-group-text">Year</div>
-                            </div>
-                            <select class="form-control year-dropdown">
-                                <option value="">All</option>
-                                @foreach($filteryear As $key=>$data)
-                                <option value="{{ $data->year }}">{{ $data->year }}</option>
-                                @endforeach
-                                <option value="2022">2022</option>
-                            </select>
-                        </div>
-
-                        <div class="btn-group submitter-group float-right">
-                            <div class="input-group-prepend">
-                                <div class="input-group-text">Month</div>
-                            </div>
-                            <select class="form-control month-dropdown">
-                                <option value="">All</option>
-                                @foreach($filteryear As $key=>$data)
-                                <option value="{{ $data->month }}">{{ $data->month }}</option>
-                                @endforeach
-                                <option value="6">6</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
                 <div class="table-responsive">
 
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">

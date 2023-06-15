@@ -44,7 +44,7 @@
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
 
-                                    <label class="form-check-label" for="remember">
+                                    <label class="form-check-label" style="font-weight:normal;" for="remember">
                                         {{ __('Remember Me') }}
                                     </label>
                                 </div>
@@ -65,10 +65,10 @@
                             </div>
                         </div>
 
-                        <div class="row mb-0">
+                        <div class="row mt-4">
                             <div class="col-md-8 offset-md-4">
-                                <label for="register">Don't have an account?</label>
-                                <a class="btn btn-link" href="{{ route('register') }}">
+                                <label for="register" style="font-weight:normal;">Don't have an account?</label>
+                                <a style="font-weight:normal;" href="{{ route('register') }}">
                                     {{ __('Register') }}
                                 </a>
                             </div>

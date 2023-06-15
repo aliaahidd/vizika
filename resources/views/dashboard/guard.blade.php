@@ -39,13 +39,13 @@
 
 <!-- Dashboard information start -->
 <div class="row">
-    <div class="col">
-        <div class="card">
+    <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+        <div class="card h-100">
             <div class="card-body">
                 <div class="row">
                     <div class="col-4">
                         <div style="background-color: #ffc6c2; border-radius: 10px; display: flex; justify-content: center; align-items: center;">
-                            <i class="material-icons md-48" style="font-size: 70px; color: white; text-align: center">event</i>
+                            <i class="material-icons md-48" style="font-size: 5rem; color: white; text-align: center">event</i>
                         </div>
                     </div>
                     <div class="col-8">
@@ -56,13 +56,13 @@
             </div>
         </div>
     </div>
-    <div class="col">
-        <div class="card">
+    <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+        <div class="card h-100">
             <div class="card-body">
                 <div class="row">
                     <div class="col-4">
                         <div style="background-color: #fae9da; border-radius: 10px; display: flex; justify-content: center; align-items: center;">
-                            <i class="material-icons md-48" style="font-size: 70px; color: white; text-align: center">event</i>
+                            <i class="material-icons md-48" style="font-size: 5rem; color: white; text-align: center">event</i>
                         </div>
                     </div>
                     <div class="col-8">
@@ -73,13 +73,13 @@
             </div>
         </div>
     </div>
-    <div class="col">
-        <div class="card">
+    <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+        <div class="card h-100">
             <div class="card-body">
                 <div class="row">
                     <div class="col-4">
                         <div style="background-color: #c3e0dd; border-radius: 10px; display: flex; justify-content: center; align-items: center;">
-                            <i class="material-icons md-48" style="font-size: 70px; color: white; text-align: center">event</i>
+                            <i class="material-icons md-48" style="font-size: 5rem; color: white; text-align: center">event</i>
                         </div>
                     </div>
                     <div class="col-8">
@@ -103,7 +103,7 @@
 </h6>
 @endif
 <div class="row">
-    <div class="col">
+    <div class="col-lg-12 col-md-6 col-sm-12 mb-4">
         <div class="card">
             <div class="card-header pb-0">
                 <h5>Visitor Log</h5>

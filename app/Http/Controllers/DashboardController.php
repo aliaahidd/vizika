@@ -192,7 +192,7 @@ class DashboardController extends Controller
         // Sort the $totalAppointments array by the date keys in ascending order
         ksort($totalVisitLine);
 
-        return view('dashboard.Officer', compact('totalVisitor', 'totalContractor', 'totalAppointment', 'totalCheckIn', 'totalCheckOut', 'totalVisitLine', 'visitorlog'));
+        return view('dashboard.officer', compact('totalVisitor', 'totalContractor', 'totalAppointment', 'totalCheckIn', 'totalCheckOut', 'totalVisitLine', 'visitorlog'));
     }
 
     public function staffDashboard()

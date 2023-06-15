@@ -74,14 +74,14 @@ class BiometricController extends Controller
             $usertype = DB::table('appointmentinfo')
                 ->join('users', 'users.id', '=', 'appointmentinfo.contVisitID')
                 ->join('contractorinfo', 'contractorinfo.userID', '=', 'appointmentinfo.contVisitID')
-                ->select('appointmentInfo.*', 'users.*', 'contractorinfo.*', 'appointmentinfo.id as appointmentID')
+                ->select('appointmentinfo.*', 'users.*', 'contractorinfo.*', 'appointmentinfo.id as appointmentID')
                 ->where('appointmentinfo.id', $id)
                 ->first();
         } else if ($user->category == "Visitor") {
             $usertype = DB::table('appointmentinfo')
                 ->join('users', 'users.id', '=', 'appointmentinfo.contVisitID')
                 ->join('visitorinfo', 'visitorinfo.userID', '=', 'appointmentinfo.contVisitID')
-                ->select('appointmentInfo.*', 'users.*', 'visitorinfo.*', 'appointmentinfo.id as appointmentID')
+                ->select('appointmentinfo.*', 'users.*', 'visitorinfo.*', 'appointmentinfo.id as appointmentID')
                 ->where('appointmentinfo.id', $id)
                 ->first();
         }

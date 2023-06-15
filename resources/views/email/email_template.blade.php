@@ -10,7 +10,7 @@
     <br>Time : <strong> {{ $data['appointmentTime'] }} </strong>
 </p>
 
-<p>Website Link: <a href="http://127.0.0.1:8000/login-user">Click this</a></p>
+<p>Website Link: <a href="http://127.0.0.1:8000/login-user">Click here</a></p>
 
 <p>If you are the first timer, your account has been created.</p>
 <p>Email: {{ $data['email'] }}
@@ -19,7 +19,7 @@
 
 <p>Else, you can login to your account as usual. Please login to choose whether you can attend or not as soon as possible.</p>
 
-<p>Thank you. Have a nice day.</p>
+<p>Thank you and have a nice day.</p>
 
 <p>Sincererly,
     <br>{{ Auth::user()->name }}

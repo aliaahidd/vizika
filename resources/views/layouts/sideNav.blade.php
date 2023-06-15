@@ -108,6 +108,12 @@
                             <span>Safety Briefing</span>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('company*') ? 'active' : '' }}" href="{{ route('company') }}">
+                            <i class="material-icons">work</i>
+                            <span>Company</span>
+                        </a>
+                    </li>
                     @endif
 
                     @if( auth()->user()->category== "SHEQ Guard")
