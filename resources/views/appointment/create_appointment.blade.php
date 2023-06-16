@@ -33,18 +33,18 @@
                     @csrf
                     <div class="row">
                         <div class="col">
-                            <label>Date</label>
+                            <label>Date<span style="color: red; margin-left: 5px">*</span></label>
                             <input type="date" name="appointmentDate" class="form-control" id="txtDate" required>
                         </div>
                         <div class="col">
-                            <label>Time</label>
+                            <label>Time<span style="color: red; margin-left: 5px">*</span></label>
                             <input type="time" name="appointmentTime" class="form-control" required>
                         </div>
                     </div>
                     <br>
                     <div class="row">
                         <div class="col">
-                            <label>Purpose</label>
+                            <label>Purpose<span style="color: red; margin-left: 5px">*</span></label>
                             <select class="form-control" name="appointmentPurpose">
                                 <option value="">Please select</option>
                                 <option value="Maintenance">Maintenance</option>
@@ -55,14 +55,14 @@
                             </select>
                         </div>
                         <div class="col">
-                            <label>Agenda</label>
+                            <label>Agenda<span style="color: red; margin-left: 5px">*</span></label>
                             <input type="text" name="appointmentAgenda" class="form-control" placeholder="Appointment Agenda" required>
                         </div>
                     </div>
                     <br>
                     <div class="row">
                         <div class="col">
-                            <label for="userType">User Type:</label>
+                            <label for="userType">User Type:<span style="color: red; margin-left: 5px">*</span></label>
                             <!-- Select the visitor type  -->
                             <select class="form-control" id="userType" onchange="toggleDropdown()">
                                 <option value="">Please select</option>

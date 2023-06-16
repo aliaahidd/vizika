@@ -60,9 +60,9 @@
 <br>
 <!-- display all from registration -->
 <div class="row justify-content-center">
-    <div class="col-md-3">
+    <div class="col-md-3 mb-3">
         <div class="card" style="padding: 20px; height: 450px">
-            <div class=" col-12">
+            <div class="col-12">
                 <h5>Passport Photo</h5>
                 <hr>
                 <div style="margin: auto;">

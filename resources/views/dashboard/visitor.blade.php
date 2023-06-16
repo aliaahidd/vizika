@@ -111,32 +111,6 @@
         </div>
     </div> -->
 </div>
-<div class="row mt-4">
-    <div class="col">
-        <div class="card">
-            <div class="card-header pb-0">
-                <h5>Total Visitor</h5>
-            </div>
-            <div class="card-body">
-                <div id="checkin_chart" style="width: 175px; height: 200px; float: left"></div>
-                <div id="checkout_chart" style="width: 175px; height: 200px; float: left"></div>
-                <div id="today_visitor" style="width: 175px; height: 200px; float: left"></div>
-
-            </div>
-        </div>
-    </div>
-    <div class="col">
-        <div class="card">
-            <div class="card-header pb-0">
-                <h5>Total Visitor</h5>
-            </div>
-            <div class="card-body">
-                <div id="total_visitor_data" style="width: 520px; height: 200px"></div>
-            </div>
-        </div>
-    </div>
-</div>
-
 
 @endsection
 <script src="{{ asset('frontend') }}/js/jquery.dataTables.js"></script>

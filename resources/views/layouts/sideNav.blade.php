@@ -166,8 +166,6 @@
                     <!-- DASHBOARD START -->
 
                 </ul>
-
-
             </div>
 
         </aside>
@@ -183,6 +181,11 @@
 
                         </div>
                     </div>
+                    <nav class="nav">
+                        <a href="#" class="nav-link nav-link-icon toggle-sidebar d-md-inline d-lg-none text-center border-left" data-toggle="collapse" data-target=".header-navbar" aria-expanded="false" aria-controls="header-navbar">
+                            <i class="material-icons">&#xE5D2;</i>
+                        </a>
+                    </nav>
                     <ul class="navbar-nav border-left flex-row ml-auto ">
                         <li class="nav-item border-right dropdown">
                             <a class="nav-link dropdown-toggle text-nowrap px-3" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
@@ -209,11 +212,6 @@
                             </div>
                         </li>
                     </ul>
-                    <nav class="nav">
-                        <a href="#" class="nav-link nav-link-icon toggle-sidebar d-md-inline d-lg-none text-center border-left" data-toggle="collapse" data-target=".header-navbar" aria-expanded="false" aria-controls="header-navbar">
-                            <i class="material-icons">&#xE5D2;</i>
-                        </a>
-                    </nav>
                 </nav>
             </div>
             <!-- / .main-navbar -->
@@ -247,7 +245,7 @@
 
             <footer class="main-footer d-flex p-2 px-3 bg-white border-top">
                 <span class="copyright ml-auto my-auto mr-2">Copyright © {{ now()->year }}
-                    <a href="#" rel="nofollow">KANEKA Malaysia Sdn. Bhd.</a>
+                    <a href="#" rel="nofollow">Faculty of Computing</a>
                 </span>
             </footer>
 

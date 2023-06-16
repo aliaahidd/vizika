@@ -25,9 +25,9 @@
                 <form method="POST" action="{{ route('storevisitorinfo') }}" enctype="multipart/form-data">
                     @csrf
                     <div class="row mb-">
-                        <div class="col">
+                        <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="companyName" class="col-form-label text-md-end">{{ __('Company Name') }}</label>
+                                <label for="companyName" class="col-form-label text-md-end">{{ __('Company Name') }}<span style="color: red; margin-left: 5px">*</span></label>
                                 <select id="companyName" class="form-control" name="companyID" required>
                                     <option value="">Please select</option>
                                     @foreach ($companylist as $data)
@@ -36,29 +36,29 @@
                                 </select>
                             </div>
                             <div class="mb-3">
-                                <label for="employeeNo" class="col-form-label text-md-end">{{ __('Employee ID') }}</label>
+                                <label for="employeeNo" class="col-form-label text-md-end">{{ __('Employee ID') }}<span style="color: red; margin-left: 5px">*</span></label>
                                 <input id="employeeNo" type="text" class="form-control" name="employeeNo" required autofocus>
                             </div>
                             <div class="mb-3">
-                                <label for="phoneNo" class="col-form-label text-md-end">{{ __('Phone Number') }}</label>
+                                <label for="phoneNo" class="col-form-label text-md-end">{{ __('Phone Number') }}<span style="color: red; margin-left: 5px">*</span></label>
                                 <input id="phoneNo" type="text" class="form-control" name="phoneNo" required autofocus>
                             </div>
                             <div class="mb-3">
-                                <label for="occupation" class="col-form-label text-md-end">{{ __('Occupation') }}</label>
-                                <textarea id="occupation" type="text" class="form-control" name="occupation" rows="1" cols="50" required></textarea>
+                                <label for="occupation" class="col-form-label text-md-end">{{ __('Occupation') }}<span style="color: red; margin-left: 5px">*</span></label>
+                                <input id="occupation" type="text" class="form-control" name="occupation" rows="1" cols="50" required>
                             </div>
                             <div class="mb-3">
-                                <label for="birthDate" class="col-form-label text-md-end">{{ __('Date of Birth') }}</label>
+                                <label for="birthDate" class="col-form-label text-md-end">{{ __('Date of Birth') }}<span style="color: red; margin-left: 5px">*</span></label>
                                 <input id="birthDate" type="date" class="form-control" name="birthDate" required autofocus>
                             </div>
                         </div>
-                        <div class="col">
+                        <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="address" class="col-form-label text-md-end">{{ __('Address') }}</label>
+                                <label for="address" class="col-form-label text-md-end">{{ __('Address') }}<span style="color: red; margin-left: 5px">*</span></label>
                                 <textarea id="address" type="text" class="form-control" name="address" rows="1" cols="50" required></textarea>
                             </div>
                             <div class="mb-3">
-                                <label for="image" class="col-form-label text-md-end">{{ __('Profile Photo') }}</label>
+                                <label for="image" class="col-form-label text-md-end">{{ __('Profile Photo') }}<span style="color: red; margin-left: 5px">*</span></label>
                                 <input type="file" name="visitorImg" class="form-control" id="image" accept="image/*" onchange="loadImage(this)" required>
                             </div>
                             <div class="mb-3">
@@ -131,6 +131,7 @@
         margin: 0;
         padding: 0 0 2rem 0;
         list-style: none;
+        justify-content: space-between;
     }
 
     .step {
@@ -141,6 +142,7 @@
         flex: 1;
         position: relative;
         pointer-events: none;
+        text-align: center;
     }
 
     .step--active,
@@ -237,4 +239,5 @@
         transition: color 0.3s ease-in-out;
         transition-delay: 0.5s;
     }
+    
 </style>

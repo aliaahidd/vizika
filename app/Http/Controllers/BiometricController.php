@@ -40,7 +40,33 @@ class BiometricController extends Controller
 
     public function saveImage(Request $request)
     {
+
         $userID = Auth::user()->id;
+
+        // Check if the user ID already exists
+        $existingBiometric = DB::table('biometricinfo')->where('userID', $userID)->first();
+        if ($existingBiometric) {
+            $user = DB::table('users')->where('id', $userID)->first();
+            $name = $user->name;
+
+            $imageData = $request->input('image');
+            $fileName = uniqid() . '.jpg';
+            $path = 'assets/' . $name . '/' . $fileName;
+
+            // Unlink the previous file
+            if (file_exists(public_path($path))) {
+                unlink(public_path($path));
+            }
+
+            file_put_contents(public_path($path), base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $imageData)));
+
+            // Update the record
+            DB::table('biometricinfo')
+                ->where('userID', $userID)
+                ->update(['facialRecognition' => $fileName]);
+
+            return response()->json(['message' => 'Image saved successfully']);
+        }
 
         $user = DB::table('users')->where('id', $userID)->first();
         $name = $user->name; // Access the name property of the retrieved user object

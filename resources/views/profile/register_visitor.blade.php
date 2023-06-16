@@ -24,10 +24,10 @@
             @csrf
             <div class="row">
                 <div class="col">
-                    <label>Name</label>
+                    <label>Name<span style="color: red; margin-left: 5px">*</span></label>
                     <input type="text" name="name" class="form-control" placeholder="Name" required>
                     <br>
-                    <label>Email</label>
+                    <label>Email<span style="color: red; margin-left: 5px">*</span></label>
                     <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" placeholder="Email" value="{{ old('email') }}" required autocomplete="email">
                     @error('email')
                     <span class="invalid-feedback" role="alert">
@@ -35,7 +35,7 @@
                     </span>
                     @enderror
                     <br>
-                    <label>User Type</label>
+                    <label>User Type<span style="color: red; margin-left: 5px">*</span></label>
                     <select class="form-control" id="userType" name="category" onchange="toggleDropdown()">
                         <option value="">Please select</option>
                         <option value="Contractor">Contractor</option>

@@ -4,7 +4,7 @@
 <!-- Page Header -->
 <div class="page-header row no-gutters pb-4">
     <div class="col-12 col-sm-4 text-center text-sm-left mb-0 d-flex">
-        <h1 class="page-title ml-3">Profile / Edit Profile</h1>
+        <h1 class="page-title">Profile / Edit Profile</h1>
     </div>
 </div>
 
@@ -19,7 +19,7 @@
 <div class="row justify-content-center">
     <div class="col-md-8">
         @if (Auth::user()->category == 'Contractor')
-        <div class="card" style="padding: 20px;">
+        <div class="card mb-3" style="padding: 20px;">
             <form method="POST" action="{{ route('updateProfileContractor', $contractor->contID) }}" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
@@ -77,7 +77,7 @@
         </div>
 
         @elseif (Auth::user()->category == 'Visitor')
-        <div class="card" style="padding: 20px;">
+        <div class="card mb-3" style="padding: 20px;">
             <form method="POST" action="{{ route('updateProfileVisitor', $visitor->visitID) }}" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')

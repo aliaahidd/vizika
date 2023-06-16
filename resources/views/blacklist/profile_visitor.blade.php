@@ -60,7 +60,7 @@
 <br>
 <!-- display all from registration -->
 <div class="row justify-content-center">
-    <div class="col-md-3">
+    <div class="col-md-3 mb-3">
         <div class="card" style="padding: 20px; height: 400px">
             <div style="margin: auto;">
                 <img src="/assets/{{$visitor->name}}/{{$visitor->passportPhoto}}" width="200px">

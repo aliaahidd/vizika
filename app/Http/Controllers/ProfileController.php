@@ -230,6 +230,63 @@ class ProfileController extends Controller
     {
         // get user auth
         $id = Auth::user()->id;
+
+        // Check if the user ID already exists
+        $existingContractor = DB::table('contractorinfo')->where('userID', $id)->first();
+        if ($existingContractor) {
+
+            $contractorinfo = ContractorInfo::where('userID', $id)->first();
+
+            if ($request->hasFile('passportPhoto')) {
+                $name = Auth::user()->name;
+                //unlink the old contractorinfo file from assets folder
+                $path = public_path() . '/assets/' . $name . $contractorinfo->passportPhoto;
+                if (file_exists($path)) {
+                    unlink($path);
+                }
+
+                $name = Auth::user()->name;
+
+                $contractorinfo->passportPhoto = $request->file('passportPhoto');
+
+                //to rename the contractorinfo file
+                $filename = time() . '.' . $contractorinfo->passportPhoto->getClientOriginalExtension();
+                // to store the new file by moving to assets folder
+                $request->passportPhoto->move('assets/' . $name, $filename);
+
+                $contractorinfo->passportPhoto = $filename;
+            }
+
+            if ($request->hasFile('validityPassImg')) {
+                //unlink the old contractorinfo file from assets folder
+                $path = public_path() . '/assets/pass' . $contractorinfo->validityPassPhoto;
+                if (file_exists($path)) {
+                    unlink($path);
+                }
+
+                $contractorinfo->validityPassPhoto = $request->file('validityPassImg');
+
+                //to rename the contractorinfo file
+                $filename2 = time() . '.' . $contractorinfo->validityPassPhoto->getClientOriginalExtension();
+
+                // to store the new file by moving to assets folder
+                $request->file('validityPassImg')->move('assets/pass', $filename2);
+
+                $contractorinfo->validityPassPhoto = $filename2;
+            }
+
+            $contractorinfo->companyID = $request->input('companyID');
+            $contractorinfo->phoneNo = $request->input('phoneNo');
+            $contractorinfo->passExpiryDate = $request->input('passExpiryDate');
+            $contractorinfo->birthDate = $request->input('birthDate');
+            $contractorinfo->address = $request->input('address');
+
+            // upadate query in the database
+            $contractorinfo->update();
+
+            return redirect()->route('registerBiometric');
+        }
+
         $companyID = $request->input('companyID');
         $employeeNo = $request->input('employeeNo');
         $phonenumber = $request->input('phoneNo');
@@ -275,6 +332,47 @@ class ProfileController extends Controller
     {
         // get user auth
         $id = Auth::user()->id;
+
+        // Check if the user ID already exists
+        $existingVisitor = DB::table('visitorinfo')->where('userID', $id)->first();
+        if ($existingVisitor) {
+
+            $visitorinfo = VisitorInfo::where('userID', $id)->first();
+
+            if ($request->hasFile('passportPhoto')) {
+                $name = Auth::user()->name;
+
+                //unlink the old visitorinfo file from assets folder
+                $path = public_path() . '/assets/' . $name . $visitorinfo->passportPhoto;
+                if (file_exists($path)) {
+                    unlink($path);
+                }
+
+                $name = Auth::user()->name;
+
+                $visitorinfo->passportPhoto = $request->file('passportPhoto');
+
+                //to rename the visitorinfo file
+                $filename = time() . '.' . $visitorinfo->passportPhoto->getClientOriginalExtension();
+                // to store the new file by moving to assets folder
+                $request->passportPhoto->move('assets/' . $name, $filename);
+
+                $visitorinfo->passportPhoto = $filename;
+            }
+
+            $visitorinfo->companyID = $request->input('companyID');
+            $visitorinfo->phoneNo = $request->input('phoneNo');
+            $visitorinfo->employeeNo = $request->input('employeeNo');
+            $visitorinfo->occupation = $request->input('occupation');
+            $visitorinfo->birthDate = $request->input('birthDate');
+            $visitorinfo->address = $request->input('address');
+
+            // upadate query in the database
+            $visitorinfo->update();
+
+            return redirect()->route('registerBiometric');
+        }
+
         $employeeNo = $request->input('employeeNo');
         $companyID = $request->input('companyID');
         $occupation = $request->input('occupation');
@@ -357,5 +455,28 @@ class ProfileController extends Controller
     public function changepassword($id)
     {
         return view('profile.change_password');
+    }
+
+    public function updatePassword(Request $request)
+    {
+        # Validation
+        $request->validate([
+            'old_password' => 'required',
+            'new_password' => 'required|confirmed',
+        ]);
+
+
+        #Match The Old Password
+        if (!Hash::check($request->old_password, auth()->user()->password)) {
+            return back()->with("error", "Old Password Doesn't match!");
+        }
+
+
+        #Update the new Password
+        User::whereId(auth()->user()->id)->update([
+            'password' => Hash::make($request->new_password)
+        ]);
+
+        return back()->with("status", "Password changed successfully!");
     }
 }

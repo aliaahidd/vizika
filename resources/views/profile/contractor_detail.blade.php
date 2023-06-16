@@ -24,9 +24,9 @@
             <form method="POST" action="{{ route('storecontractorinfo') }}" enctype="multipart/form-data">
                 @csrf
                 <div class="row mb-">
-                    <div class="col">
+                    <div class="col-md-6">
                         <div class="mb-3">
-                            <label for="companyID" class="col-form-label text-md-end">{{ __('Company Name') }}</label>
+                            <label for="companyID" class="col-form-label text-md-end">{{ __('Company Name') }}<span style="color: red; margin-left: 5px">*</span></label>
                             <select id="companyID" class="form-control" name="companyID" required>
                                 <option value="">Please select</option>
                                 @foreach ($companylist as $data)
@@ -35,19 +35,19 @@
                             </select>
                         </div>
                         <div class="mb-3">
-                            <label for="phoneNo" class="col-form-label text-md-end">{{ __('Phone Number') }}</label>
+                            <label for="phoneNo" class="col-form-label text-md-end">{{ __('Phone Number') }}<span style="color: red; margin-left: 5px">*</span></label>
                             <input id="phoneNo" type="text" class="form-control" name="phoneNo" required autofocus>
                         </div>
                         <div class="mb-3">
-                            <label for="validityPass" class="col-form-label text-md-end">{{ __('Validity Pass Expiry Date') }}</label>
+                            <label for="validityPass" class="col-form-label text-md-end">{{ __('Validity Pass Expiry Date') }}<span style="color: red; margin-left: 5px">*</span></label>
                             <input id="validityDate" type="date" class="form-control" name="validityPass" required autofocus>
                         </div>
                         <div class="mb-3">
-                            <label for="image" class="col-form-label text-md-end">{{ __('Profile Photo') }}</label>
+                            <label for="image" class="col-form-label text-md-end">{{ __('Profile Photo') }}<span style="color: red; margin-left: 5px">*</span></label>
                             <input type="file" name="contractorImg" class="form-control" id="image" accept="image/*" onchange="loadImage(this)" required>
                         </div>
                         <div class="mb-3">
-                            <label for="image" class="col-form-label text-md-end">{{ __('Preview') }}</label>
+                            <label for="image" class="col-form-label text-md-end">{{ __('Preview') }}<span style="color: red; margin-left: 5px">*</span></label>
                         </div>
                         <div class="mb-3">
                             <!-- to preview the file from the input type in div -->
@@ -56,21 +56,21 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col">
+                    <div class="col-md-6">
                         <div class="mb-3">
-                            <label for="employeeNo" class="col-form-label text-md-end">{{ __('Employee No') }}</label>
+                            <label for="employeeNo" class="col-form-label text-md-end">{{ __('Employee No') }}<span style="color: red; margin-left: 5px">*</span></label>
                             <input id="employeeNo" type="text" class="form-control" name="employeeNo" required autofocus>
                         </div>
                         <div class="mb-3">
-                            <label for="birthDate" class="col-form-label text-md-end">{{ __('Date of Birth') }}</label>
+                            <label for="birthDate" class="col-form-label text-md-end">{{ __('Date of Birth') }}<span style="color: red; margin-left: 5px">*</span></label>
                             <input id="birthDate" type="date" class="form-control" name="birthDate" required autofocus>
                         </div>
                         <div class="mb-3">
-                            <label for="address" class="col-form-label text-md-end">{{ __('Address') }}</label>
+                            <label for="address" class="col-form-label text-md-end">{{ __('Address') }}<span style="color: red; margin-left: 5px">*</span></label>
                             <textarea id="address" type="text" class="form-control" name="address" rows="1" cols="50" required></textarea>
                         </div>
                         <div class="row mb-3">
-                            <label for="image" class="col-form-label text-md-end">{{ __('Validity Pass Photo') }}</label>
+                            <label for="image" class="col-form-label text-md-end">{{ __('Validity Pass Photo') }}<span style="color: red; margin-left: 5px">*</span></label>
                             <input type="file" name="validityPassImg" class="form-control" id="image" accept="image/*" onchange="loadImage2(this)" required>
                         </div>
                         <div class="mb-3">
@@ -157,6 +157,7 @@
         margin: 0;
         padding: 0 0 2rem 0;
         list-style: none;
+        justify-content: space-between;
     }
 
     .step {
@@ -167,6 +168,7 @@
         flex: 1;
         position: relative;
         pointer-events: none;
+        text-align: center;
     }
 
     .step--active,

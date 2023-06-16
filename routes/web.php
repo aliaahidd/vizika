@@ -69,7 +69,9 @@ Route::post('/contractor-info', [App\Http\Controllers\ProfileController::class, 
 //store additional visitor info
 Route::post('/visitor-info', [App\Http\Controllers\ProfileController::class, 'storevisitorinfo'])->name('storevisitorinfo');
 //change password
-Route::get('/Change-Password', [App\Http\Controllers\ProfileController::class, 'changepassword'])->name('changepassword');
+Route::get('/change-password/{id}', [App\Http\Controllers\ProfileController::class, 'changepassword'])->name('change-password');
+//update password
+Route::post('/change-password', [App\Http\Controllers\ProfileController::class, 'updatePassword'])->name('update-password');
 //staff list 
 Route::get('/Staff-List', [App\Http\Controllers\ProfileController::class, 'stafflist'])->name('stafflist');
 //staff list 
