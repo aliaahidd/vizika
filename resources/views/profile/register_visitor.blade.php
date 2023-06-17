@@ -44,7 +44,10 @@
                 </div>
             </div>
             <br>
-            <input type="submit" value="Register" onclick="register(this)" name="submit" class="btn btn-primary" id="registerVisitor" style="float: right;">
+            <div class="row justify-content-end">
+                <a href="javascript:history.go(-1)" class="btn btn-danger pull-right mr-2">Cancel</a>
+                <input type="submit" value="Register" onclick="register(this)" name="submit" class="btn btn-primary" id="registerVisitor" style="float: right;">
+            </div>
         </form>
     </div>
 

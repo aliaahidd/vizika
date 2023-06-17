@@ -44,14 +44,9 @@
         @if( auth()->user()->category== "Staff")
 
         @if(request()->routeIs('appointment'))
-        <div class="col-lg-12 col-md-12 col-sm-12 justify-content-end d-flex">
+        <div class="col-lg-12 col-md-6 col-sm-3 justify-content-end d-flex">
             <a class="btn btn-primary" style="width:170px;" role="button" href="{{ route('appointment/createappointment') }}">
                 <i class="fas fa-plus"></i>&nbsp; Create Appointment</a>
-        </div>
-        @else
-        <div class="col-lg-12 col-md-12 col-sm-12" style="float: right;">
-            <a class="btn btn-success" style="float: right; width:100%;" role="button" href="">
-                <i class="fa fa-cog"></i>&nbsp; -</a>
         </div>
         @endif
 

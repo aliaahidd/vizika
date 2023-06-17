@@ -55,10 +55,11 @@
         <div class="card-body">
             <form method="get" action="{{ route('generatereport') }}">
                 <div class="row">
-                    <div class="col">
+                    <div class="col mb-3">
                         <label>Date Start:</label>
                         <input type="date" name="dateStart" class="form-control" onchange="setMinDate()">
                     </div>
+                    
                     <div class="col">
                         <label>Date End:</label>
                         <input type="date" name="dateEnd" class="form-control" id="dateEnd" min="">

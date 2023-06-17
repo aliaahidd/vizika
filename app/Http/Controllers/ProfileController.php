@@ -21,11 +21,13 @@ class ProfileController extends Controller
 
         $contractor = DB::table('contractorinfo')
             ->join('users', 'users.id', '=', 'contractorinfo.userID')
+            ->join('companyinfo', 'companyinfo.id', '=', 'contractorinfo.companyID')
             ->where('users.id', $id)
             ->first();
 
         $visitor = DB::table('visitorinfo')
             ->join('users', 'users.id', '=', 'visitorinfo.userID')
+            ->join('companyinfo', 'companyinfo.id', '=', 'visitorinfo.companyID')
             ->where('users.id', $id)
             ->first();
 
@@ -73,9 +75,9 @@ class ProfileController extends Controller
     public function userlist(Request $request)
     {
         $visitorlist = DB::table('users')
-            ->orderBy('name', 'asc')
             ->where('category', 'Visitor')
             ->orwhere('category', 'Contractor')
+            ->orderBy('name', 'asc')
             ->get();
 
         return view('profile.user_list', compact('visitorlist'));

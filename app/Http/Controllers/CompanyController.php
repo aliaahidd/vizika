@@ -51,4 +51,29 @@ class CompanyController extends Controller
         sleep(1);
         return redirect()->route('company');
     }
+
+    public function editcompany($id)
+    {
+        $companyinfo = DB::table('companyinfo')
+            ->orderBy('companyName', 'asc')
+            ->where('id', $id)
+            ->first();
+        return view('company.edit_company', compact('companyinfo'));
+    }
+
+    public function updatecompany(Request $request, $id)
+    {
+        $companyinfo = CompanyInfo::find($id);
+        $companyinfo->companyName = $request->input('companyName');
+        $companyinfo->companyEmail = $request->input('companyEmail');
+        $companyinfo->companyPhoneNo = $request->input('companyPhoneNo');
+        $companyinfo->companyAddress = $request->input('companyAddress');
+
+        // upadate query in the database
+        $companyinfo->update();
+
+        // display message box in the same page
+        return redirect()->back()->with('message', 'Company Info Updated Successfully');
+
+    }
 }

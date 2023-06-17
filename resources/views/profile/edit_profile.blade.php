@@ -3,8 +3,15 @@
 
 <!-- Page Header -->
 <div class="page-header row no-gutters pb-4">
-    <div class="col-12 col-sm-4 text-center text-sm-left mb-0 d-flex">
-        <h1 class="page-title">Profile / Edit Profile</h1>
+    <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
+        <h1 class="page-title mb-3">Profile</h1>
+        @if (Auth::user()->category == 'Contractor')
+        <h6><a href="{{ route('profile', $contractor->contID) }}">Profile </a> /
+            @elseif (Auth::user()->category == 'Visitor')
+            <h6><a href="{{ route('profile', $visitor->visitID) }}">Profile </a> /
+                @endif
+                <a>Edit Profile</a>
+            </h6>
     </div>
 </div>
 
@@ -71,8 +78,10 @@
                     <br>
                     <img src="/assets/pass/{{$contractor->validityPassPhoto}}" width="250px">
                 </div>
-                <button type="submit" class="btn btn-primary mr-2">Update</button>
-                <a href="{{ route('dashboard') }}" class="btn btn-danger">Cancel</a>
+                <div class="justify-content-end form-group">
+                    <a href="javascript:history.go(-1)" class="btn btn-danger pull-right mr-2">Cancel</a>
+                    <button type="submit" class="btn btn-primary">Update</button>
+                </div>f
             </form>
         </div>
 
@@ -127,8 +136,10 @@
                     <label for="address">Address</label>
                     <input type="text" class="form-control" id="address" name="address" value="{{ $visitor->address }}">
                 </div>
-                <button type="submit" class="btn btn-primary mr-2">Update</button>
-                <a href="{{ route('dashboard') }}" class="btn btn-danger">Cancel</a>
+                <div class="justify-content-end form-group">
+                    <a href="javascript:history.go(-1)" class="btn btn-danger pull-right mr-2">Cancel</a>
+                    <button type="submit" class="btn btn-primary">Update</button>
+                </div>
             </form>
         </div>
         @endif

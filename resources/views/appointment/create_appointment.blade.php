@@ -32,18 +32,19 @@
                 <form method="POST" enctype="multipart/form-data" id="appointment">
                     @csrf
                     <div class="row">
-                        <div class="col">
+                        <div class="col-md-6">
                             <label>Date<span style="color: red; margin-left: 5px">*</span></label>
                             <input type="date" name="appointmentDate" class="form-control" id="txtDate" required>
                         </div>
-                        <div class="col">
+                        <br>
+                        <div class="col-md-6">
                             <label>Time<span style="color: red; margin-left: 5px">*</span></label>
                             <input type="time" name="appointmentTime" class="form-control" required>
                         </div>
                     </div>
                     <br>
                     <div class="row">
-                        <div class="col">
+                        <div class="col-md-6">
                             <label>Purpose<span style="color: red; margin-left: 5px">*</span></label>
                             <select class="form-control" name="appointmentPurpose">
                                 <option value="">Please select</option>
@@ -54,7 +55,8 @@
                                 <option value="Enforcement Agency">Enforcement Agency</option>
                             </select>
                         </div>
-                        <div class="col">
+                        <br>
+                        <div class="col-md-6">
                             <label>Agenda<span style="color: red; margin-left: 5px">*</span></label>
                             <input type="text" name="appointmentAgenda" class="form-control" placeholder="Appointment Agenda" required>
                         </div>

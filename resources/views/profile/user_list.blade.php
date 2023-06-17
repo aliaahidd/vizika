@@ -21,8 +21,8 @@
 <div class="row mb-3">
             <!-- if user == committee, then have add new appointment button  -->
             @if( auth()->user()->category=="Staff")
-            <div class="col-lg-12 col-md-12 col-sm-12" style="float: right;">
-                <a class="btn btn-primary col-2" style="float: right; width:140px;" role="button" href="{{ route('registeruserform') }}">
+            <div class="col-lg-12 col-md-6 col-sm-3 justify-content-end d-flex">
+                <a class="btn btn-primary" style="width:140px;" role="button" href="{{ route('registeruserform') }}">
                     <i class="fas fa-plus"></i>&nbsp; Register User</a>
             </div>
             @endif

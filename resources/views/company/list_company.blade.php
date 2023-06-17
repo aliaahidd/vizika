@@ -22,7 +22,7 @@
     @if( auth()->user()->category== "SHEQ Officer")
 
     @if(request()->routeIs('company'))
-    <div class="col-lg-12 col-md-12 col-sm-12 justify-content-end d-flex">
+    <div class="col-lg-12 col-md-6 col-sm-3 justify-content-end d-flex">
         <a class="btn btn-primary" style="width:170px;" role="button" href="{{ route('createcompany') }}">
             <i class="fas fa-plus"></i>&nbsp; Create Company</a>
     </div>
@@ -54,6 +54,7 @@
                             <th>Email</th>
                             <th>Phone Number</th>
                             <th>Address</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -64,6 +65,20 @@
                             <td>{{ $data->companyEmail }}</td>
                             <td>{{ $data->companyPhoneNo }}</td>
                             <td>{{ $data->companyAddress }}</td>
+                            <td>
+                                <ul class="navbar-nav flex-row ml-auto">
+                                    <li class="nav-item">
+                                        <a class="nav-link text-nowrap px-3" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                                            <span class="d-none d-md-inline-block"><i class="large material-icons">more_vert</i></span>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-small">
+                                            <a class="dropdown-item text-danger" href="{{ route('edit-company', $data->id) }}">
+                                                <i class="material-icons text-danger">search</i> View
+                                            </a>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </td>
                         </tr>
                         @endforeach
                     </tbody>

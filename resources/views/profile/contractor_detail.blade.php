@@ -1,4 +1,10 @@
 @extends('layouts.app')
+<a class="text-danger" href="{{ route('logout') }}" style="display: block; padding: 10px" onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+    <i class="material-icons text-danger">&#xE879;</i> Logout </a>
+<form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+    @csrf
+</form>
 
 @section('content')
 <div class="container">
@@ -18,7 +24,7 @@
     </ul>
     <br>
 
-    <div class="card">
+    <div class="card mt-20">
         <div class="card-body">
             <!-- form add proposal -->
             <form method="POST" action="{{ route('storecontractorinfo') }}" enctype="multipart/form-data">
@@ -36,7 +42,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="phoneNo" class="col-form-label text-md-end">{{ __('Phone Number') }}<span style="color: red; margin-left: 5px">*</span></label>
-                            <input id="phoneNo" type="text" class="form-control" name="phoneNo" required autofocus>
+                            <input id="phoneNo" type="text" class="form-control" name="phoneNo" placeholder="Ex: 0123456789" required autofocus>
                         </div>
                         <div class="mb-3">
                             <label for="validityPass" class="col-form-label text-md-end">{{ __('Validity Pass Expiry Date') }}<span style="color: red; margin-left: 5px">*</span></label>
@@ -59,7 +65,7 @@
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label for="employeeNo" class="col-form-label text-md-end">{{ __('Employee No') }}<span style="color: red; margin-left: 5px">*</span></label>
-                            <input id="employeeNo" type="text" class="form-control" name="employeeNo" required autofocus>
+                            <input id="employeeNo" type="text" class="form-control" name="employeeNo" placeholder="Ex: ABC123" required autofocus>
                         </div>
                         <div class="mb-3">
                             <label for="birthDate" class="col-form-label text-md-end">{{ __('Date of Birth') }}<span style="color: red; margin-left: 5px">*</span></label>
@@ -67,7 +73,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="address" class="col-form-label text-md-end">{{ __('Address') }}<span style="color: red; margin-left: 5px">*</span></label>
-                            <textarea id="address" type="text" class="form-control" name="address" rows="1" cols="50" required></textarea>
+                            <textarea id="address" type="text" class="form-control" name="address" rows="1" cols="50" placeholder="Ex: Pekan, Pahang" required></textarea>
                         </div>
                         <div class="row mb-3">
                             <label for="image" class="col-form-label text-md-end">{{ __('Validity Pass Photo') }}<span style="color: red; margin-left: 5px">*</span></label>
@@ -251,6 +257,16 @@
         font-size: 0.8rem;
         text-transform: uppercase;
         transform: translateX(-50%);
+    }
+
+    @media (max-width: 768px) {
+        .step__label {
+            bottom: -4rem;
+        }
+
+        .card {
+            margin-top: 20px;
+        }
     }
 
     .step--incomplete.step--inactive .step__label {

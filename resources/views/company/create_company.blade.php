@@ -22,28 +22,32 @@
         <!-- form register new visitor -->
         <form method="POST" action="{{ route('storecompanyinfo') }}" enctype="multipart/form-data" id="company">
             @csrf
-            <div class="row">
-                <div class="col">
-                    <label>Name</label>
+            <div class="row mb-3">
+                <div class="col-md-6 mb-3">
+                    <label>Name<span style="color: red; margin-left: 5px">*</span></label>
                     <input type="text" name="name" class="form-control" placeholder="Name" required>
                     <br>
-                    <label>Email</label>
+                    <label>Email<span style="color: red; margin-left: 5px">*</span></label>
                     <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" placeholder="Email" value="{{ old('email') }}" required autocomplete="email">
                     @error('email')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
                     </span>
                     @enderror
-                    <br>
-                    <label>Phone Number</label>
+                </div>
+                
+                <div class="col-md-6">
+                    <label>Phone Number<span style="color: red; margin-left: 5px">*</span></label>
                     <input type="text" name="phoneNo" class="form-control" placeholder="Phone Number" required>
                     <br>
-                    <label>Address</label>
+                    <label>Address<span style="color: red; margin-left: 5px">*</span></label>
                     <input type="text" name="address" class="form-control" placeholder="Address" required>
                 </div>
             </div>
-            <br>
-            <input type="submit" value="Register" onclick="register(this)" name="submit" class="btn btn-primary" id="registerCompany" style="float: right;">
+            <div class="row justify-content-end">
+                <a href="javascript:history.go(-1)" class="btn btn-danger pull-right mr-2">Cancel</a>
+                <input type="submit" value="Register" onclick="register(this)" name="submit" class="btn btn-primary" id="registerCompany" style="float: right;">
+            </div>
         </form>
     </div>
 

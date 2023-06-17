@@ -172,6 +172,11 @@ Route::get('/Company', [App\Http\Controllers\CompanyController::class, 'company'
 Route::post('/storecompanyinfo', [App\Http\Controllers\CompanyController::class, 'storecompanyinfo'])->name('storecompanyinfo');
 //create appointment page load
 Route::get('/Company/Create-company', [App\Http\Controllers\CompanyController::class, 'createcompany'])->name('createcompany');
+//edit company
+Route::get('/Company/Edit-company/{id}', [App\Http\Controllers\CompanyController::class, 'editcompany'])->name('edit-company');
+//update company
+Route::post('/update-company/{id}', [App\Http\Controllers\CompanyController::class, 'updatecompany'])->name('updatecompany');
+
 
 //BIOMETRIC
 //biometric facial recog

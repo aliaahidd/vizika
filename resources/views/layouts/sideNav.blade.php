@@ -43,6 +43,14 @@
                         <a class="nav-link {{ request()->routeIs('appointment*') ? 'active' : '' }}" href="{{ route('appointment') }}">
                             <i class="material-icons">today</i>
                             <span>Appointment</span>
+                            @php
+                            $appointmentCount = App\Models\AppointmentInfo::where('appointmentStatus', 'Pending')
+                            ->where('contVisitID', Auth::user()->id)
+                            ->count();
+                            @endphp
+                            @if($appointmentCount > 0)
+                            <span class="badge badge-pill badge-primary">{{ $appointmentCount }}</span>
+                            @endif
                         </a>
                     </li>
                     @endif

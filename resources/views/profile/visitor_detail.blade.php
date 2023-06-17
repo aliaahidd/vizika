@@ -1,5 +1,10 @@
 @extends('layouts.app')
-
+<a class="text-danger" href="{{ route('logout') }}" style="display: block; padding: 10px" onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+    <i class="material-icons text-danger">&#xE879;</i> Logout </a>
+<form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+    @csrf
+</form>
 @section('content')
 <div class="container">
     <ul class="steps">
@@ -37,15 +42,15 @@
                             </div>
                             <div class="mb-3">
                                 <label for="employeeNo" class="col-form-label text-md-end">{{ __('Employee ID') }}<span style="color: red; margin-left: 5px">*</span></label>
-                                <input id="employeeNo" type="text" class="form-control" name="employeeNo" required autofocus>
+                                <input id="employeeNo" type="text" class="form-control" name="employeeNo" placeholder="Ex: ABC123" required autofocus>
                             </div>
                             <div class="mb-3">
                                 <label for="phoneNo" class="col-form-label text-md-end">{{ __('Phone Number') }}<span style="color: red; margin-left: 5px">*</span></label>
-                                <input id="phoneNo" type="text" class="form-control" name="phoneNo" required autofocus>
+                                <input id="phoneNo" type="text" class="form-control" name="phoneNo" placeholder="Ex: 0123456789" required autofocus>
                             </div>
                             <div class="mb-3">
                                 <label for="occupation" class="col-form-label text-md-end">{{ __('Occupation') }}<span style="color: red; margin-left: 5px">*</span></label>
-                                <input id="occupation" type="text" class="form-control" name="occupation" rows="1" cols="50" required>
+                                <input id="occupation" type="text" class="form-control" name="occupation" placeholder="Ex: Manager" rows="1" cols="50" required>
                             </div>
                             <div class="mb-3">
                                 <label for="birthDate" class="col-form-label text-md-end">{{ __('Date of Birth') }}<span style="color: red; margin-left: 5px">*</span></label>
@@ -55,7 +60,7 @@
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label for="address" class="col-form-label text-md-end">{{ __('Address') }}<span style="color: red; margin-left: 5px">*</span></label>
-                                <textarea id="address" type="text" class="form-control" name="address" rows="1" cols="50" required></textarea>
+                                <textarea id="address" type="text" class="form-control" name="address" rows="1" cols="50" placeholder="Pekan, Pahang" required></textarea>
                             </div>
                             <div class="mb-3">
                                 <label for="image" class="col-form-label text-md-end">{{ __('Profile Photo') }}<span style="color: red; margin-left: 5px">*</span></label>
@@ -227,6 +232,16 @@
         transform: translateX(-50%);
     }
 
+    @media (max-width: 768px) {
+        .step__label {
+            bottom: -4rem;
+        }
+
+        .card {
+            margin-top: 20px;
+        }
+    }
+
     .step--incomplete.step--inactive .step__label {
         color: #b6b8ba;
     }
@@ -239,5 +254,4 @@
         transition: color 0.3s ease-in-out;
         transition-delay: 0.5s;
     }
-    
 </style>

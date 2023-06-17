@@ -20,43 +20,31 @@
 <div class="card">
     <div class="card-body">
         <!-- form create new briefing -->
-        <form method="POST" action="{{ route('storebriefinginfo') }}" enctype="multipart/form-data" id="appointment">
+        <form method="POST" action="{{ route('storebriefinginfo') }}" enctype="multipart/form-data" id="briefing">
             @csrf
-            <div class="row">
-                <div class="col">
-                    <label>Date</label>
+            <div class="row mb-3">
+                <div class="col-md-6 mb-3">
+                    <label>Date<span style="color: red; margin-left: 5px">*</span></label>
                     <input type="date" name="briefingDate" class="form-control" id="txtDate" required>
-                </div>
-                <div class="col">
-                    <label>Time Start</label>
-                    <input type="time" name="briefingTimeStart" class="form-control" id="timeInput" step="3600" onchange="validateTime()" required>
-                </div>
-            </div>
-            <br>
-            <div class="row">
-                <div class="col">
+                    <br>
                     <label>Time end</label>
                     <input type="time" name="briefingTimeEnd" class="form-control" id="endTimeInput" readonly required>
                 </div>
-                <div class="col">
-                    <label>Max Participant</label>
+
+                <div class="col-md-6">
+                    <label>Time Start<span style="color: red; margin-left: 5px">*</span></label>
+                    <input type="time" name="briefingTimeStart" class="form-control" id="timeInput" step="3600" onchange="validateTime()" required>
+                    <br>
+                    <label>Max Participant<span style="color: red; margin-left: 5px">*</span></label>
                     <input type="number" name="participantNo" class="form-control" required>
                 </div>
             </div>
-            <br>
-            <br>
-            <br>
-            <div class="row">
-                <!-- <div class="col-md-6 text-left">
-                    <a href="" class="btn btn-danger pull-right">Previous</a>
-                </div> -->
-                <div class="col-md-6 text-right">
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </div>
+            <div class="row justify-content-end">
+                <a href="javascript:history.go(-1)" class="btn btn-danger pull-right mr-2">Cancel</a>
+                <button type="submit" class="btn btn-primary">Submit</button>
             </div>
         </form>
     </div>
-
 </div>
 <script type="text/javascript" src='https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.3.min.js'></script>
 <script type="text/javascript" src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.0.3/js/bootstrap.min.js'></script>

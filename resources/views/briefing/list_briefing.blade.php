@@ -9,38 +9,21 @@
 </div>
 
 <body>
-    <!-- to display the alert message if the record has been deleted -->
+    <!-- to display the alert message if the record has been added -->
     @if(session()->has('message'))
     <div class="alert alert-success">
         {{ session()->get('message') }}
     </div>
     @endif
 
-    <div class="row mb-3">
-        <!-- <div class=" {{  auth()->user()->category== 'Staff' ? 'col-lg-10 col-md-10 col-sm-10' : (request()->routeIs('appointment') ? 'col-lg-10 col-md-10 col-sm-10' : 'col-lg-12 col-md-12 col-sm-12') }}">
-                <nav class="">
-                    <ul class="nav nav-tabs" id="myTab" role="tablist">
-                        <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('appointment') ? 'active' : '' }}" href="{{ route('appointment') }}" role="tab" aria-selected="true">Visitor Appointment</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('appointment') ? 'active' : '' }}" href="{{ route('appointment/createappointment') }}" role="tab" aria-selected="true">Contractor Appointment</a>
-                        </li>
-                    </ul>
-                </nav>
-            </div> -->
+    <div class="row justify-content-end mb-3">
 
         @if( auth()->user()->category== "SHEQ Officer")
 
         @if(request()->routeIs('briefing'))
-        <div class="col-lg-12 col-md-12 col-sm-12" style="float: right;">
-            <a class="btn btn-primary col-2" style="float: right; width:150px;" role="button" href="{{ route('briefing/createbriefinginfo') }}">
+        <div class="col-lg-12 col-md-6 col-sm-3 justify-content-end d-flex">
+            <a class="btn btn-primary" style="width:170px;"role="button" href="{{ route('briefing/createbriefinginfo') }}">
                 <i class="fas fa-plus"></i>&nbsp; Create Briefing</a>
-        </div>
-        @else
-        <div class="col-lg-12 col-md-12 col-sm-12" style="float: right;">
-            <a class="btn btn-success" style="float: right; width:100%;" role="button" href="">
-                <i class="fa fa-cog"></i>&nbsp; -</a>
         </div>
         @endif
 
