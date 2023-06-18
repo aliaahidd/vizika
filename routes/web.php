@@ -137,7 +137,7 @@ Route::get('/Report', [App\Http\Controllers\ReportController::class, 'report'])-
 //generatereport
 Route::get('/Report-Generated', [App\Http\Controllers\ReportController::class, 'generatereport'])->name('generatereport');
 //export pdf 
-Route::get('/export-pdf-all/{exportData}', [App\Http\Controllers\ReportController::class, 'exportPDFAll'])->name('exportPDFAll');
+Route::get('/export-pdf-all', [App\Http\Controllers\ReportController::class, 'exportPDFAll'])->name('exportPDFAll');
 //export pdf 
 Route::get('/export-pdf-generated/{exportData}/{dateStart}/{dateEnd}', [App\Http\Controllers\ReportController::class, 'exportPDFGenerated'])->name('exportPDFGenerated');
 //export excel 

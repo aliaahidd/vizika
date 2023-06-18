@@ -131,12 +131,9 @@ class ReportController extends Controller
         return response()->download(public_path('storage/' . $filename))->deleteFileAfterSend(true);
     }
 
-    public function exportPDFAll($exportData)
+    public function exportPDFAll()
     {
 
-        if ($exportData) {
-
-            if ($exportData == 'AllReport') {
                 // Query for all report
                 $data = DB::table('visitrecord')
                     ->orderBy('visitrecord.id', 'desc')
@@ -145,14 +142,6 @@ class ReportController extends Controller
                     ->join('users as staff_user', 'appointmentinfo.staffID', '=', 'staff_user.id')
                     ->select('visitrecord.*', 'cont_visit_user.*', 'appointmentinfo.*', 'cont_visit_user.name as cont_visit_name', 'staff_user.name as staff_name')
                     ->get();
-            } else {
-                // Handle other cases if needed
-                // For example, if no button is clicked
-                $data = null;
-            }
-        } else {
-            $data = null;
-        }
 
         // Generate HTML table markup
         $table = '<h3>Record List</h3>';
