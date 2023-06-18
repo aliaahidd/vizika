@@ -43,10 +43,10 @@
         <div class="card-header pb-0">
             <div style="float: right; margin-bottom: 10px;">
                 @if($exportData)
-                <a href="{{ route('exportPDFAll', ['exportData' => $data]) }}" class="btn btn-primary"><i class="material-icons">print</i> Export PDF</a>
+                <a href="" class="btn btn-primary" id="printBtn"  onclick="printCard()"><i class="material-icons">print</i> Export PDF</a>
                 <a href="{{ route('exportExcelAll', ['exportData' => $data]) }}" class="btn btn-primary"><i class="material-icons">print</i> Export Excel</a>
                 @else
-                <a href="{{ route('exportPDFGenerated', ['exportData' => $data, 'dateStart' => $dateStart, 'dateEnd' => $dateEnd]) }}" class="btn btn-primary"><i class="material-icons">print</i> Export PDF</a>
+                <a href="" class="btn btn-primary" id="printBtn"  onclick="printCard()"><i class="material-icons">print</i> Export PDF</a>
                 <a href="{{ route('exportExcelGenerated', ['exportData' => $data, 'dateStart' => $dateStart, 'dateEnd' => $dateEnd]) }}" class="btn btn-primary"><i class="material-icons">print</i> Export Excel</a>
                 @endif
             </div>
@@ -131,3 +131,30 @@
         });
     });
 </script>
+<script>
+    function printCard() {
+        // Open a new window
+        var printWindow = window.open('', '_blank');
+
+        // Get the HTML content of the table
+        var tableContent = document.querySelector('#dataTable').outerHTML;
+
+        // Create a new HTML document
+        var printDocument = '<!DOCTYPE html><html><head>';
+        printDocument += '<style>table { border-collapse: collapse; width: 100%; } th, td { border: 1px solid #000; padding: 8px; }</style>';
+        printDocument += '</head><body>';
+        printDocument += '<h1>Record List</h1>'; // Add your desired title here
+        printDocument += '<table>' + tableContent + '</table>';
+        printDocument += '</body></html>';
+
+        // Write the HTML content to the new window
+        printWindow.document.open();
+        printWindow.document.write(printDocument);
+        printWindow.document.close();
+
+        // Print the new window
+        printWindow.print();
+    }
+</script>
+
+

@@ -197,7 +197,7 @@ class ReportController extends Controller
         $dompdf->stream($filename);
 
         // Return the file download response
-        return response()->download(public_path($filename))->deleteFileAfterSend(true);
+        return response()->download(public_path('storage/' . $filename))->deleteFileAfterSend(true);
     }
 
     public function exportExcelAll($exportData)
