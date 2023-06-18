@@ -92,7 +92,7 @@
                 },
 
                 events: {
-                    url: "{{ route('calendarStaff') }}",
+                    url: "{{ route('calendar') }}",
                     type: 'GET',
                 }
 

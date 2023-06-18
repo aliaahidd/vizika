@@ -1,6 +1,4 @@
 @extends('layouts.app')
-<a class="text-danger" href="javascript:history.go(-1)" style="display: block; padding: 10px">
-    <i class="material-icons text-danger">&#xE879;</i> Back </a>
 @section('content')
 
 <div class="container">
@@ -108,7 +106,7 @@
                             if (response.ok) {
                                 // Success message or further actions
                                 console.log('Image saved successfully');
-
+                                
                                 window.location.href = '/finish-form';
 
                             } else {
@@ -160,7 +158,6 @@
         margin: 0;
         padding: 0 0 2rem 0;
         list-style: none;
-        justify-content: space-between;
     }
 
     .step {
@@ -171,7 +168,6 @@
         flex: 1;
         position: relative;
         pointer-events: none;
-        text-align: center;
     }
 
     .step--active,
@@ -254,16 +250,6 @@
         font-size: 0.8rem;
         text-transform: uppercase;
         transform: translateX(-50%);
-    }
-
-    @media (max-width: 768px) {
-        .step__label {
-            bottom: -4rem;
-        }
-
-        .card {
-            margin-top: 20px;
-        }
     }
 
     .step--incomplete.step--inactive .step__label {

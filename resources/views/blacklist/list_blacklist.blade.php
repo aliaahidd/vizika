@@ -106,7 +106,7 @@
                                             <span class="d-none d-md-inline-block"><i class="large material-icons">more_vert</i></span>
                                         </a>
                                         <div class="dropdown-menu dropdown-menu-small">
-                                            <a class="dropdown-item text-danger" href="{{ route('profile-visitor', [$data->visitorID, 'from' => 'balcklist_users']) }}">
+                                            <a class="dropdown-item text-danger" href="{{ route('profile-visitor', [$data->visitorID, 'from' => 'blacklist_users']) }}">
                                                 <i class="material-icons text-danger">search</i> View
                                             </a>
                                         </div>

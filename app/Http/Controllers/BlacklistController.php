@@ -52,9 +52,10 @@ class BlacklistController extends Controller
         $blacklistvisitor = DB::table('visitorinfo')
             ->join('users', 'users.id', '=', 'visitorinfo.userID')
             ->join('blacklistvisitor', 'blacklistvisitor.userID', '=', 'visitorinfo.userID')
+            ->join('companyinfo', 'companyinfo.id', '=', 'visitorinfo.companyID')
             ->select([
                 'users.id AS visitorID',
-                'visitorinfo.id AS vID', 'users.*', 'visitorinfo.*', 'blacklistvisitor.*'
+                'visitorinfo.id AS vID', 'users.*', 'visitorinfo.*', 'blacklistvisitor.*', 'companyinfo.*'
             ])
             ->orderBy('visitorinfo.id', 'desc')
             ->get();
@@ -62,9 +63,10 @@ class BlacklistController extends Controller
         $blacklistcontractor = DB::table('contractorinfo')
             ->join('users', 'users.id', '=', 'contractorinfo.userID')
             ->join('blacklistvisitor', 'blacklistvisitor.userID', '=', 'contractorinfo.userID')
+            ->join('companyinfo', 'companyinfo.id', '=', 'contractorinfo.companyID')
             ->select([
                 'users.id AS contractorID',
-                'contractorinfo.id AS cID', 'users.*', 'contractorinfo.*', 'blacklistvisitor.*'
+                'contractorinfo.id AS cID', 'users.*', 'contractorinfo.*', 'blacklistvisitor.*', 'companyinfo.*'
             ])
             ->orderBy('contractorinfo.id', 'desc')
             ->get();
