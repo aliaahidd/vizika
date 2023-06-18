@@ -49,7 +49,7 @@
                             ->count();
                             @endphp
                             @if($appointmentCount > 0)
-                            <span class="badge badge-pill badge-primary">{{ $appointmentCount }}</span>
+                            <span class="badge badge-pill badge-primary float-right">{{ $appointmentCount }}</span>
                             @endif
                         </a>
                     </li>

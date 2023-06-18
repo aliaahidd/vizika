@@ -148,6 +148,8 @@ Route::get('/export-excel-generated/{exportData}/{dateStart}/{dateEnd}', [App\Ht
 //CALENDAR
 //display calendar
 Route::get('/Calendar', [App\Http\Controllers\CalendarController::class, 'calendar'])->name('calendar');
+//display calendar
+Route::get('/Calendar-Staff', [App\Http\Controllers\CalendarController::class, 'calendarstaff'])->name('calendarstaff');
 // calendar ajax
 Route::post('/calendarAjax', [App\Http\Controllers\CalendarController::class, 'calendarAjax'])->name('calendarAjax');
 
