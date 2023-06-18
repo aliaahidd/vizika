@@ -21,7 +21,7 @@
         <div class="col-md-12 row justify-content-center">
             <div class="copyright">
                 <span class="copyright ml-auto my-auto mr-2">Copyright © {{ now()->year }}
-                    <a href="#" rel="nofollow">Faculty of Computing</a>
+                    <a href="#" rel="nofollow">Vizika</a>
                 </span>
             </div>
         </div>

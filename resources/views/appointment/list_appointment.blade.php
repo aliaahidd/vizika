@@ -176,7 +176,7 @@
     $(document).ready(function() {
         $('#dataTable').DataTable({
             "order": [
-                [0, "asc"]
+                [1, "desc"]
             ],
             "language": {
                 search: '<i class="fa fa-search" aria-hidden="true"></i>',

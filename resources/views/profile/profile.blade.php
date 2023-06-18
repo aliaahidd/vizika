@@ -82,7 +82,7 @@
                                 <label for="expiryPass">Pass Expiry Date</label>
                             </div>
                             <div class="col">
-                                <label for="expiryPass">{{ $contractor->passExpiryDate }} <a data-toggle="modal" data-target="#viewPassModal" style="color: blue;" id="viewPass">View Pass</a></label>
+                                <label for="expiryPass">{{ $contractor->passExpiryDate }} <a data-toggle="modal" data-target="#viewPassModal" style="color: #007bff;" id="viewPass">View Pass</a></label>
                             </div>
                         </div>
                         <div class="row">

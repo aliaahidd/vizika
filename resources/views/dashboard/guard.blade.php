@@ -1,35 +1,6 @@
 @extends('layouts.sideNav')
 @section('content')
 
-<script src="{{ asset('frontend') }}/js/jquery.dataTables.js"></script>
-<script src="{{ asset('frontend') }}/js/dataTables.bootstrap4.js"></script>
-<script src="//code.jquery.com/jquery-1.12.3.js"></script>
-<script src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>
-
-<script>
-    // to search the appointment 
-    $(document).ready(function() {
-        $('#dataTable').DataTable({
-            "order": [
-                [0, "asc"]
-            ],
-            "language": {
-                search: '<i class="fa fa-search" aria-hidden="true"></i>',
-                searchPlaceholder: 'Search name'
-            }
-        });
-
-        // filter appointment
-        $('.dataTables_filter input[type="search"]').css({
-            'width': '300px',
-            'display': 'inline-block',
-            'font-size': '15px',
-            'font-weight': '400'
-        });
-    });
-</script>
-
 <!-- Page Header -->
 <div class="page-header row no-gutters pb-4">
     <div class="col-12 col-sm-4 text-center text-sm-left mb-0 d-flex">
@@ -44,8 +15,8 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-4">
-                        <div style="background-color: #ffc6c2; border-radius: 10px; display: flex; justify-content: center; align-items: center;">
-                            <i class="material-icons md-48" style="font-size: 5rem; color: white; text-align: center">event</i>
+                        <div style="border-radius: 10px; display: flex; justify-content: center; align-items: center;">
+                            <i class="material-icons md-48" style="font-size: 5rem; color: white; text-align: center; color: #6497b1;">event</i>
                         </div>
                     </div>
                     <div class="col-8">
@@ -61,8 +32,8 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-4">
-                        <div style="background-color: #fae9da; border-radius: 10px; display: flex; justify-content: center; align-items: center;">
-                            <i class="material-icons md-48" style="font-size: 5rem; color: white; text-align: center">event</i>
+                        <div style="border-radius: 10px; display: flex; justify-content: center; align-items: center;">
+                            <i class="material-icons md-48" style="font-size: 5rem; color: white; text-align: center; color: #005b96; ">event</i>
                         </div>
                     </div>
                     <div class="col-8">
@@ -78,8 +49,8 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-4">
-                        <div style="background-color: #c3e0dd; border-radius: 10px; display: flex; justify-content: center; align-items: center;">
-                            <i class="material-icons md-48" style="font-size: 5rem; color: white; text-align: center">event</i>
+                        <div style="border-radius: 10px; display: flex; justify-content: center; align-items: center;">
+                            <i class="material-icons md-48" style="font-size: 5rem; color: white; text-align: center; color: #04427d; ">event</i>
                         </div>
                     </div>
                     <div class="col-8">
@@ -149,6 +120,33 @@
         </div>
     </div>
 </div>
+<script src="{{ asset('frontend') }}/js/jquery.dataTables.js"></script>
+<script src="{{ asset('frontend') }}/js/dataTables.bootstrap4.js"></script>
+<script src="//code.jquery.com/jquery-1.12.3.js"></script>
+<script src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>
 
+<script>
+    // to search the appointment 
+    $(document).ready(function() {
+        $('#dataTable').DataTable({
+            "order": [
+                [4, "desc"]
+            ],
+            "language": {
+                search: '<i class="fa fa-search" aria-hidden="true"></i>',
+                searchPlaceholder: 'Search name'
+            }
+        });
+
+        // filter appointment
+        $('.dataTables_filter input[type="search"]').css({
+            'width': '300px',
+            'display': 'inline-block',
+            'font-size': '15px',
+            'font-weight': '400'
+        });
+    });
+</script>
 
 @endsection

@@ -176,6 +176,7 @@ class ProfileController extends Controller
 
         $contractorinfo->companyID = $request->input('companyID');
         $contractorinfo->phoneNo = $request->input('phoneNo');
+        $contractorinfo->employeeNo = $request->input('employeeNo');
         $contractorinfo->passExpiryDate = $request->input('passExpiryDate');
         $contractorinfo->birthDate = $request->input('birthDate');
         $contractorinfo->address = $request->input('address');

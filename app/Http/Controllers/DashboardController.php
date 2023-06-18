@@ -57,7 +57,7 @@ class DashboardController extends Controller
 
             //count total today appointment 
             $totalTodayAppt = DB::table('appointmentinfo')->where('appointmentDate', $today_date)->where('contVisitID', $id)->count();
-            //count total upcoming appointment 
+            //count Total Tomorrow Appointment 
             $totalUpcomingAppt = DB::table('appointmentinfo')->whereDate('appointmentDate', $upcomingDate)->where('contVisitID', $id)->count();
             //count total past appointment 
             $totalPastAppt = DB::table('visitrecord')
@@ -96,7 +96,7 @@ class DashboardController extends Controller
 
             //count total today appointment 
             $totalTodayAppt = DB::table('appointmentinfo')->where('appointmentDate', $today_date)->where('contVisitID', $id)->count();
-            //count total upcoming appointment 
+            //count Total Tomorrow Appointment 
             $totalUpcomingAppt = DB::table('appointmentinfo')->whereDate('appointmentDate', $upcomingDate)->where('contVisitID', $id)->count();
             //count total past appointment 
             $totalPastAppt = DB::table('visitrecord')
@@ -159,6 +159,12 @@ class DashboardController extends Controller
         $totalVisitor = DB::table('visitorinfo')->count();
         //count total contractor 
         $totalContractor = DB::table('contractorinfo')->count();
+        //count total staff 
+        $totalStaff = DB::table('users')->where('category', '=', 'Staff')->count();
+        //count total guard 
+        $totalGuard = DB::table('users')->where('category', '=', 'SHEQ Guard')->count();
+        //count total officer 
+        $totalOfficer = DB::table('users')->where('category', '=', 'SHEQ Officer')->count();
         //count total appointment 
         $totalAppointment = DB::table('appointmentinfo')->where('appointmentDate', $today_date)->count();
         //count total check in 
@@ -192,7 +198,7 @@ class DashboardController extends Controller
         // Sort the $totalAppointments array by the date keys in ascending order
         ksort($totalVisitLine);
 
-        return view('dashboard.officer', compact('totalVisitor', 'totalContractor', 'totalAppointment', 'totalCheckIn', 'totalCheckOut', 'totalVisitLine', 'visitorlog'));
+        return view('dashboard.officer', compact('totalVisitor', 'totalContractor', 'totalStaff', 'totalGuard', 'totalOfficer', 'totalAppointment', 'totalCheckIn', 'totalCheckOut', 'totalVisitLine', 'visitorlog'));
     }
 
     public function staffDashboard()
@@ -208,7 +214,7 @@ class DashboardController extends Controller
 
         //count total today appointment 
         $totalTodayAppt = DB::table('appointmentinfo')->where('appointmentDate', $today_date)->where('staffID', $id)->count();
-        //count total upcoming appointment 
+        //count Total Tomorrow Appointment 
         $totalUpcomingAppt = DB::table('appointmentinfo')->whereDate('appointmentDate', $upcomingDate)->where('staffID', $id)->groupBy('appointmentDate')->distinct()->count();
         //count total past appointment 
         $totalPastAppt = DB::table('visitrecord')
@@ -223,6 +229,30 @@ class DashboardController extends Controller
             ->where('appointmentDate', $today_date)
             ->where('staffID', $id)->get();
 
-        return view('dashboard.staff', compact('totalTodayAppt', 'totalUpcomingAppt', 'totalPastAppt', 'todayAppointment'));
+        //count total visitor 
+        $totalVisitor = DB::table('visitorinfo')->count();
+        //count total contractor 
+        $totalContractor = DB::table('contractorinfo')->count();
+
+        //count for line chart 7 days from today date
+        $today = date('Y-m-d');
+        $pastDate = date('Y-m-d', strtotime('-7 days'));
+
+        $totalVisitLine = [];
+        for ($i = 0; $i < 7; $i++) {
+            $date = date('Y-m-d', strtotime('-' . $i . ' days'));
+            $count = DB::table('visitrecord')
+                ->join('appointmentinfo', 'appointmentinfo.id', '=', 'visitrecord.appointmentID')
+                ->where('visitrecord.checkInDate', $date)
+                ->where('appointmentinfo.staffID', $id)
+                ->orderBy('visitrecord.checkInDate', 'asc')
+                ->count();
+            $totalVisitLine[$date] = $count;
+        }
+
+        // Sort the $totalAppointments array by the date keys in ascending order
+        ksort($totalVisitLine);
+
+        return view('dashboard.staff', compact('totalTodayAppt', 'totalUpcomingAppt', 'totalPastAppt', 'todayAppointment', 'totalVisitor', 'totalContractor', 'totalVisitLine'));
     }
 }

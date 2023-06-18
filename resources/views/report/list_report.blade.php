@@ -8,41 +8,6 @@
     </div>
 </div>
 
-<script src="{{ asset('frontend') }}/js/jquery.dataTables.js"></script>
-<script src="{{ asset('frontend') }}/js/dataTables.bootstrap4.js"></script>
-<script src="//code.jquery.com/jquery-1.12.3.js"></script>
-<script src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>
-
-
-<script>
-    // to search the appointment 
-    $(document).ready(function() {
-        $('#dataTable').DataTable({
-            "order": [
-                [0, "asc"]
-            ],
-            "language": {
-                search: '<i class="fa fa-search" aria-hidden="true"></i>',
-                searchPlaceholder: 'Search record'
-            }
-        });
-
-        // filter appointment
-        $('.dataTables_filter input[type="search"]').css({
-            'width': '300px',
-            'display': 'inline-block',
-            'font-size': '15px',
-            'font-weight': '400'
-        });
-
-        $('.year-dropdown').on('change', function(e) {
-            var year = $(this).val();
-            dataTable.column(3).search('^' + year + '-', true, false).draw();
-        });
-    });
-</script>
-
 <body>
     <!-- to display the alert message if the record has been deleted -->
     @if(session()->has('message'))
@@ -59,7 +24,7 @@
                         <label>Date Start:</label>
                         <input type="date" name="dateStart" class="form-control" onchange="setMinDate()">
                     </div>
-                    
+
                     <div class="col">
                         <label>Date End:</label>
                         <input type="date" name="dateEnd" class="form-control" id="dateEnd" min="">
@@ -123,7 +88,6 @@
     </div>
 </body>
 
-<script src="{{ asset('frontend') }}/js/jquery.dataTables.js"></script>
 @endsection
 
 <script>
@@ -132,4 +96,38 @@
         const dateEndInput = document.querySelector('input[name="dateEnd"]');
         dateEndInput.min = dateStartInput.value;
     }
+</script>
+<script src="{{ asset('frontend') }}/js/jquery.dataTables.js"></script>
+<script src="{{ asset('frontend') }}/js/dataTables.bootstrap4.js"></script>
+<script src="//code.jquery.com/jquery-1.12.3.js"></script>
+<script src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>
+
+
+<script>
+    // to search the appointment 
+    $(document).ready(function() {
+        $('#dataTable').DataTable({
+            "order": [
+                [3, "desc"]
+            ],
+            "language": {
+                search: '<i class="fa fa-search" aria-hidden="true"></i>',
+                searchPlaceholder: 'Search record'
+            }
+        });
+
+        // filter appointment
+        $('.dataTables_filter input[type="search"]').css({
+            'width': '300px',
+            'display': 'inline-block',
+            'font-size': '15px',
+            'font-weight': '400'
+        });
+
+        $('.year-dropdown').on('change', function(e) {
+            var year = $(this).val();
+            dataTable.column(3).search('^' + year + '-', true, false).draw();
+        });
+    });
 </script>

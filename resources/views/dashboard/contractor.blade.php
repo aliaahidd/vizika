@@ -8,12 +8,6 @@
     </div>
 </div>
 
-@if (session('success'))
-<script>
-    window.alert('{{ session("success") }}');
-</script>
-@endif
-
 <!-- Dashboard information start -->
 <div class="row">
     <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
@@ -21,8 +15,8 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-4">
-                        <div style="background-color: #ffc6c2; border-radius: 10px; display: flex; justify-content: center; align-items: center;">
-                            <i class="material-icons md-48" style="font-size: 5rem; color: white; text-align: center">event</i>
+                        <div style="border-radius: 10px; display: flex; justify-content: center; align-items: center;">
+                            <i class="material-icons md-48" style="font-size: 5rem; color: white; text-align: center; color: #6497b1; ">event</i>
                         </div>
                     </div>
                     <div class="col-8">
@@ -38,13 +32,13 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-4">
-                        <div style="background-color: #fae9da; border-radius: 10px; display: flex; justify-content: center; align-items: center;">
-                            <i class="material-icons md-48" style="font-size: 5rem; color: white; text-align: center">event</i>
+                        <div style="border-radius: 10px; display: flex; justify-content: center; align-items: center;">
+                            <i class="material-icons md-48" style="font-size: 5rem; color: white; text-align: center; color: #005b96;">event</i>
                         </div>
                     </div>
                     <div class="col-8">
                         <h1>{{ $totalUpcomingAppt }}</h1>
-                        <span>Total Upcoming Appointment</span>
+                        <span>Total Tomorrow Appointment</span>
                     </div>
                 </div>
             </div>
@@ -55,8 +49,8 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-4">
-                        <div style="background-color: #c3e0dd; border-radius: 10px; display: flex; justify-content: center; align-items: center;">
-                            <i class="material-icons md-48" style="font-size: 5rem; color: white; text-align: center">event</i>
+                        <div style="border-radius: 10px; display: flex; justify-content: center; align-items: center;">
+                            <i class="material-icons md-48" style="font-size: 5rem; color: white; text-align: center; color: #04427d; ">event</i>
                         </div>
                     </div>
                     <div class="col-8">

@@ -253,7 +253,7 @@
 
             <footer class="main-footer d-flex p-2 px-3 bg-white border-top">
                 <span class="copyright ml-auto my-auto mr-2">Copyright © {{ now()->year }}
-                    <a href="#" rel="nofollow">Faculty of Computing</a>
+                    <a href="#" rel="nofollow">Vizika</a>
                 </span>
             </footer>
 

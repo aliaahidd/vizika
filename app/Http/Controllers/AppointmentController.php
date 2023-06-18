@@ -18,24 +18,24 @@ class AppointmentController extends Controller
     {
         //staff view 
         $appointmentStaff = DB::table('appointmentinfo')
-            ->orderBy('appointmentinfo.id', 'desc')
             ->join('users', 'users.id', '=', 'appointmentinfo.contVisitID')
             ->select([
                 'users.id AS staffID',
                 'appointmentinfo.id AS appointmentID', 'users.*', 'appointmentinfo.*'
             ])
             ->where('staffID', Auth::user()->id)
+            ->orderBy('appointmentID', 'desc')
             ->get();
 
         //visitor view
         $appointmentVisitor = DB::table('appointmentinfo')
-            ->orderBy('appointmentinfo.id', 'desc')
             ->join('users', 'users.id', '=', 'appointmentinfo.staffID')
             ->select([
                 'users.id AS staffID',
                 'appointmentinfo.id AS appointmentID', 'users.*', 'appointmentinfo.*'
             ])
             ->where('contVisitID', Auth::user()->id)
+            ->orderBy('appointmentinfo.id', 'desc')
             ->get();
 
         return view('appointment.list_appointment', compact('appointmentVisitor', 'appointmentStaff'));

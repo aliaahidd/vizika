@@ -27,8 +27,8 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-4">
-                        <div style="background-color: #ffc6c2; border-radius: 10px; display: flex; justify-content: center; align-items: center;">
-                            <i class="material-icons md-48" style="font-size: 5rem; color: white; text-align: center">event</i>
+                        <div style="border-radius: 10px; display: flex; justify-content: center; align-items: center;">
+                            <i class="material-icons md-48" style="font-size: 5rem; color: white; text-align: center; color: #6497b1;">event</i>
                         </div>
                     </div>
                     <div class="col-8">
@@ -44,8 +44,8 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-4">
-                        <div style="background-color: #fae9da; border-radius: 10px; display: flex; justify-content: center; align-items: center;">
-                            <i class="material-icons md-48" style="font-size: 5rem; color: white; text-align: center">event</i>
+                        <div style="border-radius: 10px; display: flex; justify-content: center; align-items: center;">
+                            <i class="material-icons md-48" style="font-size: 5rem; color: white; text-align: center; color: #005b96; ">event</i>
                         </div>
                     </div>
                     <div class="col-8">
@@ -61,8 +61,8 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-4">
-                        <div style="background-color: #c3e0dd; border-radius: 10px; display: flex; justify-content: center; align-items: center;">
-                            <i class="material-icons md-48" style="font-size: 5rem; color: white; text-align: center">event</i>
+                        <div style="border-radius: 10px; display: flex; justify-content: center; align-items: center;">
+                            <i class="material-icons md-48" style="font-size: 5rem; color: white; text-align: center; color: #04427d; ">event</i>
                         </div>
                     </div>
                     <div class="col-8">
@@ -83,16 +83,16 @@
                 <h5>Total Visit for Past 7 Days</h5>
             </div>
             <div class="card-body">
-                <div id="total_visitor_data" style="width: 100%; height: 100%"></div>
+                <div id="total_visitor_data" style="width: 100%; height: 100%; min-height: 240px;"></div>
             </div>
         </div>
     </div>
     <div class="col-lg-3 col-md-6 col-sm-12 mb-4">
         <div class="card">
             <div class="card-header pb-0">
-                <h5>User type</h5>
+                <h5>User Type</h5>
             </div>
-            <div class="card-body">
+            <div class="card-body" style="height: 300px; min-height: 240px;">
                 <div id="visitortype"></div>
             </div>
         </div>
@@ -157,7 +157,7 @@
     $(document).ready(function() {
         $('#dataTable').DataTable({
             "order": [
-                [0, "asc"]
+                [6, "desc"]
             ],
             "language": {
                 search: '<i class="fa fa-search" aria-hidden="true"></i>',
@@ -178,17 +178,29 @@
             ['Type', 'Total'],
             ['Visitor', <?php echo $totalVisitor ?>],
             ['Contractor', <?php echo $totalContractor ?>],
+            ['Staff', <?php echo $totalStaff ?>],
+            ['SHEQ Officer', <?php echo $totalOfficer ?>],
+            ['SHEQ Guard', <?php echo $totalGuard ?>],
         ]);
 
         var options = {
             // title: 'My Daily Activities'
             legend: {
                 position: 'bottom'
+
             },
+            chartArea: {
+                width: '90%', // Adjust the chart area width
+                height: '85%' // Adjust the chart area height
+            }
         };
 
         var chart = new google.visualization.PieChart(document.getElementById('visitortype'));
-
+        // Redraw the chart when the window is resized
+        $(window).resize(function() {
+            chart.draw(data, options);
+        });
+        chart.draw(data, options);
         chart.draw(data, options);
     }
 </script>
@@ -231,10 +243,18 @@
                 0: {
                     curveType: 'none'
                 }
+            },
+            chartArea: {
+                width: '90%', // Adjust the chart area width
+                height: '60%' // Adjust the chart area height
             }
         };
 
         var chart = new google.visualization.LineChart(document.getElementById('total_visitor_data'));
+        // Redraw the chart when the window is resized
+        $(window).resize(function() {
+            chart.draw(data, options);
+        });
         chart.draw(data, options);
     }
 
