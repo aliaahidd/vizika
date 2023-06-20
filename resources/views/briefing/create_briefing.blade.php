@@ -33,10 +33,14 @@
 
                 <div class="col-md-6">
                     <label>Time Start<span style="color: red; margin-left: 5px">*</span></label>
-                    <input type="time" name="briefingTimeStart" class="form-control" id="timeInput" step="3600" onchange="validateTime()" required>
+                    <select name="briefingTimeStart" class="form-control" id="timeInput" onchange="validateTime()" required>
+                        <option value="">Select a time</option>
+                        <option value="09:00">9.00am</option>
+                        <option value="15:00">3.00pm</option>
+                    </select>
                     <br>
                     <label>Max Participant<span style="color: red; margin-left: 5px">*</span></label>
-                    <input type="number" name="participantNo" class="form-control" required>
+                    <input type="number" name="participantNo" class="form-control" placeholder="Ex: 30" required>
                 </div>
             </div>
             <div class="row justify-content-end">
@@ -80,44 +84,41 @@
         var timeInput = document.getElementById('timeInput');
         var selectedTime = timeInput.value;
 
-        // Convert the selected time to lowercase for case-insensitive comparison
-        selectedTime = selectedTime.toLowerCase();
+        if (selectedTime === '09:00' || selectedTime === '15:00') {
+            var startTimeInput = document.getElementById('timeInput');
+            var endTimeInput = document.getElementById('endTimeInput');
 
-        // Check if the selected time is not equal to either 9am or 3pm
-        if (selectedTime !== '09:00' && selectedTime !== '15:00') {
+            // Get the selected start time value
+            var startTime = startTimeInput.value;
+
+            // If start time is not selected, reset the end time input value and disable it
+            if (startTime === '') {
+                endTimeInput.value = '';
+                endTimeInput.disabled = true;
+                return;
+            }
+
+            // Convert the start time value to a date object
+            var startDate = new Date();
+            var timeParts = startTime.split(':');
+            startDate.setHours(timeParts[0]);
+            startDate.setMinutes(timeParts[1]);
+
+            // Add 2 hours to the start time to get the end time
+            startDate.setHours(startDate.getHours() + 2);
+
+            // Convert the end time value to a string in "hh:mm" format
+            var endTime = ('0' + startDate.getHours()).slice(-2) + ':' + ('0' + startDate.getMinutes()).slice(-2);
+
+            // Set the calculated end time value and enable the end time input
+            endTimeInput.value = endTime;
+            endTimeInput.disabled = false;
+        } else {
             // Reset the input value to empty
             timeInput.value = '';
             // Display an error message or perform any other action
-            alert('Please select either 9am or 3pm.');
+            alert('Please select either 9.00am or 3.00pm.');
         }
-
-        var startTimeInput = document.getElementById('timeInput');
-        var endTimeInput = document.getElementById('endTimeInput');
-
-        // Get the selected start time value
-        var startTime = startTimeInput.value;
-
-        // If start time is not selected, reset the end time input value and disable it
-        if (startTime === '') {
-            endTimeInput.value = '';
-            endTimeInput.disabled = true;
-            return;
-        }
-
-        // Convert the start time value to a date object
-        var startDate = new Date();
-        var timeParts = startTime.split(':');
-        startDate.setHours(timeParts[0]);
-        startDate.setMinutes(timeParts[1]);
-
-        // Add 2 hours to the start time to get the end time
-        startDate.setHours(startDate.getHours() + 2);
-
-        // Convert the end time value to a string in "hh:mm" format
-        var endTime = ('0' + startDate.getHours()).slice(-2) + ':' + ('0' + startDate.getMinutes()).slice(-2);
-
-        // Set the calculated end time value and enable the end time input
-        endTimeInput.value = endTime;
     }
 </script>
 @endsection

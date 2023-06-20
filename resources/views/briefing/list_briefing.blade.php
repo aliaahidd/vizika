@@ -73,12 +73,8 @@
                                     </div>
                                     @endif
                                 </td>
-                                <td>
-                                    @if ($data->totalParticipants === 0)
-                                    <a onclick="deleteItem(this)" data-id="{{ $data->id }}" data-name="{{ $data->briefingDate }}" class="btn btn-danger" style="justify-content: center; align-items: center; margin: auto; color: white">Delete</a>
-                                    @else
+                                <td> 
                                     <a href="{{ route('briefingsession', $data->id )}}" class="btn btn-primary" style="justify-content: center; align-items: center; margin: auto; color: white">View</a>
-                                    @endif
                                 </td>
 
                             </tr>
@@ -199,66 +195,5 @@
         });
     });
 </script>
-<script>
-    function deleteItem(e) {
-        let id = e.getAttribute('data-id');
-        let name = e.getAttribute('data-name');
 
-        const swalWithBootstrapButtons = Swal.mixin({
-            customClass: {
-                confirmButton: 'btn btn-success ml-1',
-                cancelButton: 'btn btn-danger mr-1'
-            },
-            buttonsStyling: false
-        });
-
-        swalWithBootstrapButtons.fire({
-            title: 'Are you sure to delete this briefing session?',
-            html: "Date: " + name + "<br> You won't be able to revert this!",
-            text: "",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonText: 'Yes, delete it!',
-            cancelButtonText: 'No, cancel!',
-            reverseButtons: true
-        }).then((result) => {
-            if (result.value) {
-                if (result.isConfirmed) {
-
-                    $.ajax({
-                        type: 'DELETE',
-                        url: '{{url("/deletebriefingsession")}}/' + id,
-                        data: {
-                            "_token": "{{ csrf_token() }}",
-                        },
-                        success: function(data) {
-                            if (data.success) {
-                                swalWithBootstrapButtons.fire(
-                                    'Deleted!',
-                                    'Briefing session has been deleted.',
-                                    "success"
-                                );
-
-                                $("#row" + id).remove(); // you can add name div to remove
-                            }
-
-
-                        }
-                    });
-
-                }
-
-            } else if (
-                result.dismiss === Swal.DismissReason.cancel
-            ) {
-                // swalWithBootstrapButtons.fire(
-                //     'Cancelled',
-                //     'Your imaginary file is safe :)',
-                //     'error'
-                // );
-            }
-        });
-
-    }
-</script>
 @endsection

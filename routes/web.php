@@ -128,8 +128,6 @@ Route::get('/briefingsession/{id}', [App\Http\Controllers\BriefingController::cl
 Route::get('/Update-Validity-Pass/{id}', [App\Http\Controllers\BriefingController::class, 'updatepassdate'])->name('updatepassdate');
 //delete the participant record
 Route::get('/Delete-participant/{id}', [App\Http\Controllers\BriefingController::class, 'deleterecord'])->name('deleterecord');
-//delete the briefing session
-Route::delete('/deletebriefingsession/{id}', [App\Http\Controllers\BriefingController::class, 'deletebriefingsession'])->name('deletebriefingsession');
 
 //REPORT
 //report list

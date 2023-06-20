@@ -20,9 +20,21 @@
 
     <div class="card">
         <div class="card-body">
+            <div class="row justify-content-start">
+                <p>Instructions</p><br>
+            </div>
+            <div class="row justify-content-start mt-1">
+                <h7>1. Find a well-lit area for capturing the photo.</h7>
+                <h7>2. Position yourself facing a natural light source, such as a window, or utilize artificial lighting to ensure sufficient illumination.</h7>
+                <h7>3. Avoid strong backlighting or shadows on your face.</h7>
+                <h7>4. Maintain a comfortable distance from the camera, allowing your face to fill the frame adequately.</h7>
+                <h7>5. Avoid extreme close-ups or being too far away, ensuring your facial features are clearly visible.</h7>
+                <h7>6. Remove any objects, accessories, or items that may obstruct your face. (Hats, sunglasses, or hair covering significant parts of your face).</h7>
+            </div>
             <div class="row justify-content-center mt-3">
                 <!-- Display webcam stream -->
                 <video id="videoElement" width="640" height="480" autoplay></video>
+                <div id="guideOverlay"></div> <!-- Guide overlay -->
             </div>
 
             <div class="row justify-content-center mt-3">
@@ -59,12 +71,23 @@
             const captureButton = document.getElementById('captureButton');
             const canvasElement = document.getElementById('canvasElement');
             const context = canvasElement.getContext('2d');
-
+            const guideOverlay = document.getElementById('guideOverlay');
 
             // Set canvas dimensions based on video dimensions
             videoElement.addEventListener('loadedmetadata', () => {
                 canvasElement.width = videoElement.videoWidth;
                 canvasElement.height = videoElement.videoHeight;
+
+                // Set guide overlay position
+                const videoRect = videoElement.getBoundingClientRect();
+                const videoWidth = videoRect.width;
+                const videoHeight = videoRect.height;
+                const guideSize = 1750; // Size of the guide overlay
+                const guideSizeL = 1400; // Size of the guide overlay
+                const guideLeft = (guideSize - videoWidth) / 2;
+                const guideTop = (guideSizeL - videoHeight) / 2;
+                guideOverlay.style.left = `${guideLeft}px`;
+                guideOverlay.style.top = `${guideTop}px`;
             });
 
             captureButton.addEventListener('click', () => {
@@ -106,7 +129,7 @@
                             if (response.ok) {
                                 // Success message or further actions
                                 console.log('Image saved successfully');
-                                
+
                                 window.location.href = '/finish-form';
 
                             } else {
@@ -126,6 +149,23 @@
 </script>
 
 <style>
+    #videoContainer {
+        position: relative;
+    }
+
+    #guideOverlay {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 200px;
+        height: 200px;
+        border: 2px solid red;
+        pointer-events: none;
+        /* Make the overlay non-interactable */
+    }
+
+
     @import "color-schemer";
 
     /* Mixins */

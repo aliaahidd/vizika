@@ -35,6 +35,7 @@
                                 <th>Name</th>
                                 <th>Phone Number</th>
                                 <th>Email</th>
+                                <th>Pass Expiry Date</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -43,11 +44,17 @@
                             <tr id="row{{$data->id}}">
                                 <td>{{ $data->contractorID }}</td>
                                 <td>{{ $data->name }}</td>
-                                <td>{{ $data->phoneNo }}</td>
+                                <td>{{ $data->name }}</td>
                                 <td>{{ $data->email }}</td>
+                                <td>{{ $data->passExpiryDate }}</td>
                                 <td>
-                                    <a class="btn btn-success" style="color: white" href="{{ route('updatepassdate', $data->id) }}">Attend</a>&nbsp
-                                    <a class="btn btn-danger" style="color: white" href="{{ route('deleterecord', $data->id) }}">Not Attend</a>
+                                    @if ($data->passExpiryDate < now()) <a class="btn btn-success" style="color: white" href="{{ route('updatepassdate', $data->id) }}">Update</a>
+                                        @else
+                                        <div style="background-color: #d9f3ea; border-radius: 10px; display: flex; justify-content: center; align-items: center; margin: auto; width: 100px">
+                                            <label style=" color: #0bb37a; text-align: center; font-weight: bold" class="mb-1 mt-1">Updated</label>
+                                        </div>
+
+                                        @endif
                                 </td>
                             </tr>
                             @endforeach

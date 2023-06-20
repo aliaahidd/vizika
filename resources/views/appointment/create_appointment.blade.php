@@ -35,6 +35,8 @@
                         <div class="col-md-6">
                             <label>Date<span style="color: red; margin-left: 5px">*</span></label>
                             <input type="date" name="appointmentDate" class="form-control" id="txtDate" required>
+                            <span style="font-size: 12px; color: #999;">(Please note that Saturday and Sunday are not available for selection.)</span>
+
                         </div>
                         <br>
                         <div class="col-md-6">

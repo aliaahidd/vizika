@@ -102,8 +102,8 @@ class BriefingController extends Controller
     {
         $sessionlist = DB::table('briefingsession')
             ->join('safetybriefinginfo', 'safetybriefinginfo.id', '=', 'briefingsession.briefingID')
-            ->join('contractorinfo', 'contractorinfo.id', '=', 'briefingsession.contractorID')
-            ->join('users', 'users.id', '=', 'contractorinfo.userID')
+            ->join('users', 'users.id', '=', 'briefingsession.contractorID')
+            ->join('contractorinfo', 'contractorinfo.userID', '=', 'users.id')
             ->select('briefingsession.*', 'briefingsession.contractorID as contractorID', 'users.*', 'contractorinfo.*')
             ->where('briefingsession.briefingID', $id)
             ->get();
@@ -179,9 +179,6 @@ class BriefingController extends Controller
 
         // upadate query in the database
         $contractorinfo->update();
-
-        // Delete briefingsession records
-        BriefingSession::where('contractorID', '=', $id)->delete();
 
         // display message box in the same page
         return redirect()->route('briefing');
