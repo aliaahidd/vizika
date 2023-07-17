@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Mail\EmailUserApproval;
+use App\Mail\EmailAccountRegistered;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
@@ -209,6 +210,22 @@ class ProfileController extends Controller
         // insert query
         DB::table('users')->insert($data);
 
+         //send email
+         $data = array(
+            'name'                =>  $name,
+            'email'               =>  $email,
+        );
+
+        $to = [
+            [
+                'email' => $email,
+            ]
+        ];
+
+        //send email 
+        Mail::to($to)->send(new EmailAccountRegistered($data));
+
+
         sleep(1);
         return redirect()->route('userlist');
     }
@@ -219,25 +236,25 @@ class ProfileController extends Controller
 
         $contractorinfo = ContractorInfo::find($id);
 
-        if ($request->hasFile('passportPhoto')) {
-            $name = Auth::user()->name;
-            //unlink the old contractorinfo file from assets folder
-            $path = public_path() . '/assets/' . $name . $contractorinfo->passportPhoto;
-            if (file_exists($path)) {
-                unlink($path);
-            }
+        // if ($request->hasFile('passportPhoto')) {
+        //     $name = Auth::user()->name;
+        //     //unlink the old contractorinfo file from assets folder
+        //     $path = public_path() . '/assets/' . $name . $contractorinfo->passportPhoto;
+        //     if (file_exists($path)) {
+        //         unlink($path);
+        //     }
 
-            $name = Auth::user()->name;
+        //     $name = Auth::user()->name;
 
-            $contractorinfo->passportPhoto = $request->file('passportPhoto');
+        //     $contractorinfo->passportPhoto = $request->file('passportPhoto');
 
-            //to rename the contractorinfo file
-            $filename = time() . '.' . $contractorinfo->passportPhoto->getClientOriginalExtension();
-            // to store the new file by moving to assets folder
-            $request->passportPhoto->move('assets/' . $name, $filename);
+        //     //to rename the contractorinfo file
+        //     $filename = time() . '.' . $contractorinfo->passportPhoto->getClientOriginalExtension();
+        //     // to store the new file by moving to assets folder
+        //     $request->passportPhoto->move('assets/' . $name, $filename);
 
-            $contractorinfo->passportPhoto = $filename;
-        }
+        //     $contractorinfo->passportPhoto = $filename;
+        // }
 
         if ($request->hasFile('validityPassImg')) {
             //unlink the old contractorinfo file from assets folder
@@ -277,26 +294,26 @@ class ProfileController extends Controller
 
         $visitorinfo = VisitorInfo::find($id);
 
-        if ($request->hasFile('passportPhoto')) {
-            $name = Auth::user()->name;
+        // if ($request->hasFile('passportPhoto')) {
+        //     $name = Auth::user()->name;
 
-            //unlink the old visitorinfo file from assets folder
-            $path = public_path() . '/assets/' . $name . $visitorinfo->passportPhoto;
-            if (file_exists($path)) {
-                unlink($path);
-            }
+        //     //unlink the old visitorinfo file from assets folder
+        //     $path = public_path() . '/assets/' . $name . $visitorinfo->passportPhoto;
+        //     if (file_exists($path)) {
+        //         unlink($path);
+        //     }
 
-            $name = Auth::user()->name;
+        //     $name = Auth::user()->name;
 
-            $visitorinfo->passportPhoto = $request->file('passportPhoto');
+        //     $visitorinfo->passportPhoto = $request->file('passportPhoto');
 
-            //to rename the visitorinfo file
-            $filename = time() . '.' . $visitorinfo->passportPhoto->getClientOriginalExtension();
-            // to store the new file by moving to assets folder
-            $request->passportPhoto->move('assets/' . $name, $filename);
+        //     //to rename the visitorinfo file
+        //     $filename = time() . '.' . $visitorinfo->passportPhoto->getClientOriginalExtension();
+        //     // to store the new file by moving to assets folder
+        //     $request->passportPhoto->move('assets/' . $name, $filename);
 
-            $visitorinfo->passportPhoto = $filename;
-        }
+        //     $visitorinfo->passportPhoto = $filename;
+        // }
 
         $visitorinfo->companyID = $request->input('companyID');
         $visitorinfo->phoneNo = $request->input('phoneNo');

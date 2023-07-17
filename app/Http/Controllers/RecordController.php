@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\VisitRecord;
 use App\Models\AppointmentInfo;
 use App\Models\User;
+use App\Models\VisitorQrScan;
 use Carbon\Carbon;
 
 class RecordController extends Controller
@@ -33,12 +34,6 @@ class RecordController extends Controller
             ->get();
 
         return view('record.list_record', compact('recordliststaff'));
-    }
-
-    public function qrcode()
-    {
-        
-        return view('record.qr_code');
     }
 
     public function historyappointment()
@@ -142,5 +137,43 @@ class RecordController extends Controller
             ->get();
 
         return view('record.visitorlog', compact('visitorlog'));
+    }
+
+    //past record display table for user scan qr code
+    public function visitorlogqrcode()
+    {
+        // Set the timezone to Kuala Lumpur
+        $kl_timezone = 'Asia/Kuala_Lumpur';
+
+        // Get today's date in Kuala Lumpur timezone
+        $today_date = Carbon::now($kl_timezone)->toDateString();
+
+        $visitorlog = DB::table('visitorqrscan')
+            ->where('checkInDate', $today_date)
+            ->orderBy('id', 'desc')
+            ->get();
+
+        return view('record.visitorlogscanqr', compact('visitorlog'));
+    }
+
+    //checkout qr scan
+    public function checkoutQR($id)
+    {
+        $checkoutinfo = VisitorQrScan::find($id);
+
+        // Set the timezone to Kuala Lumpur
+        $kl_timezone = 'Asia/Kuala_Lumpur';
+
+        // Get today's date in Kuala Lumpur timezone
+        $today_date = Carbon::now($kl_timezone)->toDateString();
+        $time_now = Carbon::now($kl_timezone)->toTimeString();
+
+        $checkoutinfo->checkOutDate = $today_date;
+        $checkoutinfo->checkOutTime = $time_now;
+
+        $checkoutinfo->update();
+
+        // display message box in the same page
+        return redirect()->back()->with('message', 'Checkout updated');
     }
 }

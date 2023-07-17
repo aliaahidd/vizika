@@ -4,7 +4,7 @@
 <div class="page-header row no-gutters">
     <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
         <h1 class="page-title mb-3">Visitor Log</h1>
-        <h6>Visitor Log</h6>
+        <h6>Visitor Log Scan QR</h6>
     </div>
 </div>
 
@@ -42,10 +42,9 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Visitor Name</th>
-                                <th>KANEKA Staff</th>
+                                <th>Name</th>
+                                <th>Email</th>
                                 <th>Purpose</th>
-                                <th>Agenda</th>
                                 <th>Check-In</th>
                                 <th>Check-Out</th>
                             </tr>
@@ -54,12 +53,19 @@
                             @foreach($visitorlog As $key=>$data)
                             <tr id="row{{$data->id}}">
                                 <td>{{ $data->id }}</td>
-                                <td>{{ $data->cont_visit_name }}</td>
-                                <td>{{ $data->staff_name }}</td>
-                                <td>{{ $data->appointmentPurpose }}</td>
-                                <td>{{ $data->appointmentAgenda }}</td>
+                                <td>{{ $data->name }}</td>
+                                <td>{{ $data->email }}</td>
+                                <td>{{ $data->visitPurpose }}</td>
                                 <td>{{ $data->checkInDate }} {{ $data->checkInTime }} </td>
-                                <td>{{ $data->checkOutDate }} {{ $data->checkOutTime }} </td>
+                                <td>
+                                    @if($data->checkOutTime == NULL)
+                                    <div class="btn-group">
+                                        <a class="btn btn-primary" style="color: white" href="{{ route('checkoutQR', $data->id) }}">Check Out</a>&nbsp
+                                    </div>
+                                    @else
+                                    {{ $data->checkOutDate }} {{ $data->checkOutTime }}
+                                    @endif
+                                </td>
                             </tr>
                             @endforeach
                         </tbody>

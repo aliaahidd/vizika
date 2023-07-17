@@ -121,16 +121,18 @@ Route::get('/contractor/{id}', [App\Http\Controllers\AppointmentController::clas
 //RECORD VISIT
 //past record lisr
 Route::get('/Record', [App\Http\Controllers\RecordController::class, 'record'])->name('record');
-//qr code for visitor that come without appointment
-Route::get('/Qr-Code', [App\Http\Controllers\RecordController::class, 'qrcode'])->name('qrcode');
 //past appointment history page
 Route::get('/Appointment-History', [App\Http\Controllers\RecordController::class, 'historyappointment'])->name('historyappointment');
 //visitor log
 Route::get('/Visitor-Log', [App\Http\Controllers\RecordController::class, 'visitorlog'])->name('logvisitor');
+//visitor log scan qr
+Route::get('/Visitor-Log-Scan', [App\Http\Controllers\RecordController::class, 'visitorlogqrcode'])->name('logvisitorqrcode');
 //checkin user
 Route::post('/checkin-user/{id}', [App\Http\Controllers\RecordController::class, 'checkinuser'])->name('checkinuser');
 //checkout
 Route::get('/checkout/{id}', [App\Http\Controllers\RecordController::class, 'checkout'])->name('checkout');
+//checkout qr scan
+Route::get('/checkout-QR/{id}', [App\Http\Controllers\RecordController::class, 'checkoutQR'])->name('checkoutQR');
 
 //SAFTEY BRIEFING
 //safety briefing list 
@@ -209,8 +211,15 @@ Route::get('/Scan-Biometric/{id}', [App\Http\Controllers\BiometricController::cl
 //get data from scan image
 Route::get('/getPhoto/{userID}', [App\Http\Controllers\BiometricController::class, 'getUserInformation']);
 
+//QR CODE FOR VISITOR WITHOUT INVITATION
+//qr code for visitor that come without appointment
+Route::get('/Qr-Code', [App\Http\Controllers\QRCodeController::class, 'qrcode'])->name('qrcode');
 //QR Code
 Route::get('/qrcode', [App\Http\Controllers\QRCodeController::class, 'generateQrCode'])->name('generateQrCode');
+//visitor form that come without invitation
+Route::get('/Visitor-Form', [App\Http\Controllers\QRCodeController::class, 'visitorform'])->name('visitorform');
+//store additional visitor info
+Route::post('/visitor-form', [App\Http\Controllers\QRCodeController::class, 'storevisitorform'])->name('storevisitorform');
 
 //FINISH FORM
 //get data from scan image

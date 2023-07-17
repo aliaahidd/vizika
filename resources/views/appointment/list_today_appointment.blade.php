@@ -44,6 +44,7 @@
                                 <th>Visitor Name</th>
                                 <th>KANEKA Staff</th>
                                 <th>Purpose</th>
+                                <th>User Status</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -54,11 +55,34 @@
                                 <td>{{ $data->cont_visit_name }}</td>
                                 <td>{{ $data->staff_name }}</td>
                                 <td>{{ $data->appointmentPurpose }}</td>
+                                <td>
+                                    <div class="btn-group">
+                                        <!-- if status == pending then color status = blue -->
+                                        @if($data->status =='Active')
+                                        <div style="background-color: #d9f3ea; border-radius: 10px; display: flex; justify-content: center; align-items: center; margin: auto; width: 100px">
+                                            <label style=" color: #0bb37a; text-align: center; font-weight: bold" class="mb-1 mt-1">{{ $data->status }}</label>
+                                        </div>
+                                        <!-- if status == pending then color status = red -->
+                                        @elseif($data->status =='Blacklisted')
+                                        <div style="background-color: #ffe6e6; border-radius: 10px; display: flex; justify-content: center; align-items: center; margin: auto; width: 100px">
+                                            <label style=" color: #ff5b5b; text-align: center; font-weight: bold" class="mb-1 mt-1">{{ $data->status }}</label>
+                                        </div>
+                                        @endif
+                                    </div>
+                                </td>
 
                                 @if( $data->category == "Visitor")
+                                @if($data->status =='Active')
                                 <td><a class="btn btn-primary" style="color: white" href="{{ route('visitor.showV', $data->appointmentID) }}">View</a>
+                                    @else
+                                <td><a class="btn btn-primary" style="color: white" href="{{ route('visitor.showV', $data->appointmentID) }}" onclick="return false;">View</a>
+                                    @endif
                                     @elseif( $data->category == "Contractor")
+                                    @if($data->status =='Active')
                                 <td><a class="btn btn-primary" style="color: white" href="{{ route('contractor.showC', $data->appointmentID) }}">View</a>
+                                    @else
+                                <td><a class="btn btn-primary" style="color: white" href="{{ route('contractor.showC', $data->appointmentID) }}" onclick="return false;">View</a>
+                                    @endif
                                 </td>
                                 @endif
 

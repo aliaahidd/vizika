@@ -62,10 +62,10 @@
         <div class="col-md-3">
             <div class="card" style="padding: 20px; height: 450px">
                 <div class=" col-12">
-                    <h5>Passport Photo</h5>
+                    <h5>Photo</h5>
                     <hr>
                     <div style="margin: auto;">
-                        <img src="/assets/{{$usertype->name}}/{{$usertype->passportPhoto}}" width="200px">
+                        <img src="/assets/{{$usertype->name}}/{{$usertype->facialRecognition}}" width="200px">
                     </div>
                 </div>
             </div>
@@ -150,7 +150,7 @@
         <div class="col-md-3">
             <div class="card" style="padding: 20px; height: 400px">
                 <div style="margin: auto;">
-                    <img src="/assets/{{$usertype->name}}/{{$usertype->passportPhoto}}" width="200px">
+                    <img src="/assets/{{$usertype->name}}/{{$usertype->facialRecognition}}" width="200px">
                 </div>
             </div>
         </div>

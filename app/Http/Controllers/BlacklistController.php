@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\BlacklistVisitor;
+use App\Models\User;
 use App\Models\VisitorInfo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -78,9 +78,10 @@ class BlacklistController extends Controller
     {
         $visitor = DB::table('visitorinfo')
             ->join('users', 'users.id', '=', 'visitorinfo.userID')
+            ->join('biometricinfo', 'biometricinfo.userID', '=', 'users.id')
             ->select([
                 'users.id AS userID',
-                'visitorinfo.id AS vID', 'users.*', 'visitorinfo.*'
+                'visitorinfo.id AS vID', 'users.*', 'visitorinfo.*', 'biometricinfo.*'
             ])
             ->where('users.id', $id)
             ->first();
@@ -100,11 +101,12 @@ class BlacklistController extends Controller
     public function profilecontractor($id)
     {
         $contractor = DB::table('contractorinfo')
-        ->join('companyinfo', 'companyinfo.id', '=', 'contractorinfo.companyID')
+            ->join('companyinfo', 'companyinfo.id', '=', 'contractorinfo.companyID')
             ->join('users', 'users.id', '=', 'contractorinfo.userID')
+            ->join('biometricinfo', 'biometricinfo.userID', '=', 'users.id')
             ->select([
                 'users.id AS userID',
-                'contractorinfo.id AS cID', 'users.*', 'contractorinfo.*', 'companyinfo.*',
+                'contractorinfo.id AS cID', 'users.*', 'contractorinfo.*', 'companyinfo.*', 'biometricinfo.*'
             ])
             ->where('users.id', $id)
             ->first();
@@ -124,6 +126,10 @@ class BlacklistController extends Controller
     //blacklist reason
     public function blacklist(Request $request, $id)
     {
+        $userStatus = User::where('id', $id)->first();
+        $userStatus->status = 'Blacklisted';
+        $userStatus->update();
+
         $blacklist = VisitorInfo::find($id);
         $blacklistReason = $request->input('blacklistReason');
 
@@ -141,6 +147,10 @@ class BlacklistController extends Controller
 
     public function unblacklist($id)
     {
+        $userStatus = User::where('id', $id)->first();
+        $userStatus->status = 'Active';
+        $userStatus->update();
+
         $blacklist = DB::table('blacklistvisitor')
             ->where('userID', $id)
             ->first();

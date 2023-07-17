@@ -23,7 +23,16 @@
         </div>
 
         <div class="card-body">
-            <img id="qrCodeImage" src="" alt="QR Code">
+            <form class="text-center" action="{{route('generateQrCode')}}" method="get" accept-charset="utf-8">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h2>QR Code - Visitor</h2>
+                        <button class="btn btn-success" type="submit">Generate</button>
+                        <a href="{{asset('qrcode.png')}}" class="btn btn-primary" download>Download</a><br>
+                        <img class="img-thumbnail" src="{{asset('assets/qr/qrcode.png')}}" width="300" height="300" style="margin-top: 20px">
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 </body>
@@ -47,14 +56,6 @@
             }
         });
     });
-</script>
-<script>
-    function refreshQRCode() {
-        const img = document.getElementById('qrCodeImage');
-        img.src = '/qrcode?' + Date.now();
-    }
-
-    setInterval(refreshQRCode, 60000); // Refresh every 1 minute (60000 milliseconds)
 </script>
 
 @endsection
