@@ -5,7 +5,7 @@
 <div class="page-header row no-gutters pb-4">
     <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
         <h1 class="page-title mb-3">Visitor & Contractor</h1>
-        <h6>List Visitor & Contractor</h6>
+        <h6>List Visitor & Contractor (Registered by me)</h6>
     </div>
 </div>
 
@@ -38,7 +38,7 @@
                             <a class="nav-link {{ request()->routeIs('userlist') && !request()->has('type') ? 'active' : '' }}" href="{{ route('userlist') }}" role="tab" aria-selected="true">All user</a>
                         </li>
                         <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('registeredby') && !request()->has('type') ? 'active' : '' }}" href="{{ route('registeredby') }}" role="tab" aria-selected="true">Registered by me</a>
+                            <a class="nav-link {{ request()->routeIs('registeredby') && !request()->has('type') ? 'active' : '' }}" href="{{ route('registeredby') }}" role="tab" aria-selected="true">Registered by me</a>
                         </li>
                     </ul>
                 </nav>
@@ -58,6 +58,8 @@
                             <th>Name</th>
                             <th>Email</th>
                             <th>Type</th>
+                            <th>Status</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -67,6 +69,30 @@
                             <td>{{ $data->name }}</td>
                             <td>{{ $data->email }}</td>
                             <td>{{ $data->category }}</td>
+                            @if( $data->status == 'Registered')
+                            <td>
+                                <div style="background-color: #dff0fa; border-radius: 10px; display: flex; justify-content: center; align-items: center; margin: auto; width: 100px">
+                                    <label style=" color: #2d9cdb; text-align: center; font-weight: bold" class="mb-1 mt-1">{{ $data->status }}</label>
+                                </div>
+                            </td>
+                            @elseif( $data->status == 'Pending')
+                            <td>
+                                <div style="background-color: #fef6d9; border-radius: 10px; display: flex; justify-content: center; align-items: center; margin: auto; width: 100px">
+                                    <label style=" color: #f2c204; text-align: center; font-weight: bold" class="mb-1 mt-1">{{ $data->status }}</label>
+                                </div>
+                            </td>
+                            @elseif( $data->status == 'Active')
+                            <td>
+                                <div style="background-color: #d9f3ea; border-radius: 10px; display: flex; justify-content: center; align-items: center; margin: auto; width: 100px">
+                                    <label style=" color: #0bb37a; text-align: center; font-weight: bold" class="mb-1 mt-1">{{ $data->status }}</label>
+                                </div>
+                            </td>
+                            @endif
+                            @if( $data->status == 'Registered')
+                            <td><button class="btn btn-primary" disabled>View</button></td>
+                            @else
+                            <td><a class="btn btn-primary" href="{{ route('registeredprofile', [$data->id]) }}">View</a></td>
+                            @endif
                         </tr>
                         @endforeach
                     </tbody>

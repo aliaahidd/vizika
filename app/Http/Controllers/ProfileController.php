@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use App\Mail\EmailUserApproval;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
@@ -22,12 +24,14 @@ class ProfileController extends Controller
         $contractor = DB::table('contractorinfo')
             ->join('users', 'users.id', '=', 'contractorinfo.userID')
             ->join('companyinfo', 'companyinfo.id', '=', 'contractorinfo.companyID')
+            ->join('biometricinfo', 'biometricinfo.userID', '=', 'users.id')
             ->where('users.id', $id)
             ->first();
 
         $visitor = DB::table('visitorinfo')
             ->join('users', 'users.id', '=', 'visitorinfo.userID')
             ->join('companyinfo', 'companyinfo.id', '=', 'visitorinfo.companyID')
+            ->join('biometricinfo', 'biometricinfo.userID', '=', 'users.id')
             ->where('users.id', $id)
             ->first();
 
@@ -49,10 +53,11 @@ class ProfileController extends Controller
         $contractor = DB::table('contractorinfo')
             ->join('users', 'users.id', '=', 'contractorinfo.userID')
             ->join('companyinfo', 'companyinfo.id', '=', 'contractorinfo.companyID')
+            ->join('biometricinfo', 'biometricinfo.userID', '=', 'users.id')
             ->select([
                 'users.id AS sessionID',
                 'companyinfo.id AS companyID',
-                'contractorinfo.id AS contID', 'users.*', 'contractorinfo.*', 'companyinfo.*'
+                'contractorinfo.id AS contID', 'users.*', 'contractorinfo.*', 'companyinfo.*', 'biometricinfo.*'
             ])
             ->where('users.id', $id)
             ->first();
@@ -60,10 +65,11 @@ class ProfileController extends Controller
         $visitor = DB::table('visitorinfo')
             ->join('users', 'users.id', '=', 'visitorinfo.userID')
             ->join('companyinfo', 'companyinfo.id', '=', 'visitorinfo.companyID')
+            ->join('biometricinfo', 'biometricinfo.userID', '=', 'users.id')
             ->select([
                 'users.id AS sessionID',
                 'companyinfo.id AS companyID',
-                'visitorinfo.id AS visitID', 'users.*', 'visitorinfo.*', 'companyinfo.*'
+                'visitorinfo.id AS visitID', 'users.*', 'visitorinfo.*', 'companyinfo.*', 'biometricinfo.*'
             ])
             ->where('users.id', $id)
             ->first();
@@ -72,7 +78,7 @@ class ProfileController extends Controller
     }
 
     //choose visitor form page
-    public function userlist(Request $request)
+    public function userlist()
     {
         $visitorlist = DB::table('users')
             ->where('category', 'Visitor')
@@ -81,6 +87,79 @@ class ProfileController extends Controller
             ->get();
 
         return view('profile.user_list', compact('visitorlist'));
+    }
+
+    //choose visitor form page (registered by staff)
+    public function registeredby()
+    {
+        $id = Auth::user()->id;
+
+        $visitorlist = DB::table('users')
+            ->where('category', 'Visitor')
+            ->orwhere('category', 'Contractor')
+            ->where('recommendedBy', $id)
+            ->orderBy('name', 'asc')
+            ->get();
+
+        return view('profile.registeredby', compact('visitorlist'));
+    }
+
+    public function registeredprofile($id)
+    {
+        $usertype = DB::table('users')
+        ->where('id', $id)
+        ->first();
+
+        $visitor = DB::table('visitorinfo')
+            ->join('users', 'users.id', '=', 'visitorinfo.userID')
+            ->join('companyinfo', 'companyinfo.id', '=', 'visitorinfo.companyID')
+            ->join('biometricinfo', 'biometricinfo.userID', '=', 'users.id')
+            ->select([
+                'users.id AS sessionID',
+                'companyinfo.id AS companyID',
+                'visitorinfo.id AS visitID', 'users.*', 'visitorinfo.*', 'companyinfo.*', 'biometricinfo.*'
+            ])
+            ->where('users.id', $id)
+            ->first();
+
+        $contractor = DB::table('contractorinfo')
+            ->join('users', 'users.id', '=', 'contractorinfo.userID')
+            ->join('companyinfo', 'companyinfo.id', '=', 'contractorinfo.companyID')
+            ->join('biometricinfo', 'biometricinfo.userID', '=', 'users.id')
+            ->select([
+                'users.id AS sessionID',
+                'companyinfo.id AS companyID',
+                'contractorinfo.id AS contID', 'users.*', 'contractorinfo.*', 'companyinfo.*', 'biometricinfo.*'
+            ])
+            ->where('users.id', $id)
+            ->first();
+
+
+        return view('profile.profile_registered', compact('usertype', 'visitor', 'contractor'));
+    }
+
+    public function approveuser($id)
+    {
+        $userStatus = User::where('id', $id)->first();
+        $userStatus->status = 'Active';
+        $userStatus->update();
+
+        //send email
+        $data = array(
+            'name'                =>  $userStatus->name,
+            'email'               =>  $userStatus->email,
+        );
+
+        $to = [
+            [
+                'email' => $userStatus->email,
+            ]
+        ];
+
+        //send email 
+        Mail::to($to)->send(new EmailUserApproval($data));
+
+        return redirect()->route('registeredby');
     }
 
     public function registeruserform()
@@ -93,6 +172,8 @@ class ProfileController extends Controller
     {
         // create visitor account 
         // get user auth
+        $id = Auth::user()->id;
+
         $name = $request->input('name');
         $email = $request->input('email');
         $category = $request->input('category');
@@ -121,6 +202,8 @@ class ProfileController extends Controller
             'email' => $email,
             'password' => Hash::make('visitor123'),
             'category' => $category,
+            'status' => 'Registered',
+            'recommendedBy' => $id,
         );
 
         // insert query
@@ -240,25 +323,25 @@ class ProfileController extends Controller
 
             $contractorinfo = ContractorInfo::where('userID', $id)->first();
 
-            if ($request->hasFile('passportPhoto')) {
-                $name = Auth::user()->name;
-                //unlink the old contractorinfo file from assets folder
-                $path = public_path() . '/assets/' . $name . $contractorinfo->passportPhoto;
-                if (file_exists($path)) {
-                    unlink($path);
-                }
+            // if ($request->hasFile('passportPhoto')) {
+            //     $name = Auth::user()->name;
+            //     //unlink the old contractorinfo file from assets folder
+            //     $path = public_path() . '/assets/' . $name . $contractorinfo->passportPhoto;
+            //     if (file_exists($path)) {
+            //         unlink($path);
+            //     }
 
-                $name = Auth::user()->name;
+            //     $name = Auth::user()->name;
 
-                $contractorinfo->passportPhoto = $request->file('passportPhoto');
+            //     $contractorinfo->passportPhoto = $request->file('passportPhoto');
 
-                //to rename the contractorinfo file
-                $filename = time() . '.' . $contractorinfo->passportPhoto->getClientOriginalExtension();
-                // to store the new file by moving to assets folder
-                $request->passportPhoto->move('assets/' . $name, $filename);
+            //     //to rename the contractorinfo file
+            //     $filename = time() . '.' . $contractorinfo->passportPhoto->getClientOriginalExtension();
+            //     // to store the new file by moving to assets folder
+            //     $request->passportPhoto->move('assets/' . $name, $filename);
 
-                $contractorinfo->passportPhoto = $filename;
-            }
+            //     $contractorinfo->passportPhoto = $filename;
+            // }
 
             if ($request->hasFile('validityPassImg')) {
                 //unlink the old contractorinfo file from assets folder
@@ -290,22 +373,26 @@ class ProfileController extends Controller
             return redirect()->route('registerBiometric');
         }
 
+        $userStatus = User::where('id', $id)->first();
+        $userStatus->status = 'Pending';
+        $userStatus->update();
+
         $companyID = $request->input('companyID');
         $employeeNo = $request->input('employeeNo');
         $phonenumber = $request->input('phoneNo');
         $expiryDate = $request->input('validityPass');
         $birthDate = $request->input('birthDate');
         $address = $request->input('address');
-        $passportPhoto = $request->file('contractorImg');
+        // $passportPhoto = $request->file('contractorImg');
         $validityPass = $request->file('validityPassImg');
 
-        $name = Auth::user()->name;
+        // $name = Auth::user()->name;
 
-        // to rename the contractorinfo file
-        $filename = time() . '.' . $passportPhoto->getClientOriginalExtension();
+        // // to rename the contractorinfo file
+        // $filename = time() . '.' . $passportPhoto->getClientOriginalExtension();
 
-        // to store the file by moving to assets folder
-        $passportPhoto->move('assets/' . $name, $filename);
+        // // to store the file by moving to assets folder
+        // $passportPhoto->move('assets/' . $name, $filename);
 
         // to rename the contractorinfo file
         $filename2 = time() . '.' . $validityPass->getClientOriginalExtension();
@@ -321,7 +408,7 @@ class ProfileController extends Controller
             'passExpiryDate' => $expiryDate,
             'birthDate' => $birthDate,
             'address' => $address,
-            'passportPhoto' => $filename,
+            // 'passportPhoto' => $filename,
             'validityPassPhoto' => $filename2,
         );
 
@@ -342,26 +429,26 @@ class ProfileController extends Controller
 
             $visitorinfo = VisitorInfo::where('userID', $id)->first();
 
-            if ($request->hasFile('passportPhoto')) {
-                $name = Auth::user()->name;
+            // if ($request->hasFile('passportPhoto')) {
+            //     $name = Auth::user()->name;
 
-                //unlink the old visitorinfo file from assets folder
-                $path = public_path() . '/assets/' . $name . $visitorinfo->passportPhoto;
-                if (file_exists($path)) {
-                    unlink($path);
-                }
+            //     //unlink the old visitorinfo file from assets folder
+            //     $path = public_path() . '/assets/' . $name . $visitorinfo->passportPhoto;
+            //     if (file_exists($path)) {
+            //         unlink($path);
+            //     }
 
-                $name = Auth::user()->name;
+            //     $name = Auth::user()->name;
 
-                $visitorinfo->passportPhoto = $request->file('passportPhoto');
+            //     $visitorinfo->passportPhoto = $request->file('passportPhoto');
 
-                //to rename the visitorinfo file
-                $filename = time() . '.' . $visitorinfo->passportPhoto->getClientOriginalExtension();
-                // to store the new file by moving to assets folder
-                $request->passportPhoto->move('assets/' . $name, $filename);
+            //     //to rename the visitorinfo file
+            //     $filename = time() . '.' . $visitorinfo->passportPhoto->getClientOriginalExtension();
+            //     // to store the new file by moving to assets folder
+            //     $request->passportPhoto->move('assets/' . $name, $filename);
 
-                $visitorinfo->passportPhoto = $filename;
-            }
+            //     $visitorinfo->passportPhoto = $filename;
+            // }
 
             $visitorinfo->companyID = $request->input('companyID');
             $visitorinfo->phoneNo = $request->input('phoneNo');
@@ -376,21 +463,25 @@ class ProfileController extends Controller
             return redirect()->route('registerBiometric');
         }
 
+        $userStatus = User::where('id', $id)->first();
+        $userStatus->status = 'Pending';
+        $userStatus->update();
+
         $employeeNo = $request->input('employeeNo');
         $companyID = $request->input('companyID');
         $occupation = $request->input('occupation');
         $phonenumber = $request->input('phoneNo');
         $birthDate = $request->input('birthDate');
         $address = $request->input('address');
-        $passportPhoto = $request->file('visitorImg');
+        // $passportPhoto = $request->file('visitorImg');
 
-        $name = Auth::user()->name;
+        // $name = Auth::user()->name;
 
-        // to rename the contractorinfo file
-        $filename = time() . '.' . $passportPhoto->getClientOriginalExtension();
+        // // to rename the contractorinfo file
+        // $filename = time() . '.' . $passportPhoto->getClientOriginalExtension();
 
-        // to store the file by moving to assets folder
-        $passportPhoto->move('assets/' . $name, $filename);
+        // // to store the file by moving to assets folder
+        // $passportPhoto->move('assets/' . $name, $filename);
 
         $data = array(
             'userID' => $id,
@@ -400,7 +491,7 @@ class ProfileController extends Controller
             'phoneNo' => $phonenumber,
             'birthDate' => $birthDate,
             'address' => $address,
-            'passportPhoto' => $filename,
+            // 'passportPhoto' => $filename,
         );
 
         // insert query

@@ -147,6 +147,12 @@
                             </ul>
                         </div>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('qrcode*') ? 'active' : '' }}" href="{{ route('qrcode') }}">
+                            <i class="material-icons">qr_code_scanner</i>
+                            <span>QR Code</span>
+                        </a>
+                    </li>
                     @endif
 
                     @if( auth()->user()->category== "Staff")
@@ -200,9 +206,9 @@
                                 @if(Auth::user()->category == "Staff" || Auth::user()->category == "SHEQ Officer" || Auth::user()->category == "SHEQ Guard")
                                 <img class="user-avatar rounded-circle mr-2" src="{{ asset('frontend') }}/images/avatar.jpg" alt="Avatar" width="30px" height="30px" style="vertical-align:baseline">
                                 @elseif(Auth::user()->category == "Contractor")
-                                <img class="user-avatar rounded-circle mr-2" src="/assets/{{Auth::user()->name}}/{{Auth::user()->contractor->passportPhoto}}" alt="Avatar" height="30px" width="30px" style="vertical-align:baseline; border: 1px solid #000000; ">
+                                <img class="user-avatar rounded-circle mr-2" src="/assets/{{Auth::user()->name}}/{{Auth::user()->contractor->facialRecognition}}" alt="Avatar" height="30px" width="30px" style="vertical-align:baseline; border: 1px solid #000000; ">
                                 @elseif(Auth::user()->category == "Visitor")
-                                <img class="user-avatar rounded-circle mr-2" src="/assets/{{Auth::user()->name}}/{{Auth::user()->visitor->passportPhoto}}" alt="Avatar" height="30px" width="30px" style="vertical-align:baseline; border: 1px solid #000000; ">
+                                <img class="user-avatar rounded-circle mr-2" src="/assets/{{Auth::user()->name}}/{{Auth::user()->visitor->facialRecognition}}" alt="Avatar" height="30px" width="30px" style="vertical-align:baseline; border: 1px solid #000000; ">
                                 @endif
                                 <span class="d-none d-md-inline-block"><strong>{{ Auth::user()->name }}</strong><br> {{Auth::user()->category}}</span>
                             </a>

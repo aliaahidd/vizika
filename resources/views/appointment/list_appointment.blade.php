@@ -67,18 +67,20 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Appointment Date</th>
-                                <th>Appointment Time</th>
-                                <th>Appointment Purpose</th>
-                                <th>Appointment Agenda</th>
+                                <th>Date</th>
+                                <th>Time</th>
+                                <th>Purpose</th>
+                                <th>Agenda</th>
                                 <th>Visitor</th>
                                 <th>Status</th>
+                                <th>Bring laptop?</th>
+                                <th>Approval</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach($appointmentStaff As $key=>$data)
                             <tr id="row{{$data->id}}">
-                                <td>{{ $data->appointmentID }}</td>
+                                <td>{{ $data->appointID }}</td>
                                 <td>{{ $data->appointmentDate }}</td>
                                 <td>{{ $data->appointmentTime }}</td>
                                 <td>{{ $data->appointmentPurpose }}</td>
@@ -104,6 +106,34 @@
                                         @endif
                                     </div>
                                 </td>
+                                <td>
+                                    @if($data->appointmentStatus == 'Pending')
+                                    N/A
+                                    @else
+                                    {{ $data->bringLaptop }}
+                                    @endif
+                                </td>
+                                <td>
+                                    <div class="btn-group">
+                                        <!-- if status == pending then color status = blue -->
+                                        @if($data->status =='Pending')
+                                        <a class="btn btn-success" style="color: white" href="{{ route('approveLaptop', $data->appointID) }}">Approve</a>&nbsp
+                                        <a class="btn btn-danger" style="color: white" href="{{ route('rejectLaptop', $data->appointID) }}">Reject</a>
+                                        <!-- if status == pending then color status = green -->
+                                        @elseif($data->status =='Approved')
+                                        <div style="background-color: #d9f3ea; border-radius: 10px; display: flex; justify-content: center; align-items: center; margin: auto; width: 100px">
+                                            <label style=" color: #0bb37a; text-align: center; font-weight: bold" class="mb-1 mt-1">{{ $data->status }}</label>
+                                        </div>
+                                        <!-- if status == pending then color status = red -->
+                                        @elseif($data->status =='Rejected')
+                                        <div style="background-color: #ffe6e6; border-radius: 10px; display: flex; justify-content: center; align-items: center; margin: auto; width: 100px">
+                                            <label style=" color: #ff5b5b; text-align: center; font-weight: bold" class="mb-1 mt-1">{{ $data->status }}</label>
+                                        </div>
+                                        @else
+                                        N/A
+                                        @endif
+                                    </div>
+                                </td>
                             </tr>
                             @endforeach
                         </tbody>
@@ -118,18 +148,21 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Appointment Date</th>
-                                <th>Appointment Time</th>
-                                <th>Appointment Name</th>
-                                <th>Appointment Purpose</th>
-                                <th>KANEKA Staff</th>
+                                <th>Date</th>
+                                <th>Time</th>
+                                <th>Name</th>
+                                <th>Purpose</th>
+                                <th>Staff</th>
                                 <th>Status</th>
+                                <th>Bring laptop?</th>
+                                <th>Approval</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach($appointmentVisitor as $key => $data)
-                            <tr id="row{{$data->id}}">
-                                <td>{{ $data->id }}</td>
+                            <tr id="row{{$data->appointID}}">
+                                <td>{{ $data->appointID }}</td>
                                 <td>{{ $data->appointmentDate }}</td>
                                 <td>{{ $data->appointmentTime }}</td>
                                 <td>{{ $data->appointmentPurpose }}</td>
@@ -137,19 +170,55 @@
                                 <td>{{ $data->name }}</td>
                                 <td>
                                     <div class="btn-group">
+                                        <!-- if status == pending then color status = blue -->
                                         @if($data->appointmentStatus =='Pending')
-                                        <a class="btn btn-success" style="color: white" href="{{ route('attendvisit', $data->appointmentID) }}">Attend</a>&nbsp
-                                        <a class="btn btn-danger" style="color: white" href="{{ route('notattendvisit', $data->appointmentID) }}">Not Attend</a>
+                                        <div style="background-color: #dff0fa; border-radius: 10px; display: flex; justify-content: center; align-items: center; margin: auto; width: 100px">
+                                            <label style=" color: #2d9cdb; text-align: center; font-weight: bold" class="mb-1 mt-1">{{ $data->appointmentStatus }}</label>
+                                        </div>
+                                        <!-- if status == pending then color status = green -->
                                         @elseif($data->appointmentStatus =='Attend')
                                         <div style="background-color: #d9f3ea; border-radius: 10px; display: flex; justify-content: center; align-items: center; margin: auto; width: 100px">
-                                            <label style="color: #0bb37a; text-align: center; font-weight: bold" class="mb-1 mt-1">{{ $data->appointmentStatus }}</label>
+                                            <label style=" color: #0bb37a; text-align: center; font-weight: bold" class="mb-1 mt-1">{{ $data->appointmentStatus }}</label>
                                         </div>
+                                        <!-- if status == pending then color status = red -->
                                         @elseif($data->appointmentStatus =='Not Attend')
                                         <div style="background-color: #ffe6e6; border-radius: 10px; display: flex; justify-content: center; align-items: center; margin: auto; width: 100px">
-                                            <label style="color: #ff5b5b; text-align: center; font-weight: bold" class="mb-1 mt-1">{{ $data->appointmentStatus }}</label>
+                                            <label style=" color: #ff5b5b; text-align: center; font-weight: bold" class="mb-1 mt-1">{{ $data->appointmentStatus }}</label>
                                         </div>
                                         @endif
                                     </div>
+                                </td>
+                                <td>
+                                    @if($data->appointmentStatus == 'Pending')
+                                    N/A
+                                    @else
+                                    {{ $data->bringLaptop }}
+                                    @endif
+                                </td>
+                                <td>
+                                    <div class="btn-group">
+                                        <!-- if status == pending then color status = blue -->
+                                        @if($data->status =='Pending')
+                                        <div style="background-color: #dff0fa; border-radius: 10px; display: flex; justify-content: center; align-items: center; margin: auto; width: 100px">
+                                            <label style=" color: #2d9cdb; text-align: center; font-weight: bold" class="mb-1 mt-1">{{ $data->status }}</label>
+                                        </div>
+                                        <!-- if status == pending then color status = green -->
+                                        @elseif($data->status =='Approved')
+                                        <div style="background-color: #d9f3ea; border-radius: 10px; display: flex; justify-content: center; align-items: center; margin: auto; width: 100px">
+                                            <label style=" color: #0bb37a; text-align: center; font-weight: bold" class="mb-1 mt-1">{{ $data->status }}</label>
+                                        </div>
+                                        <!-- if status == pending then color status = red -->
+                                        @elseif($data->status =='Rejected')
+                                        <div style="background-color: #ffe6e6; border-radius: 10px; display: flex; justify-content: center; align-items: center; margin: auto; width: 100px">
+                                            <label style=" color: #ff5b5b; text-align: center; font-weight: bold" class="mb-1 mt-1">{{ $data->status }}</label>
+                                        </div>
+                                        @else
+                                        N/A
+                                        @endif
+                                    </div>
+                                </td>
+                                <td>
+                                    <a href="{{ route('appointmentdetails', $data->appointID) }}" class="btn btn-primary">View</a>
                                 </td>
                             </tr>
                             @endforeach

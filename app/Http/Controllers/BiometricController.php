@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use App\Mail\EmailWaitingApproval;
 use App\Models\BiometricInfo;
 use App\Models\ContractorInfo;
 
@@ -85,6 +87,26 @@ class BiometricController extends Controller
         $image->userID = $userID;
         $image->facialRecognition = $fileName;
         $image->save();
+
+        //send email
+        $staff = DB::table('users')
+        ->join('users as staff', 'users.recommendedby', '=', 'staff.id')
+        ->where('users.id', Auth::user()->id)
+        ->first();
+
+        $data = array(
+            'name'                =>  $staff->name,
+            'email'               =>  $staff->email,
+        );
+
+        $to = [
+            [
+                'email' => $staff->email,
+            ]
+        ];
+
+        //send email 
+        Mail::to($to)->send(new EmailWaitingApproval($data));
 
         return response()->json(['message' => 'Image saved successfully']);
     }

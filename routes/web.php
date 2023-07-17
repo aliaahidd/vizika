@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 /*
@@ -52,6 +53,12 @@ Route::get('/Profile/{id}', [App\Http\Controllers\ProfileController::class, 'loa
 Route::get('/Profile/Edit-Profile/{id}', [App\Http\Controllers\ProfileController::class, 'editprofile'])->name('editprofile');
 //choose visitor page load
 Route::get('/User-List', [App\Http\Controllers\ProfileController::class, 'userlist'])->name('userlist');
+//choose visitor page load
+Route::get('/Registered-List', [App\Http\Controllers\ProfileController::class, 'registeredby'])->name('registeredby');
+//view detail for approval from staff
+Route::get('/Registered-User-Profile/{id}', [App\Http\Controllers\ProfileController::class, 'registeredprofile'])->name('registeredprofile');
+//approve user 
+Route::get('approveuser/{id}', [App\Http\Controllers\ProfileController::class, 'approveuser'])->name('approveuser');
 //register visitor page load
 Route::get('/Register-User', [App\Http\Controllers\ProfileController::class, 'registeruserform'])->name('registeruserform');
 //register visitor (insert)
@@ -81,6 +88,8 @@ Route::delete('/deletestaff/{id}', [App\Http\Controllers\ProfileController::clas
 //APPOINTMENT
 //appointment page
 Route::get('/Appointment', [App\Http\Controllers\AppointmentController::class, 'appointment'])->name('appointment');
+//appointment details page
+Route::get('/Appointment-Details/{id}', [App\Http\Controllers\AppointmentController::class, 'appointmentdetails'])->name('appointmentdetails');
 //appointment page
 Route::get('/Appointment-Today', [App\Http\Controllers\AppointmentController::class, 'appointmenttoday'])->name('appointment/today');
 //query insert appointment multiple 
@@ -91,6 +100,14 @@ Route::get('/Appointment/Create-appointment', [App\Http\Controllers\AppointmentC
 Route::get('/Attend-visit/{id}', [App\Http\Controllers\AppointmentController::class, 'attendvisit'])->name('attendvisit');
 //route to the not aattend the visit
 Route::get('/Not-attend-visit/{id}', [App\Http\Controllers\AppointmentController::class, 'notattendvisit'])->name('notattendvisit');
+//laptop info
+Route::post('/Laptop-info/{id}', [App\Http\Controllers\AppointmentController::class, 'laptopinfo'])->name('laptopinfo');
+//laptop info
+Route::post('/Vehicle-info/{id}', [App\Http\Controllers\AppointmentController::class, 'vehicleinfo'])->name('vehicleinfo');
+//route to approve laptop
+Route::get('/Approve-Laptop/{id}', [App\Http\Controllers\AppointmentController::class, 'approveLaptop'])->name('approveLaptop');
+//route to reject laptop
+Route::get('/Reject-Laptop/{id}', [App\Http\Controllers\AppointmentController::class, 'rejectLaptop'])->name('rejectLaptop');
 // //show modal visitor
 // Route::get('/visitor/{id}', [App\Http\Controllers\AppointmentController::class, 'modalVisitor'])->name('visitor.showV');
 // //show modal contractor
@@ -104,6 +121,8 @@ Route::get('/contractor/{id}', [App\Http\Controllers\AppointmentController::clas
 //RECORD VISIT
 //past record lisr
 Route::get('/Record', [App\Http\Controllers\RecordController::class, 'record'])->name('record');
+//qr code for visitor that come without appointment
+Route::get('/Qr-Code', [App\Http\Controllers\RecordController::class, 'qrcode'])->name('qrcode');
 //past appointment history page
 Route::get('/Appointment-History', [App\Http\Controllers\RecordController::class, 'historyappointment'])->name('historyappointment');
 //visitor log
@@ -190,8 +209,16 @@ Route::get('/Scan-Biometric/{id}', [App\Http\Controllers\BiometricController::cl
 //get data from scan image
 Route::get('/getPhoto/{userID}', [App\Http\Controllers\BiometricController::class, 'getUserInformation']);
 
+//QR Code
+Route::get('/qrcode', [App\Http\Controllers\QRCodeController::class, 'generateQrCode'])->name('generateQrCode');
+
 //FINISH FORM
 //get data from scan image
 Route::get('/finish-form', function () {
-    return view('layouts.finishform');
+    $recommend = DB::table('users')
+        ->join('users as recommended', 'users.recommendedby', '=', 'recommended.id')
+        ->where('users.id', Auth::user()->id)
+        ->first();
+
+    return view('layouts.finishform',  compact('recommend'));
 })->name('finishform');

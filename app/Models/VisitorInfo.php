@@ -18,6 +18,5 @@ class VisitorInfo extends Model
         'phoneNo',
         'birthDate',
         'address',
-        'passportPhoto',
     ];
 }

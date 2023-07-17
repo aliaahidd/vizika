@@ -1,5 +1,10 @@
 @extends('layouts.app')
-
+<a class="text-danger" href="{{ route('logout') }}" style="display: block; padding: 10px" onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+    <i class="material-icons text-danger">&#xE879;</i> Logout </a>
+<form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+    @csrf
+</form>
 @section('content')
 <div class="container">
     <ul class="steps">
@@ -24,11 +29,20 @@
                 <h4>Thank you for completing the form!</h4>
             </div>
             <div class="row justify-content-center mt-4" style="margin-bottom: 50">
-                @if(Auth::user()->category == 'Contractor')
-                <a class="btn btn-primary" style="color: white" href="{{route('dashboardContractor')}}">Finish</a>
-                @elseif(Auth::user()->category == 'Visitor')
-                <a class="btn btn-primary" style="color: white" href="{{route('dashboardVisitor')}}">Finish</a>
-                @endif
+                <h6>Your registration is currently pending approval. Please wait for up to 24 hours for the approval process to be completed. </h6>
+
+                <h6>In the meantime, we kindly request you to reach out to the recommended person for registration approval.</h6>
+
+                <h6>We appreciate your patience and understanding.</h6>
+            </div>
+            <div class="row justify-content-center mt-4">
+                <h6>Recommended by:</h6>
+            </div>
+            <div class="row justify-content-center mt-4">
+                <h6>Name: {{ $recommend->name }}</h6>
+            </div>
+            <div class="row justify-content-center" style="margin-bottom: 50">
+                <h6>Email: {{ $recommend->email }}</h6>
             </div>
         </div>
     </div>

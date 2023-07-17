@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('appointmentAgenda');
             $table->date('appointmentDate');
             $table->time('appointmentTime');
+            $table->string('bringVehicle');
+            $table->string('bringLaptop');
             $table->string('appointmentStatus');
             $table->timestamps();
         });

@@ -11,15 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('visitorinfo', function (Blueprint $table) {
+        Schema::create('laptopinfo', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('userID');
-            $table->bigInteger('companyID');
-            $table->string('employeeNo');
-            $table->string('occupation');
-            $table->string('phoneNo');
-            $table->date('birthDate');
-            $table->string('address');
+            $table->bigInteger('appointmentID');
+            $table->string('laptopBrand');
+            $table->string('laptopModel');
+            $table->string('laptopColor');
+            $table->string('laptopSerialNo');
+            $table->string('status');
             $table->timestamps();
         });
     }
@@ -29,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('visitorinfo');
+        Schema::dropIfExists('laptopinfo');
     }
 };

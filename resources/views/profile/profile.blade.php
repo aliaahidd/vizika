@@ -23,7 +23,7 @@
                         <h5>Passport Photo</h5>
                         <hr>
                         <div style="margin: auto;">
-                            <img src="/assets/{{$contractor->name}}/{{$contractor->passportPhoto}}" width="200px">
+                            <img src="/assets/{{$contractor->name}}/{{$contractor->facialRecognition}}" width="200px">
                         </div>
                     </div>
                 </div>
@@ -137,7 +137,7 @@
             <div class="col-md-3 mb-3">
                 <div class="card" style="padding: 20px; height: 430px">
                     <div style="margin: auto;">
-                        <img src="/assets/{{$visitor->name}}/{{$visitor->passportPhoto}}" width="200px">
+                        <img src="/assets/{{$visitor->name}}/{{$visitor->facialRecognition}}" width="200px">
                     </div>
                 </div>
             </div>

@@ -33,7 +33,7 @@
                         <div class="col-md-12">
                             <label for="name">Passport Photo</label>
                             <input type="file" name="passportPhoto" class="form-control mb-4" accept="image/*" onchange="loadImage(this)">
-                            <img id="imgPreview" src="/assets/{{Auth::user()->name}}/{{$contractor->passportPhoto}}" width="100%">
+                            <img id="imgPreview" src="/assets/{{Auth::user()->name}}/{{$contractor->facialRecognition}}" width="100%">
                         </div>
                     </div>
                 </div>
@@ -120,7 +120,7 @@
                         <div class="col-md-12">
                             <label for="name">Passport Photo</label>
                             <input type="file" name="passportPhoto" class="form-control mb-4" accept="image/*" onchange="loadImage(this)">
-                            <img id="imgPreview" src="/assets/{{Auth::user()->name}}/{{$visitor->passportPhoto}}" width="100%">
+                            <img id="imgPreview" src="/assets/{{Auth::user()->name}}/{{$visitor->facialRecognition}}" width="100%">
                         </div>
                     </div>
                 </div>

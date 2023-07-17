@@ -35,6 +35,12 @@ class RecordController extends Controller
         return view('record.list_record', compact('recordliststaff'));
     }
 
+    public function qrcode()
+    {
+        
+        return view('record.qr_code');
+    }
+
     public function historyappointment()
     {
         $historyappointment = DB::table('visitrecord')

@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Mail\SendEmail;
 use App\Models\AppointmentInfo;
+use App\Models\LaptopInfo;
 use App\Models\User;
 use Carbon\Carbon;
 
@@ -19,13 +20,49 @@ class AppointmentController extends Controller
         //staff view 
         $appointmentStaff = DB::table('appointmentinfo')
             ->join('users', 'users.id', '=', 'appointmentinfo.contVisitID')
+            ->leftJoin('laptopinfo', 'laptopinfo.appointmentID', '=', 'appointmentinfo.id')
             ->select([
                 'users.id AS staffID',
-                'appointmentinfo.id AS appointmentID', 'users.*', 'appointmentinfo.*'
+                'appointmentinfo.id AS appointID', 'users.*', 'appointmentinfo.*', 'laptopinfo.*'
             ])
             ->where('staffID', Auth::user()->id)
-            ->orderBy('appointmentID', 'desc')
+            ->orderBy('appointmentinfo.id', 'desc')
             ->get();
+
+        //visitor view
+        $appointmentVisitor = DB::table('appointmentinfo')
+            ->join('users', 'users.id', '=', 'appointmentinfo.staffID')
+            ->leftJoin('laptopinfo', 'laptopinfo.appointmentID', '=', 'appointmentinfo.id')
+            ->select([
+                'users.id AS staffID',
+                'appointmentinfo.id AS appointID', 'users.*', 'appointmentinfo.*', 'laptopinfo.*'
+            ])
+            ->where('contVisitID', Auth::user()->id)
+            ->orderBy('appointmentinfo.id', 'desc')
+            ->get();
+
+        return view('appointment.list_appointment', compact('appointmentVisitor', 'appointmentStaff'));
+    }
+
+    // list of appointment for all users    
+    public function appointmentdetails($id)
+    {
+
+        $laptopExist = DB::table('laptopinfo')
+            ->where('appointmentID', $id)
+            ->exists();
+
+        $laptopinfo = DB::table('laptopinfo')
+            ->where('appointmentID', $id)
+            ->first();
+
+        $vehicleExist = DB::table('vehicleinfo')
+            ->where('appointmentID', $id)
+            ->exists();
+
+        $vehicleinfo = DB::table('vehicleinfo')
+            ->where('appointmentID', $id)
+            ->first();
 
         //visitor view
         $appointmentVisitor = DB::table('appointmentinfo')
@@ -36,9 +73,9 @@ class AppointmentController extends Controller
             ])
             ->where('contVisitID', Auth::user()->id)
             ->orderBy('appointmentinfo.id', 'desc')
-            ->get();
+            ->first();
 
-        return view('appointment.list_appointment', compact('appointmentVisitor', 'appointmentStaff'));
+        return view('appointment.appointment_details', compact('appointmentVisitor', 'laptopExist', 'laptopinfo', 'vehicleExist', 'vehicleinfo'));
     }
 
     // list of appointment for all users    
@@ -63,7 +100,7 @@ class AppointmentController extends Controller
             ->where('appointmentStatus', 'Attend')
             ->whereNull('visitrecord.appointmentID') // Filter only records not existing in visitrecord
             ->get();
-            
+
         return view('appointment.list_today_appointment', compact('appointmentGuard'));
     }
 
@@ -105,6 +142,8 @@ class AppointmentController extends Controller
             $appointment->appointmentDate = $appointmentDate;
             $appointment->appointmentTime = $appointmentTime;
             $appointment->appointmentStatus = 'Pending';
+            $appointment->bringVehicle = 'No';
+            $appointment->bringLaptop = 'No';
             $appointment->save();
             $successCount++;
 
@@ -155,6 +194,61 @@ class AppointmentController extends Controller
         return response()->json($response);
     }
 
+    //laptop infor store
+    public function laptopinfo(Request $request, $id)
+    {
+        $bringLaptop = AppointmentInfo::find($id);
+        $bringLaptop->bringLaptop = "Yes";
+
+        $bringLaptop->update();
+
+        $laptopBrand = $request->input('laptopBrand');
+        $laptopModel = $request->input('laptopModel');
+        $laptopColor = $request->input('laptopColor');
+        $laptopSerialNo = $request->input('laptopSerialNo');
+
+        $data = array(
+            'appointmentID' => $id,
+            'laptopBrand' => $laptopBrand,
+            'laptopModel' => $laptopModel,
+            'laptopColor' => $laptopColor,
+            'laptopSerialNo' => $laptopSerialNo,
+            'status' => 'Pending',
+        );
+
+        // insert query
+        DB::table('laptopinfo')->insert($data);
+
+        return redirect()->route('appointmentdetails', ['id' => $id]);
+    }
+
+    //vehicle infor store
+    public function vehicleinfo(Request $request, $id)
+    {
+        $bringVehicle = AppointmentInfo::find($id);
+        $bringVehicle->bringVehicle = "Yes";
+
+        $bringVehicle->update();
+
+        $vehicleType = $request->input('vehicleType');
+        $vehicleBrand = $request->input('vehicleBrand');
+        $vehicleColor = $request->input('vehicleColor');
+        $vehicleRegNo = $request->input('vehicleRegNo');
+
+        $data = array(
+            'appointmentID' => $id,
+            'vehicleType' => $vehicleType,
+            'vehicleBrand' => $vehicleBrand,
+            'vehicleColor' => $vehicleColor,
+            'vehicleRegNo' => $vehicleRegNo,
+        );
+
+        // insert query
+        DB::table('vehicleinfo')->insert($data);
+
+        return redirect()->route('appointmentdetails', ['id' => $id]);
+    }
+
     //function for visitor to attend 
     public function attendvisit($id)
     {
@@ -172,6 +266,26 @@ class AppointmentController extends Controller
         $visit->appointmentStatus = "Not Attend";
 
         $visit->update();
+        return redirect()->route('appointment');
+    }
+
+    //function for visitor to attend 
+    public function approveLaptop($id)
+    {
+        $approve = LaptopInfo::find($id);
+        $approve->status = "Approved";
+
+        $approve->update();
+        return redirect()->route('appointment');
+    }
+
+    //function for visitor to attend 
+    public function rejectLaptop($id)
+    {
+        $reject = LaptopInfo::find($id);
+        $reject->status = "Rejected";
+
+        $reject->update();
         return redirect()->route('appointment');
     }
 

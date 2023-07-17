@@ -22,6 +22,7 @@ class User extends Authenticatable
         'email',
         'password',
         'category',
+        'status'
     ];
 
     /**
@@ -45,11 +46,11 @@ class User extends Authenticatable
 
     public function contractor()
     {
-        return $this->hasOne(ContractorInfo::class, 'userID');
+        return $this->hasOne(BiometricInfo::class, 'userID');
     }
 
     public function visitor()
     {
-        return $this->hasOne(VisitorInfo::class, 'userID');
+        return $this->hasOne(BiometricInfo::class, 'userID');
     }
 }

@@ -45,7 +45,9 @@ class DashboardController extends Controller
 
         //if contractor info exists in the table 
         if (DB::table('visitorinfo')
+            ->join('users', 'users.id', '=', 'visitorinfo.userID')
             ->where('userID', $id)
+            ->where('users.status', 'Active')
             ->exists()
         ) {
             // Set the timezone to Kuala Lumpur
@@ -73,8 +75,14 @@ class DashboardController extends Controller
                 ->where('contVisitID', $id)->get();
 
             return view('dashboard.visitor', compact('totalTodayAppt', 'totalUpcomingAppt', 'totalPastAppt', 'todayAppointment'));
-        } else {
+        } elseif (DB::table('users')
+            ->where('id', $id)
+            ->where('status', 'Registered')
+            ->exists()
+        ) {
             return redirect()->route('visitordetail');
+        } else {
+            return redirect()->route('finishform');
         }
     }
 
@@ -84,7 +92,9 @@ class DashboardController extends Controller
 
         //if contractor info exists in the table 
         if (DB::table('contractorinfo')
+            ->join('users', 'users.id', '=', 'contractorinfo.userID')
             ->where('userID', $id)
+            ->where('users.status', 'Active')
             ->exists()
         ) {
             // Set the timezone to Kuala Lumpur
@@ -112,8 +122,14 @@ class DashboardController extends Controller
                 ->where('contVisitID', $id)->get();
 
             return view('dashboard.contractor', compact('totalTodayAppt', 'totalUpcomingAppt', 'totalPastAppt', 'todayAppointment'));
-        } else {
+        } elseif (DB::table('users')
+            ->where('id', $id)
+            ->where('status', 'Registered')
+            ->exists()
+        ) {
             return redirect()->route('contractordetail');
+        } else {
+            return redirect()->route('finishform');
         }
     }
 
