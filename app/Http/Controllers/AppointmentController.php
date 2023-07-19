@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Mail\SendEmail;
 use App\Models\AppointmentInfo;
 use App\Models\LaptopInfo;
+use App\Mail\EmailAppointmentStatus;
 use App\Models\User;
 use Carbon\Carbon;
 
@@ -256,6 +257,34 @@ class AppointmentController extends Controller
         $visit->appointmentStatus = "Attend";
 
         $visit->update();
+
+        $visitinfo = DB::table('appointmentinfo')
+            ->join('users', 'users.id', '=', 'appointmentinfo.contVisitID')
+            ->where('appointmentinfo.id', $id)
+            ->first();
+
+        $staffEmail = DB::table('appointmentinfo')
+            ->join('users', 'users.id', '=', 'appointmentinfo.staffID')
+            ->where('appointmentinfo.id', $id)
+            ->first();
+        //send email
+
+        $data = array(
+            'name'                =>  $staffEmail->name,
+            'email'               =>  $staffEmail->email,
+            'bringVehicle'        =>  $visitinfo->bringVehicle,
+            'bringLaptop'         =>  $visitinfo->bringLaptop,
+            'appointmentStatus'   =>  $visitinfo->appointmentStatus,
+        );
+
+        $to = [
+            [
+                'email' => $staffEmail->email,
+            ]
+        ];
+
+        //send email 
+        Mail::to($to)->send(new EmailAppointmentStatus($data));
         return redirect()->route('appointment');
     }
 
