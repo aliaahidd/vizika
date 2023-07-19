@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 17, 2023 at 08:17 AM
+-- Generation Time: Jul 17, 2023 at 07:16 PM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -42,6 +42,13 @@ CREATE TABLE `appointmentinfo` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `appointmentinfo`
+--
+
+INSERT INTO `appointmentinfo` (`id`, `staffID`, `contVisitID`, `appointmentPurpose`, `appointmentAgenda`, `appointmentDate`, `appointmentTime`, `bringVehicle`, `bringLaptop`, `appointmentStatus`, `created_at`, `updated_at`) VALUES
+(1, 1, 2, 'Meeting', 'Repair machine A', '2023-07-18', '14:00:00', 'Yes', 'Yes', 'Attend', '2023-07-16 23:04:31', '2023-07-16 23:23:47');
+
 -- --------------------------------------------------------
 
 --
@@ -55,6 +62,13 @@ CREATE TABLE `biometricinfo` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `biometricinfo`
+--
+
+INSERT INTO `biometricinfo` (`id`, `userID`, `facialRecognition`, `created_at`, `updated_at`) VALUES
+(1, 2, '64b5152f9007e.jpg', '2023-07-16 22:36:20', '2023-07-16 22:36:20');
 
 -- --------------------------------------------------------
 
@@ -99,6 +113,13 @@ CREATE TABLE `companyinfo` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `companyinfo`
+--
+
+INSERT INTO `companyinfo` (`id`, `companyName`, `companyEmail`, `companyPhoneNo`, `companyAddress`, `created_at`, `updated_at`) VALUES
+(1, 'Universiti Malaysia Pahang', 'ump@ump.edu.my', '0123456789', 'Pekan, Pahang', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -154,6 +175,13 @@ CREATE TABLE `laptopinfo` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `laptopinfo`
+--
+
+INSERT INTO `laptopinfo` (`id`, `appointmentID`, `laptopBrand`, `laptopModel`, `laptopColor`, `laptopSerialNo`, `status`, `created_at`, `updated_at`) VALUES
+(1, 1, 'Huawei', 'Matebook D', 'Silver', '3234235', 'Approved', NULL, '2023-07-16 23:39:14');
+
 -- --------------------------------------------------------
 
 --
@@ -186,7 +214,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (156, '2023_03_31_072517_create_companyinfo_table', 1),
 (157, '2023_05_31_161858_create_biometricinfo_table', 1),
 (158, '2023_07_09_145916_create_laptopinfo_table', 1),
-(159, '2023_07_13_153223_create_vehicleinfo_table', 1);
+(159, '2023_07_13_153223_create_vehicleinfo_table', 1),
+(160, '2023_07_17_154955_create_visitorqrscan_table', 2);
 
 -- --------------------------------------------------------
 
@@ -267,6 +296,17 @@ CREATE TABLE `users` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `category`, `status`, `recommendedBy`, `remember_token`, `created_at`, `updated_at`) VALUES
+(1, 'Nurain Aleeya', 'nurainaleeyacz@gmail.com', NULL, '$2y$10$qv7cTmodwkPs801UpgawCez8Pmt4o9BoiaD3TEaZxAs2xBpyJrtmm', 'Staff', 'Active', NULL, NULL, '2023-07-16 22:24:19', '2023-07-16 22:24:19'),
+(2, 'Nur Alia Hidayah', 'aliahidayah00@gmail.com', NULL, '$2y$10$WSFwiTaybg2o4TmWiSRr5.VujMqHFtg/FQXxKJLoAy2zYQNQP80mW', 'Visitor', 'Blacklisted', 1, NULL, NULL, '2023-07-17 09:03:32'),
+(3, 'Nurin Azyyati', 'theocloud1479@gmail.com', NULL, '$2y$10$5hKtl5ewifIZiyDzD6D.fOHjPCxtvR9ps9wlRZJxltHPyRW2VKAle', 'SHEQ Officer', 'Active', NULL, NULL, '2023-07-16 22:34:01', '2023-07-16 22:34:01'),
+(4, 'Maisarah Faisal', 'maisarahfaisal75@gmail.com', NULL, '$2y$10$kQi48NoJiWxZCTlrxggkHeP.s239m4efJLlMDGL/EJpjwp0Y84kxG', 'SHEQ Guard', 'Active', NULL, NULL, '2023-07-16 23:41:15', '2023-07-16 23:41:15'),
+(5, 'Alia', 'aliahidayah146@gmail.com', NULL, '$2y$10$bq1fbVE17YTlXb6ascsFkOz3MYqc4rmRyegTRhJzR0e4T6EJW9TaC', 'Contractor', 'Registered', 1, NULL, NULL, NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -283,6 +323,13 @@ CREATE TABLE `vehicleinfo` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `vehicleinfo`
+--
+
+INSERT INTO `vehicleinfo` (`id`, `appointmentID`, `vehicleType`, `vehicleBrand`, `vehicleColor`, `vehicleRegNo`, `created_at`, `updated_at`) VALUES
+(1, 1, 'Car', 'Myvi', 'Silver', 'ABC123', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -302,6 +349,44 @@ CREATE TABLE `visitorinfo` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `visitorinfo`
+--
+
+INSERT INTO `visitorinfo` (`id`, `userID`, `companyID`, `employeeNo`, `occupation`, `phoneNo`, `birthDate`, `address`, `created_at`, `updated_at`) VALUES
+(1, 2, 1, 'AM2357385334', 'Executive', '0123456789', '2023-07-17', 'Pekan, Pahang', NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `visitorqrscan`
+--
+
+CREATE TABLE `visitorqrscan` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `phoneNo` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `companyName` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `employeeNo` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `occupation` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `visitPurpose` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `passNo` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `checkInDate` date NOT NULL,
+  `checkInTime` time NOT NULL,
+  `checkOutDate` date DEFAULT NULL,
+  `checkOutTime` time DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `visitorqrscan`
+--
+
+INSERT INTO `visitorqrscan` (`id`, `name`, `email`, `phoneNo`, `companyName`, `employeeNo`, `occupation`, `visitPurpose`, `passNo`, `checkInDate`, `checkInTime`, `checkOutDate`, `checkOutTime`, `created_at`, `updated_at`) VALUES
+(1, 'Ahmad', 'ahmad@gmail.com', '0123456789', '1', 'AM2357385367', 'Manager', 'Enforcement', NULL, '2023-07-18', '00:08:28', '2023-07-18', '00:25:20', NULL, '2023-07-17 08:25:20');
 
 -- --------------------------------------------------------
 
@@ -426,6 +511,12 @@ ALTER TABLE `visitorinfo`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `visitorqrscan`
+--
+ALTER TABLE `visitorqrscan`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `visitrecord`
 --
 ALTER TABLE `visitrecord`
@@ -439,19 +530,19 @@ ALTER TABLE `visitrecord`
 -- AUTO_INCREMENT for table `appointmentinfo`
 --
 ALTER TABLE `appointmentinfo`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `biometricinfo`
 --
 ALTER TABLE `biometricinfo`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `blacklistvisitor`
 --
 ALTER TABLE `blacklistvisitor`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `briefingsession`
@@ -463,7 +554,7 @@ ALTER TABLE `briefingsession`
 -- AUTO_INCREMENT for table `companyinfo`
 --
 ALTER TABLE `companyinfo`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `contractorinfo`
@@ -481,13 +572,13 @@ ALTER TABLE `failed_jobs`
 -- AUTO_INCREMENT for table `laptopinfo`
 --
 ALTER TABLE `laptopinfo`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=160;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=161;
 
 --
 -- AUTO_INCREMENT for table `personal_access_tokens`
@@ -505,19 +596,25 @@ ALTER TABLE `safetybriefinginfo`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `vehicleinfo`
 --
 ALTER TABLE `vehicleinfo`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `visitorinfo`
 --
 ALTER TABLE `visitorinfo`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `visitorqrscan`
+--
+ALTER TABLE `visitorqrscan`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `visitrecord`
