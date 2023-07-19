@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Models\VisitorQrScan;
 use Carbon\Carbon;
+use Symfony\Component\HttpFoundation\Response;
 
 
 class QRCodeController extends Controller
@@ -35,12 +36,16 @@ class QRCodeController extends Controller
         $qrCode->setSize(300);
         $qrCode->setMargin(20);
 
-        header('Content-Type: ' . $qrCode->getContentType());
-        $qrCode->writeFile(public_path('assets/qr/qrcode.png'));
+        $imageData = $qrCode->writeString();
 
+        $response = new Response($imageData);
+        $response->headers->set('Content-Type', 'image/png');
+
+        $qrCode->writeFile(public_path('assets/qr/qrcode.png'));
 
         return redirect()->route('qrcode');
     }
+    
 
     private function generateFormLink()
     {
