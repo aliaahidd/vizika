@@ -49,21 +49,6 @@
                             <input id="validityDate" type="date" class="form-control" name="validityPass" required autofocus>
                         </div>
                         <div class="mb-3">
-                            <label for="image" class="col-form-label text-md-end">{{ __('Profile Photo') }}<span style="color: red; margin-left: 5px">*</span></label>
-                            <input type="file" name="contractorImg" class="form-control" id="image" accept="image/*" onchange="loadImage(this)" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="image" class="col-form-label text-md-end">{{ __('Preview') }}<span style="color: red; margin-left: 5px">*</span></label>
-                        </div>
-                        <div class="mb-3">
-                            <!-- to preview the file from the input type in div -->
-                            <div style="border-style: dashed; margin:auto;">
-                                <img id="imgPreview" style="height: 250px; margin:auto; display:flex;">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="mb-3">
                             <label for="employeeNo" class="col-form-label text-md-end">{{ __('Employee No') }}<span style="color: red; margin-left: 5px">*</span></label>
                             <input id="employeeNo" type="text" class="form-control" name="employeeNo" placeholder="Ex: ABC123" required autofocus>
                         </div>
@@ -71,6 +56,8 @@
                             <label for="birthDate" class="col-form-label text-md-end">{{ __('Date of Birth') }}<span style="color: red; margin-left: 5px">*</span></label>
                             <input id="birthDate" type="date" class="form-control" name="birthDate" required autofocus>
                         </div>
+                    </div>
+                    <div class="col-md-6">
                         <div class="mb-3">
                             <label for="address" class="col-form-label text-md-end">{{ __('Address') }}<span style="color: red; margin-left: 5px">*</span></label>
                             <textarea id="address" type="text" class="form-control" name="address" rows="1" cols="50" placeholder="Ex: Pekan, Pahang" required></textarea>

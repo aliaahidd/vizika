@@ -231,3 +231,7 @@ Route::get('/finish-form', function () {
 
     return view('layouts.finishform',  compact('recommend'));
 })->name('finishform');
+
+Route::get('/complete-form-visit', function () {
+    return view('record.form_complete');
+})->name('completeformvisit');

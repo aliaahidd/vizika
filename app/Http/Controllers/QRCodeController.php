@@ -108,6 +108,6 @@ class QRCodeController extends Controller
         // insert query
         DB::table('visitorqrscan')->insert($data);
 
-        return redirect()->route('registerBiometric');
+        return redirect()->route('completeformvisit');
     }
 }
