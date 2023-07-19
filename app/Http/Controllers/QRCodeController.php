@@ -45,7 +45,7 @@ class QRCodeController extends Controller
     private function generateFormLink()
     {
         // Generate your form link here (e.g., using a random token, unique identifier, etc.)
-        return 'http://127.0.0.1:8000/Visitor-Form';
+        return 'https://vizika.online/Visitor-Form';
     }
 
     public function storevisitorform(Request $request)

@@ -10,14 +10,9 @@
     <br>Time : <strong> {{ $data['appointmentTime'] }} </strong>
 </p>
 
-<p>Website Link: <a href="http://127.0.0.1:8000/login-user">Click here</a></p>
+<p>Website Link: <a href="https://vizika.online/login-user">Click here</a></p>
 
-<p>If you are the first timer, your account has been created.</p>
-<p>Email: {{ $data['email'] }}
-    <br>Password: visitor123
-</p>
-
-<p>Else, you can login to your account as usual. Please login to choose whether you can attend or not as soon as possible.</p>
+<p>Please login using the username and password you set during registration</p>
 
 <p>Thank you and have a nice day.</p>
 

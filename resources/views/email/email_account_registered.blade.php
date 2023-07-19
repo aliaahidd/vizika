@@ -2,8 +2,12 @@
 <hr>
 <p>Dear {{ $data['name'] }},</p>
 
-<p>Your account has been registered. Please login to fill in the your additional information.</p>
+<p>Please go to the website link below and register an account . This account is needed to get authorization to visit/enter Kaneka.</p>
 
-<p>Website Link: <a href="http://127.0.0.1:8000/login-user">Click here</a></p>
+<p>Website Link: <a href="https://vizika.online/login-user">Click here</a></p>
+
+<p>Email: {{ $data['email'] }}
+    <br>Password: visitor123
+</p>
 
 <p>Thank you and have a nice day.</p>
