@@ -15,6 +15,10 @@ use App\Models\VisitorInfo;
 use App\Models\AppointmentInfo;
 use App\Models\VisitRecord;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Response;
+use Carbon\Carbon;
+
+
 
 class ProfileController extends Controller
 {
@@ -108,8 +112,8 @@ class ProfileController extends Controller
     public function registeredprofile($id)
     {
         $usertype = DB::table('users')
-        ->where('id', $id)
-        ->first();
+            ->where('id', $id)
+            ->first();
 
         $visitor = DB::table('visitorinfo')
             ->join('users', 'users.id', '=', 'visitorinfo.userID')
@@ -210,8 +214,8 @@ class ProfileController extends Controller
         // insert query
         DB::table('users')->insert($data);
 
-         //send email
-         $data = array(
+        //send email
+        $data = array(
             'name'                =>  $name,
             'email'               =>  $email,
         );
@@ -228,6 +232,59 @@ class ProfileController extends Controller
 
         sleep(1);
         return redirect()->route('userlist');
+    }
+
+    public function registerbulkfile(Request $request)
+    {
+        $id = Auth::user()->id;
+        $category = $request->input('category');
+        $password = Hash::make('visitor123');
+        $companyID = $request->input('companyID');
+
+        if ($request->hasFile('file') && $request->file('file')->getClientOriginalExtension() === 'csv') {
+            $file = $request->file('file');
+            $handle = fopen($file->getPathname(), "r");
+            $firstRowSkipped = false; // Flag to track if the first row has been skipped
+
+            while ($data = fgetcsv($handle)) {
+                if (!$firstRowSkipped) {
+                    $firstRowSkipped = true;
+                    continue; // Skip the first row and move to the next iteration
+                }
+
+                $data[0] = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $data[0]);
+                $nameCSV = $data[0];
+                $emailCSV = $data[1];
+                $empNoCSV = $data[2];
+                $phoneNoCSV = $data[3];
+                $passExpiryDateCSV = $data[4];
+                $birthDateCSV = $data[5];
+                $addressCSV = $data[6];
+                $validityPassPhotoCSV = $data[7];
+
+                //change format date 
+                $carbonBirthDate = Carbon::createFromFormat('d/m/Y', $birthDateCSV);
+                $birthDate = $carbonBirthDate->format('Y-m-d');
+
+                $carbonPassExpiryDate = Carbon::createFromFormat('d/m/Y', $passExpiryDateCSV);
+                $passExpiryDate = $carbonPassExpiryDate->format('Y-m-d');
+
+
+                $query = "INSERT INTO users(name, email, password, category, status, recommendedBy) VALUES (?, ?, ?, ?, ?, ?)";
+                DB::insert($query, [$nameCSV, $emailCSV, $password, $category, 'Pending', $id]);
+
+                // Get the last inserted ID (primary key) from 'users' table
+                $contractorID = DB::getPdo()->lastInsertId();
+
+                $query = "INSERT INTO contractorinfo(userID, companyID, employeeNo, phoneNo, passExpiryDate, birthDate, address, validityPassPhoto) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                DB::insert($query, [$contractorID, $companyID, $empNoCSV, $phoneNoCSV, $passExpiryDate, $birthDate, $addressCSV, $validityPassPhotoCSV]);
+            }
+
+            fclose($handle);
+            return redirect()->back()->with('success', 'Success');
+        } else {
+            return redirect()->back()->with('error', 'Sila muat naik fail CSV sahaja');
+        }
     }
 
     public function updateProfileContractor(Request $request, $id)
@@ -515,6 +572,36 @@ class ProfileController extends Controller
         DB::table('visitorinfo')->insert($data);
 
         return redirect()->route('registerBiometric');
+    }
+
+    public function bulkregistration()
+    {
+        $companylist = DB::table('companyinfo')
+            ->orderBy('companyName', 'asc')
+            ->get();
+
+        return view('profile.bulk_registration', compact('companylist'));
+    }
+
+    public function exceldownload($fileType)
+    {
+        // Replace 'public/excels/your_file.xlsx' with the actual path to your Excel file.
+        $contractorFilePath  = public_path('excel/guideline_contractor_registration.csv');
+        $visitorFilePath = public_path('excel/guideline_visitor_registration.csv');
+
+
+        if ($fileType === 'contractor') {
+            if (file_exists($contractorFilePath)) {
+                return response()->download($contractorFilePath, 'guideline_contractor_registration.csv');
+            }
+        } elseif ($fileType === 'visitor') {
+            if (file_exists($visitorFilePath)) {
+                return response()->download($visitorFilePath, 'guideline_visitor_registration.csv');
+            }
+        }
+
+        // If the file doesn't exist, return an error response or redirect to an error page.
+        abort(404, 'File not found');
     }
 
     public function contractordetail(Request $request)

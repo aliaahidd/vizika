@@ -22,7 +22,7 @@
                         <label for="date">Appointment Date</label>
                     </div>
                     <div class="col">
-                        <label for="date">{{ $appointmentVisitor->appointmentDate }}</label>
+                        <label for="date">{{ $appointmentVisitor->appointmentDateStart }}</label>
                     </div>
                 </div>
                 <div class="row">
@@ -96,7 +96,12 @@
                                 <label for="Vehicle">Vehicle Type<span style="color: red; margin-left: 5px">*</span></label>
                             </div>
                             <div class="col">
-                                <input type="text" class="form-control" name="vehicleType" placeholder="Vehicle Type" required>
+                                <select class="form-control" name="vehicleType" required>
+                                    <option value="Car">Car</option>
+                                    <option value="Lorry">Lorry</option>
+                                    <option value="Motorcycle">Motorcycle</option>
+                                    <option value="Van">Van</option>
+                                </select>
                             </div>
                         </div>
                         <br>
@@ -105,7 +110,21 @@
                                 <label for="Vehicle">Vehicle Brand<span style="color: red; margin-left: 5px">*</span></label>
                             </div>
                             <div class="col">
-                                <input type="text" class="form-control" name="vehicleBrand" placeholder="Vehicle Brand" required>
+                                <select class="form-control" name="vehicleBrand" required>
+                                    <option value="Audi">Audi</option>
+                                    <option value="BMW">BMW</option>
+                                    <option value="Honda">Honda</option>
+                                    <option value="Hyundai">Hyundai</option>
+                                    <option value="Kia">Kia</option>
+                                    <option value="Mazda">Mazda</option>
+                                    <option value="Mercedes">Mercedes</option>
+                                    <option value="Nissan">Nissan</option>
+                                    <option value="Perodua">Perodua</option>
+                                    <option value="Proton">Proton</option>
+                                    <option value="Range Rover">Range Rover</option>
+                                    <option value="Suzuki">Suzuki</option>
+                                    <option value="Toyota">Toyota</option>
+                                </select>
                             </div>
                         </div>
                         <br>
@@ -183,7 +202,21 @@
                                 <label for="laptop">Laptop Brand<span style="color: red; margin-left: 5px">*</span></label>
                             </div>
                             <div class="col">
-                                <input type="text" class="form-control" name="laptopBrand" placeholder="Laptop Brand" required>
+                                <select class="form-control" name="laptopBrand" required>
+                                    <option value="">Please select</option>
+                                    <option value="Acer">Acer</option>
+                                    <option value="Apple">Apple</option>
+                                    <option value="Asus">Asus</option>
+                                    <option value="Dell">Dell</option>
+                                    <option value="HP">HP</option>
+                                    <option value="Huawei">Huawei</option>
+                                    <option value="Lenovo">Lenovo</option>
+                                    <option value="Microsoft">Microsoft</option>
+                                    <option value="MSI">MSI</option>
+                                    <option value="Razer">Razer</option>
+                                    <option value="Samsung">Samsung</option>
+                                    <option value="Toshiba">Toshiba</option>
+                                </select>
                             </div>
                         </div>
                         <br>

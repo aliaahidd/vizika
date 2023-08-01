@@ -118,7 +118,7 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('company*') ? 'active' : '' }}" href="{{ route('company') }}">
-                            <i class="material-icons">work</i>
+                            <i class="material-icons">corporate_fare</i>
                             <span>Company</span>
                         </a>
                     </li>
@@ -152,6 +152,22 @@
                             <i class="material-icons">qr_code_scanner</i>
                             <span>QR Code</span>
                         </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('transport*') ? 'active' : '' }}" data-toggle="collapse" data-target="#transportSubMenu">
+                            <i class="material-icons">local_shipping</i>
+                            <span>Transport</span>
+                        </a>
+                        <div class="collapse" id="transportSubMenu" style="margin-left: 20px">
+                            <ul class="nav flex-column">
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('transport') ? 'active' : '' }}" href="{{ route('transport') }}">Transport Registration</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('transportInspection') ? 'active' : '' }}" href="{{ route('transportInspection') }}">Transport Inspection</a>
+                                </li>
+                            </ul>
+                        </div>
                     </li>
                     @endif
 

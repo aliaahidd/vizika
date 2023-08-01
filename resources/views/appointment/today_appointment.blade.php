@@ -71,7 +71,7 @@
             </div>
         </div>
         <div class="col-md-9">
-            <div class="card" style="padding: 20px; height: 450px">
+            <div class="card" style="padding: 20px; height: 100%">
                 <div class=" col-12">
                     <h5>Contact Details</h5>
                     <hr>
@@ -143,19 +143,97 @@
                             <label for="birthdate">{{ $usertype->birthDate }}</label>
                         </div>
                     </div>
+                    <br>
+                    <h5>Vehicle Information</h5>
+                    <hr>
+                    <div class="row">
+                        <div class="col-4">
+                            <label for="brand">Type</label>
+                        </div>
+                        <div class="col">
+                            <label for="brand">{{ $usertype->vehicleType }}</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4">
+                            <label for="model">Model</label>
+                        </div>
+                        <div class="col">
+                            <label for="model">{{ $usertype->vehicleBrand }}</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4">
+                            <label for="color">Color</label>
+                        </div>
+                        <div class="col">
+                            <label for="color">{{ $usertype->vehicleColor }}</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4">
+                            <label for="serialNo">Serial No</label>
+                        </div>
+                        <div class="col">
+                            <label for="serialNo">{{ $usertype->vehicleRegNo }}</label>
+                        </div>
+                    </div>
+                    <br>
+                    <h5>Laptop Information</h5>
+                    <hr>
+                    <div class="row">
+                        <div class="col-4">
+                            <label for="status">Laptop Status</label>
+                        </div>
+                        <div class="col">
+                            <label for="status">{{ $usertype->status }}</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4">
+                            <label for="brand">Brand</label>
+                        </div>
+                        <div class="col">
+                            <label for="brand">{{ $usertype->laptopBrand }}</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4">
+                            <label for="model">Model</label>
+                        </div>
+                        <div class="col">
+                            <label for="model">{{ $usertype->laptopModel }}</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4">
+                            <label for="color">Color</label>
+                        </div>
+                        <div class="col">
+                            <label for="color">{{ $usertype->laptopColor }}</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4">
+                            <label for="serialNo">Serial No</label>
+                        </div>
+                        <div class="col">
+                            <label for="serialNo">{{ $usertype->laptopSerialNo }}</label>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
         @elseif ($usertype->category == 'Visitor')
         <div class="col-md-3">
-            <div class="card" style="padding: 20px; height: 400px">
+            <div class="card" style="padding: 20px; height: 100%">
                 <div style="margin: auto;">
                     <img src="/assets/{{$usertype->name}}/{{$usertype->facialRecognition}}" width="200px">
                 </div>
             </div>
         </div>
         <div class="col-md-9">
-            <div class="card" style="padding: 20px; height: 400px">
+            <div class="card" style="padding: 20px; height: 100%">
                 <div class=" col-12">
                     <h5>Contact Details</h5>
                     <hr>
@@ -217,6 +295,84 @@
                         </div>
                         <div class="col">
                             <label for="occupation">{{ $usertype->occupation }}</label>
+                        </div>
+                    </div>
+                    <br>
+                    <h5>Vehicle Information</h5>
+                    <hr>
+                    <div class="row">
+                        <div class="col-4">
+                            <label for="brand">Type</label>
+                        </div>
+                        <div class="col">
+                            <label for="brand">{{ $usertype->vehicleType }}</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4">
+                            <label for="model">Model</label>
+                        </div>
+                        <div class="col">
+                            <label for="model">{{ $usertype->vehicleBrand }}</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4">
+                            <label for="color">Color</label>
+                        </div>
+                        <div class="col">
+                            <label for="color">{{ $usertype->vehicleColor }}</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4">
+                            <label for="serialNo">Serial No</label>
+                        </div>
+                        <div class="col">
+                            <label for="serialNo">{{ $usertype->vehicleRegNo }}</label>
+                        </div>
+                    </div>
+                    <br>
+                    <h5>Laptop Information</h5>
+                    <hr>
+                    <div class="row">
+                        <div class="col-4">
+                            <label for="status">Laptop Status</label>
+                        </div>
+                        <div class="col">
+                            <label for="status">{{ $usertype->status }}</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4">
+                            <label for="brand">Brand</label>
+                        </div>
+                        <div class="col">
+                            <label for="brand">{{ $usertype->laptopBrand }}</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4">
+                            <label for="model">Model</label>
+                        </div>
+                        <div class="col">
+                            <label for="model">{{ $usertype->laptopModel }}</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4">
+                            <label for="color">Color</label>
+                        </div>
+                        <div class="col">
+                            <label for="color">{{ $usertype->laptopColor }}</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4">
+                            <label for="serialNo">Serial No</label>
+                        </div>
+                        <div class="col">
+                            <label for="serialNo">{{ $usertype->laptopSerialNo }}</label>
                         </div>
                     </div>
                 </div>

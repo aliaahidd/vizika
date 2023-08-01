@@ -17,11 +17,12 @@ class CalendarController extends Controller
             $klTime = Carbon::now('Asia/Kuala_Lumpur'); // Get current KL time
             $start = $klTime->toDateString(); // Get the date part in YYYY-MM-DD format
 
-            $data = AppointmentInfo::select('id', 'appointmentPurpose as title', 'appointmentDate as start', 'appointmentTime')
+            $data = AppointmentInfo::select('id', 'appointmentPurpose as title', 'appointmentDateStart as start', 'appointmentDateEnd as end', 'appointmentTime')
                 ->where('appointmentStatus', 'Attend')
                 ->get()
                 ->map(function ($event) {
                     $event->start = $event->start . 'T' . $event->appointmentTime;
+                    $event->end = $event->end . 'T' . $event->appointmentTime; // Include the time part for end date as well
                     return $event;
                 });
 
@@ -40,12 +41,13 @@ class CalendarController extends Controller
             $klTime = Carbon::now('Asia/Kuala_Lumpur'); // Get current KL time
             $start = $klTime->toDateString(); // Get the date part in YYYY-MM-DD format
 
-            $data = AppointmentInfo::select('id', 'appointmentPurpose as title', 'appointmentDate as start', 'appointmentTime')
+            $data = AppointmentInfo::select('id', 'appointmentPurpose as title', 'appointmentDateStart as start', 'appointmentDateEnd as end', 'appointmentTime')
                 ->where('appointmentStatus', 'Attend')
                 ->where('staffID', $id)
                 ->get()
                 ->map(function ($event) {
                     $event->start = $event->start . 'T' . $event->appointmentTime;
+                    $event->end = $event->end . 'T' . $event->appointmentTime; // Include the time part for end date as well
                     return $event;
                 });
 

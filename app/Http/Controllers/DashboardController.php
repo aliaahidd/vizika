@@ -58,9 +58,9 @@ class DashboardController extends Controller
             $upcomingDate = Carbon::now($kl_timezone)->addDay();
 
             //count total today appointment 
-            $totalTodayAppt = DB::table('appointmentinfo')->where('appointmentDate', $today_date)->where('contVisitID', $id)->count();
+            $totalTodayAppt = DB::table('appointmentinfo')->where('appointmentDateStart', '<=', $today_date)->where('appointmentDateEnd', '>=', $today_date)->where('contVisitID', $id)->count();
             //count Total Tomorrow Appointment 
-            $totalUpcomingAppt = DB::table('appointmentinfo')->whereDate('appointmentDate', $upcomingDate)->where('contVisitID', $id)->count();
+            $totalUpcomingAppt = DB::table('appointmentinfo')->whereDate('appointmentDateStart', $upcomingDate)->where('contVisitID', $id)->count();
             //count total past appointment 
             $totalPastAppt = DB::table('visitrecord')
                 ->join('appointmentinfo', 'appointmentinfo.id', '=', 'visitrecord.appointmentID')
@@ -71,7 +71,8 @@ class DashboardController extends Controller
                 ->join('users as cont_visit_user', 'appointmentinfo.contVisitID', '=', 'cont_visit_user.id')
                 ->join('users as staff_user', 'appointmentinfo.staffID', '=', 'staff_user.id')
                 ->select('appointmentinfo.*', 'appointmentinfo.id as appointmentID', 'cont_visit_user.*', 'cont_visit_user.id as contVisitID', 'cont_visit_user.name as cont_visit_name', 'staff_user.name as staff_name')
-                ->where('appointmentDate', $today_date)
+                ->where('appointmentDateStart', '<=', $today_date) // Check if appointmentDateStart is less than or equal to today's date
+                ->where('appointmentDateEnd', '>=', $today_date)   // Check if appointmentDateEnd is greater than or equal to today's date
                 ->where('contVisitID', $id)->get();
 
             return view('dashboard.visitor', compact('totalTodayAppt', 'totalUpcomingAppt', 'totalPastAppt', 'todayAppointment'));
@@ -105,9 +106,9 @@ class DashboardController extends Controller
             $upcomingDate = Carbon::now($kl_timezone)->addDay();
 
             //count total today appointment 
-            $totalTodayAppt = DB::table('appointmentinfo')->where('appointmentDate', $today_date)->where('contVisitID', $id)->count();
+            $totalTodayAppt = DB::table('appointmentinfo')->where('appointmentDateStart', '<=', $today_date)->where('appointmentDateEnd', '>=', $today_date)->where('contVisitID', $id)->count();
             //count Total Tomorrow Appointment 
-            $totalUpcomingAppt = DB::table('appointmentinfo')->whereDate('appointmentDate', $upcomingDate)->where('contVisitID', $id)->count();
+            $totalUpcomingAppt = DB::table('appointmentinfo')->whereDate('appointmentDateStart', $upcomingDate)->where('contVisitID', $id)->count();
             //count total past appointment 
             $totalPastAppt = DB::table('visitrecord')
                 ->join('appointmentinfo', 'appointmentinfo.id', '=', 'visitrecord.appointmentID')
@@ -118,7 +119,8 @@ class DashboardController extends Controller
                 ->join('users as cont_visit_user', 'appointmentinfo.contVisitID', '=', 'cont_visit_user.id')
                 ->join('users as staff_user', 'appointmentinfo.staffID', '=', 'staff_user.id')
                 ->select('appointmentinfo.*', 'appointmentinfo.id as appointmentID', 'cont_visit_user.*', 'cont_visit_user.id as contVisitID', 'cont_visit_user.name as cont_visit_name', 'staff_user.name as staff_name')
-                ->where('appointmentDate', $today_date)
+                ->where('appointmentDateStart', '<=', $today_date) // Check if appointmentDateStart is less than or equal to today's date
+                ->where('appointmentDateEnd', '>=', $today_date)   // Check if appointmentDateEnd is greater than or equal to today's date
                 ->where('contVisitID', $id)->get();
 
             return view('dashboard.contractor', compact('totalTodayAppt', 'totalUpcomingAppt', 'totalPastAppt', 'todayAppointment'));
@@ -142,7 +144,7 @@ class DashboardController extends Controller
         $today_date = Carbon::now($kl_timezone)->toDateString();
 
         //count total appointment 
-        $totalAppointment = DB::table('appointmentinfo')->where('appointmentDate', $today_date)->count();
+        $totalAppointment = DB::table('appointmentinfo')->where('appointmentDateStart', '<=', $today_date)->where('appointmentDateEnd', '>=', $today_date)->count();
         //count total check in 
         $totalCheckIn = DB::table('visitrecord')
             ->join('appointmentinfo', 'appointmentinfo.id', '=', 'visitrecord.appointmentID')
@@ -182,7 +184,7 @@ class DashboardController extends Controller
         //count total officer 
         $totalOfficer = DB::table('users')->where('category', '=', 'SHEQ Officer')->count();
         //count total appointment 
-        $totalAppointment = DB::table('appointmentinfo')->where('appointmentDate', $today_date)->count();
+        $totalAppointment = DB::table('appointmentinfo')->where('appointmentDateStart', '<=', $today_date)->where('appointmentDateEnd', '>=', $today_date)->count();
         //count total check in 
         $totalCheckIn = DB::table('visitrecord')->where('checkOutDate', NULL)->count();
         //count total checkout 
@@ -229,9 +231,9 @@ class DashboardController extends Controller
         $upcomingDate = Carbon::now($kl_timezone)->addDay();
 
         //count total today appointment 
-        $totalTodayAppt = DB::table('appointmentinfo')->where('appointmentDate', $today_date)->where('staffID', $id)->count();
+        $totalTodayAppt = DB::table('appointmentinfo')->where('appointmentDateStart', '<=', $today_date)->where('appointmentDateEnd', '>=', $today_date)->where('staffID', $id)->count();
         //count Total Tomorrow Appointment 
-        $totalUpcomingAppt = DB::table('appointmentinfo')->whereDate('appointmentDate', $upcomingDate)->where('staffID', $id)->groupBy('appointmentDate')->distinct()->count();
+        $totalUpcomingAppt = DB::table('appointmentinfo')->whereDate('appointmentDateStart', $upcomingDate)->where('staffID', $id)->groupBy('appointmentDateStart')->distinct()->count();
         //count total past appointment 
         $totalPastAppt = DB::table('visitrecord')
             ->join('appointmentinfo', 'appointmentinfo.id', '=', 'visitrecord.appointmentID')
@@ -242,7 +244,8 @@ class DashboardController extends Controller
             ->join('users as cont_visit_user', 'appointmentinfo.contVisitID', '=', 'cont_visit_user.id')
             ->join('users as staff_user', 'appointmentinfo.staffID', '=', 'staff_user.id')
             ->select('appointmentinfo.*', 'appointmentinfo.id as appointmentID', 'cont_visit_user.*', 'cont_visit_user.id as contVisitID', 'cont_visit_user.name as cont_visit_name', 'staff_user.name as staff_name')
-            ->where('appointmentDate', $today_date)
+            ->where('appointmentDateStart', '<=', $today_date) // Check if appointmentDateStart is less than or equal to today's date
+            ->where('appointmentDateEnd', '>=', $today_date)   // Check if appointmentDateEnd is greater than or equal to today's date
             ->where('staffID', $id)->get();
 
         //count total visitor 

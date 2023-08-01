@@ -18,15 +18,19 @@
 </div>
 @endif
 
-<div class="row mb-3">
+<div class="row mb-3 justify-content-end">
     <!-- if user == committee, then have add new appointment button  -->
     @if( auth()->user()->category=="Staff")
-    <div class="col-lg-12 col-md-6 col-sm-3 justify-content-end d-flex">
+    <div class="col-lg-6 col-md-6 col-sm-6 d-flex justify-content-end">
+        <a class="btn btn-primary mr-3" style="width:140px;" role="button" href="{{ route('bulkregistration') }}">
+            <i class="fas fa-plus"></i>&nbsp; Bulk Registration</a>
         <a class="btn btn-primary" style="width:140px;" role="button" href="{{ route('registeruserform') }}">
-            <i class="fas fa-plus"></i>&nbsp; Register User</a>
+            <i class="fas fa-plus"></i>&nbsp; User Registration</a>
     </div>
     @endif
 </div>
+
+
 
 <div class="card">
     <div class="card-header pb-0">
@@ -38,7 +42,7 @@
                             <a class="nav-link {{ request()->routeIs('userlist') && !request()->has('type') ? 'active' : '' }}" href="{{ route('userlist') }}" role="tab" aria-selected="true">All user</a>
                         </li>
                         <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('registeredby') && !request()->has('type') ? 'active' : '' }}" href="{{ route('registeredby') }}" role="tab" aria-selected="true">Registered by me</a>
+                            <a class="nav-link {{ request()->routeIs('registeredby') && !request()->has('type') ? 'active' : '' }}" href="{{ route('registeredby') }}" role="tab" aria-selected="true">Registered by me</a>
                         </li>
                     </ul>
                 </nav>

@@ -95,12 +95,17 @@ class AppointmentController extends Controller
             ->join('users as cont_visit_user', 'appointmentinfo.contVisitID', '=', 'cont_visit_user.id')
             ->join('users as staff_user', 'appointmentinfo.staffID', '=', 'staff_user.id')
             ->leftJoin('biometricinfo', 'biometricinfo.userID', '=', 'cont_visit_user.id')
-            ->leftJoin('visitrecord', 'visitrecord.appointmentID', '=', 'appointmentinfo.id')
+            ->leftJoin('visitrecord', function ($join) {
+                $join->on('visitrecord.appointmentID', '=', 'appointmentinfo.id')
+                    ->where('visitrecord.checkInDate', '=', date('Y-m-d'));
+            })
             ->select('appointmentinfo.*', 'appointmentinfo.id as appointmentID', 'cont_visit_user.*', 'cont_visit_user.id as contVisitID', 'cont_visit_user.name as cont_visit_name', 'staff_user.name as staff_name', 'biometricinfo.userID')
-            ->where('appointmentDate', $today_date)
+            ->where('appointmentDateStart', '<=', $today_date)
+            ->where('appointmentDateEnd', '>=', $today_date)
             ->where('appointmentStatus', 'Attend')
-            ->whereNull('visitrecord.appointmentID') // Filter only records not existing in visitrecord
+            ->whereNull('visitrecord.appointmentID')
             ->get();
+
 
         return view('appointment.list_today_appointment', compact('appointmentGuard'));
     }
@@ -129,7 +134,8 @@ class AppointmentController extends Controller
 
         foreach ($appointments as $user) {
             $contVisitID = $user['contVisitID'];
-            $appointmentDate = $user['appointmentDate'];
+            $appointmentDateStart = $user['appointmentDateStart'];
+            $appointmentDateEnd = $user['appointmentDateEnd'];
             $appointmentTime = $user['appointmentTime'];
             $appointmentPurpose = $user['appointmentPurpose'];
             $appointmentAgenda = $user['appointmentAgenda'];
@@ -140,7 +146,8 @@ class AppointmentController extends Controller
             $appointment->contVisitID = $contVisitID;
             $appointment->appointmentPurpose = $appointmentPurpose;
             $appointment->appointmentAgenda = $appointmentAgenda;
-            $appointment->appointmentDate = $appointmentDate;
+            $appointment->appointmentDateStart = $appointmentDateStart;
+            $appointment->appointmentDateEnd = $appointmentDateEnd;
             $appointment->appointmentTime = $appointmentTime;
             $appointment->appointmentStatus = 'Pending';
             $appointment->bringVehicle = 'No';
@@ -162,7 +169,8 @@ class AppointmentController extends Controller
                 'email'               =>  $contVisit->email,
                 'appointmentPurpose'  =>  $appointmentPurpose,
                 'appointmentAgenda'   =>  $appointmentAgenda,
-                'appointmentDate'     =>  $appointmentDate,
+                'appointmentDateStart' =>  $appointmentDateStart,
+                'appointmentDateEnd'  =>  $appointmentDateEnd,
                 'appointmentTime'     =>  $appointmentTime
             );
 
@@ -350,7 +358,9 @@ class AppointmentController extends Controller
             ->join('visitorinfo', 'visitorinfo.userID', '=', 'appointmentinfo.contVisitID')
             ->join('biometricinfo', 'biometricinfo.userID', '=', 'users.id')
             ->join('companyinfo', 'companyinfo.id', '=', 'visitorinfo.companyID')
-            ->select('appointmentinfo.*', 'users.*', 'visitorinfo.*', 'companyinfo.*', 'biometricinfo.*', 'appointmentinfo.id as appointmentID')
+            ->leftJoin('laptopinfo', 'laptopinfo.appointmentID', '=', 'appointmentinfo.id')
+            ->leftJoin('vehicleinfo', 'vehicleinfo.appointmentID', '=', 'appointmentinfo.id')
+            ->select('appointmentinfo.*', 'users.*', 'visitorinfo.*', 'companyinfo.*', 'biometricinfo.*', 'laptopinfo.*', 'vehicleinfo.*', 'appointmentinfo.id as appointmentID')
             ->where('appointmentinfo.id', $id)
             ->first();
 
@@ -368,7 +378,9 @@ class AppointmentController extends Controller
             ->join('contractorinfo', 'contractorinfo.userID', '=', 'appointmentinfo.contVisitID')
             ->join('biometricinfo', 'biometricinfo.userID', '=', 'users.id')
             ->join('companyinfo', 'companyinfo.id', '=', 'contractorinfo.companyID')
-            ->select('appointmentinfo.*', 'users.*', 'contractorinfo.*', 'companyinfo.*', 'biometricinfo.*', 'appointmentinfo.id as appointmentID')
+            ->leftJoin('laptopinfo', 'laptopinfo.appointmentID', '=', 'appointmentinfo.id')
+            ->leftJoin('vehicleinfo', 'vehicleinfo.appointmentID', '=', 'appointmentinfo.id')
+            ->select('appointmentinfo.*', 'users.*', 'contractorinfo.*', 'companyinfo.*', 'biometricinfo.*', 'laptopinfo.*', 'vehicleinfo.*', 'appointmentinfo.id as appointmentID')
             ->where('appointmentinfo.id', $id)
             ->first();
 

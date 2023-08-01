@@ -67,7 +67,8 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Date</th>
+                                <th>Date Start</th>
+                                <th>Date End</th>
                                 <th>Time</th>
                                 <th>Purpose</th>
                                 <th>Agenda</th>
@@ -81,7 +82,8 @@
                             @foreach($appointmentStaff As $key=>$data)
                             <tr id="row{{$data->id}}">
                                 <td>{{ $data->appointID }}</td>
-                                <td>{{ $data->appointmentDate }}</td>
+                                <td>{{ $data->appointmentDateStart }}</td>
+                                <td>{{ $data->appointmentDateEnd }}</td>
                                 <td>{{ $data->appointmentTime }}</td>
                                 <td>{{ $data->appointmentPurpose }}</td>
                                 <td>{{ $data->appointmentAgenda }}</td>
@@ -148,7 +150,8 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Date</th>
+                                <th>Date Start</th>
+                                <th>Date End</th>
                                 <th>Time</th>
                                 <th>Name</th>
                                 <th>Purpose</th>
@@ -163,7 +166,8 @@
                             @foreach($appointmentVisitor as $key => $data)
                             <tr id="row{{$data->appointID}}">
                                 <td>{{ $data->appointID }}</td>
-                                <td>{{ $data->appointmentDate }}</td>
+                                <td>{{ $data->appointmentDateStart }}</td>
+                                <td>{{ $data->appointmentDateEnd }}</td>
                                 <td>{{ $data->appointmentTime }}</td>
                                 <td>{{ $data->appointmentPurpose }}</td>
                                 <td>{{ $data->appointmentAgenda }}</td>

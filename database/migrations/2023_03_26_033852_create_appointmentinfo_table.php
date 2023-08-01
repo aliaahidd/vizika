@@ -17,7 +17,8 @@ return new class extends Migration
             $table->bigInteger('contVisitID');
             $table->string('appointmentPurpose');
             $table->string('appointmentAgenda');
-            $table->date('appointmentDate');
+            $table->date('appointmentDateStart');
+            $table->date('appointmentDateEnd');
             $table->time('appointmentTime');
             $table->string('bringVehicle');
             $table->string('bringLaptop');

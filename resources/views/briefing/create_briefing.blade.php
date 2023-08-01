@@ -27,17 +27,13 @@
                     <label>Date<span style="color: red; margin-left: 5px">*</span></label>
                     <input type="date" name="briefingDate" class="form-control" id="txtDate" required>
                     <br>
-                    <label>Time end</label>
-                    <input type="time" name="briefingTimeEnd" class="form-control" id="endTimeInput" readonly required>
+                    <label>Time end<span style="color: red; margin-left: 5px">*</span></label>
+                    <input type="time" name="briefingTimeEnd" class="form-control" id="endTimeInput" required>
                 </div>
 
                 <div class="col-md-6">
                     <label>Time Start<span style="color: red; margin-left: 5px">*</span></label>
-                    <select name="briefingTimeStart" class="form-control" id="timeInput" onchange="validateTime()" required>
-                        <option value="">Select a time</option>
-                        <option value="09:00">9.00am</option>
-                        <option value="15:00">3.00pm</option>
-                    </select>
+                    <input type="time" name="briefingTimeStart" class="form-control" id="timeInput" required>
                     <br>
                     <label>Max Participant<span style="color: red; margin-left: 5px">*</span></label>
                     <input type="number" name="participantNo" class="form-control" placeholder="Ex: 30" required>
@@ -79,7 +75,7 @@
         }
     });
 </script>
-<script>
+<!-- <script>
     function validateTime() {
         var timeInput = document.getElementById('timeInput');
         var selectedTime = timeInput.value;
@@ -120,5 +116,5 @@
             alert('Please select either 9.00am or 3.00pm.');
         }
     }
-</script>
+</script> -->
 @endsection

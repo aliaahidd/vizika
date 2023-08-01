@@ -33,19 +33,24 @@
                     @csrf
                     <div class="row">
                         <div class="col-md-6">
-                            <label>Date<span style="color: red; margin-left: 5px">*</span></label>
-                            <input type="date" name="appointmentDate" class="form-control" id="txtDate" required>
+                            <label>Date Start<span style="color: red; margin-left: 5px">*</span></label>
+                            <input type="date" name="appointmentDateStart" class="form-control" id="startDate"required>
                             <span style="font-size: 12px; color: #999;">(Please note that Saturday and Sunday are not available for selection.)</span>
 
                         </div>
                         <br>
                         <div class="col-md-6">
-                            <label>Time<span style="color: red; margin-left: 5px">*</span></label>
-                            <input type="time" name="appointmentTime" class="form-control" required>
+                            <label>Date End<span style="color: red; margin-left: 5px">*</span></label>
+                            <input type="date" name="appointmentDateEnd" class="form-control" id="endDate" required>
+                            <span style="font-size: 12px; color: #999;"></span>
                         </div>
                     </div>
                     <br>
                     <div class="row">
+                        <div class="col-md-6">
+                            <label>Time<span style="color: red; margin-left: 5px">*</span></label>
+                            <input type="time" name="appointmentTime" class="form-control" required>
+                        </div>
                         <div class="col-md-6">
                             <label>Purpose<span style="color: red; margin-left: 5px">*</span></label>
                             <select class="form-control" name="appointmentPurpose">
@@ -57,15 +62,14 @@
                                 <option value="Enforcement Agency">Enforcement Agency</option>
                             </select>
                         </div>
-                        <br>
+                    </div>
+                    <br>
+                    <div class="row">
                         <div class="col-md-6">
                             <label>Agenda<span style="color: red; margin-left: 5px">*</span></label>
                             <input type="text" name="appointmentAgenda" class="form-control" placeholder="Appointment Agenda" required>
                         </div>
-                    </div>
-                    <br>
-                    <div class="row">
-                        <div class="col">
+                        <div class="col-md-6">
                             <label for="userType">User Type:<span style="color: red; margin-left: 5px">*</span></label>
                             <!-- Select the visitor type  -->
                             <select class="form-control" id="userType" onchange="toggleDropdown()">
@@ -74,7 +78,11 @@
                                 <option value="Visitor">Visitor</option>
                             </select>
                             <br>
-
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-12">
                             <div class="overflow-auto" style="overflow:hidden;display:none;" id="contractorlistlabel">
                                 <div class="table-responsive">
                                     <table class="table table-bordered" id="contractorTable" width="100%" cellspacing="0">
@@ -194,17 +202,27 @@
     // convert the date to ISO format
     var minDateISO = minDate.toISOString().slice(0, 10);
 
-    // set the minimum value of the date input field
-    document.getElementById("txtDate").setAttribute("min", minDateISO);
+    // set the minimum value of the date input fields
+    document.getElementById("startDate").setAttribute("min", minDateISO);
+    document.getElementById("endDate").setAttribute("min", minDateISO);
 
-    const dateInput = document.getElementById("txtDate");
+    const startDateInput = document.getElementById("startDate");
+    const endDateInput = document.getElementById("endDate");
 
-    dateInput.addEventListener("input", () => {
-        const chosenDate = new Date(dateInput.value);
-        if (chosenDate.getDay() === 0 || chosenDate.getDay() === 6) {
-            dateInput.setCustomValidity("Please choose a date that is not a Saturday or Sunday");
+    startDateInput.addEventListener("input", () => {
+        const chosenStartDate = new Date(startDateInput.value);
+        // add one day to the chosen start date
+        // chosenStartDate.setDate(chosenStartDate.getDate() + 1);
+        const minEndDateISO = chosenStartDate.toISOString().slice(0, 10);
+        endDateInput.setAttribute("min", minEndDateISO);
+    });
+
+    endDateInput.addEventListener("input", () => {
+        const chosenEndDate = new Date(endDateInput.value);
+        if (chosenEndDate <= new Date(startDateInput.value)) {
+            endDateInput.setCustomValidity("Please choose a date after the Start Date.");
         } else {
-            dateInput.setCustomValidity("");
+            endDateInput.setCustomValidity("");
         }
     });
 </script>
@@ -360,7 +378,8 @@
             return;
         }
 
-        const appointmentDate = document.getElementsByName("appointmentDate")[0].value;
+        const appointmentDateStart = document.getElementsByName("appointmentDateStart")[0].value;
+        const appointmentDateEnd = document.getElementsByName("appointmentDateEnd")[0].value;
         const appointmentTime = document.getElementsByName("appointmentTime")[0].value;
         const appointmentPurpose = document.getElementsByName("appointmentPurpose")[0].value;
         const appointmentAgenda = document.getElementsByName("appointmentAgenda")[0].value;
@@ -372,11 +391,12 @@
             const name = item.parentNode.parentNode.querySelector("td:last-child").textContent;
 
             // Check if the required data is available
-            if (id && name && appointmentDate && appointmentTime && appointmentPurpose && appointmentAgenda) {
+            if (id && name && appointmentDateStart && appointmentDateEnd && appointmentTime && appointmentPurpose && appointmentAgenda) {
                 const appointment = {
                     contVisitID: id,
                     name: name,
-                    appointmentDate: appointmentDate,
+                    appointmentDateStart: appointmentDateStart,
+                    appointmentDateEnd: appointmentDateEnd,
                     appointmentTime: appointmentTime,
                     appointmentPurpose: appointmentPurpose,
                     appointmentAgenda: appointmentAgenda

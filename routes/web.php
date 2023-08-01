@@ -61,8 +61,14 @@ Route::get('/Registered-User-Profile/{id}', [App\Http\Controllers\ProfileControl
 Route::get('approveuser/{id}', [App\Http\Controllers\ProfileController::class, 'approveuser'])->name('approveuser');
 //register visitor page load
 Route::get('/Register-User', [App\Http\Controllers\ProfileController::class, 'registeruserform'])->name('registeruserform');
+//bulk registration form
+Route::get('/Bulk-Registration', [App\Http\Controllers\ProfileController::class, 'bulkregistration'])->name('bulkregistration');
+//downlaod guideline excel
+Route::get('/Excel-Download/{fileType}', [App\Http\Controllers\ProfileController::class, 'exceldownload'])->name('exceldownload');
 //register visitor (insert)
 Route::post('/register-visitor', [App\Http\Controllers\ProfileController::class, 'registervisitor'])->name('registervisitor');
+//register bulk using excel store
+Route::post('/bulk-excel-file', [App\Http\Controllers\ProfileController::class, 'registerbulkfile'])->name('registerbulkfile');
 //query edit profile page (contractor)
 Route::put('updateprofilecontractor/{id}', [App\Http\Controllers\ProfileController::class, 'updateProfileContractor'])->name('updateProfileContractor');
 //query edit profile page (visitor)
@@ -220,6 +226,23 @@ Route::get('/qrcode', [App\Http\Controllers\QRCodeController::class, 'generateQr
 Route::get('/Visitor-Form', [App\Http\Controllers\QRCodeController::class, 'visitorform'])->name('visitorform');
 //store additional visitor info
 Route::post('/visitor-form', [App\Http\Controllers\QRCodeController::class, 'storevisitorform'])->name('storevisitorform');
+
+//TRANSPORT 
+//transport list 
+Route::get('/Transport', [App\Http\Controllers\TransportController::class, 'transport'])->name('transport');
+//regsiter transport
+Route::get('/Transport/Register-Transport', [App\Http\Controllers\TransportController::class, 'registerTransport'])->name('transport/registerTransport');
+//store transport registration with contractor 
+Route::post('/Store-Transport-Registration', [App\Http\Controllers\TransportController::class, 'storetransportregistration'])->name('storetransportregistration');
+//transport inspection list 
+Route::get('/Transport-Inspection', [App\Http\Controllers\TransportController::class, 'transportInspection'])->name('transportInspection');
+//transport inspection form 
+Route::get('/Transport-Inspection/InspectionForm', [App\Http\Controllers\TransportController::class, 'inspectionform'])->name('transportInspection/inspectionform');
+//store inspection
+Route::post('/Store-Inspection', [App\Http\Controllers\TransportController::class, 'storeinspection'])->name('storeinspection');
+
+
+
 
 //FINISH FORM
 //get data from scan image

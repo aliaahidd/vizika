@@ -15,7 +15,8 @@ class AppointmentInfo extends Model
         'contVisitID',
         'appointmentPurpose',
         'appointmentAgenda',
-        'appointmentDate',
+        'appointmentDateStart',
+        'appointmentDateEnd',
         'appointmentTime',
         'appointmentStatus',
     ];

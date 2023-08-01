@@ -6,7 +6,7 @@
     I would like to invite you for {{ $data['appointmentPurpose'] }}.</p>
 
 <p>Agenda : <strong>{{ $data['appointmentAgenda'] }}</strong>
-    <br>Date : <strong> {{ $data['appointmentDate'] }} </strong>
+    <br>Date : <strong> {{ $data['appointmentDateStart'] }} </strong>
     <br>Time : <strong> {{ $data['appointmentTime'] }} </strong>
 </p>
 
