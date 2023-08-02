@@ -111,10 +111,20 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('briefing*') ? 'active' : '' }}" href="{{ route('briefing') }}">
+                        <a class="nav-link {{ request()->routeIs('briefing*') ? 'active' : '' }}" data-toggle="collapse" data-target="#briefingSubMenu">
                             <i class="material-icons">work</i>
                             <span>Safety Briefing</span>
                         </a>
+                        <div class="collapse" id="briefingSubMenu" style="margin-left: 20px">
+                            <ul class="nav flex-column">
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('briefing') ? 'active' : '' }}" href="{{ route('briefing') }}">Briefing List</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('expirypasslist') ? 'active' : '' }}" href="{{ route('expirypasslist') }}">Expiry Pass List</a>
+                                </li>
+                            </ul>
+                        </div>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('company*') ? 'active' : '' }}" href="{{ route('company') }}">
@@ -154,6 +164,19 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('contractortransport*') ? 'active' : '' }}" data-toggle="collapse" data-target="#contractorSubMenu">
+                            <i class="material-icons">person</i>
+                            <span>Contractor</span>
+                        </a>
+                        <div class="collapse" id="contractorSubMenu" style="margin-left: 20px">
+                            <ul class="nav flex-column">
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('contractortransport') ? 'active' : '' }}" href="{{ route('contractortransport') }}">Transport Registration</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('transport*') ? 'active' : '' }}" data-toggle="collapse" data-target="#transportSubMenu">
                             <i class="material-icons">local_shipping</i>
                             <span>Transport</span>
@@ -161,7 +184,7 @@
                         <div class="collapse" id="transportSubMenu" style="margin-left: 20px">
                             <ul class="nav flex-column">
                                 <li class="nav-item">
-                                    <a class="nav-link {{ request()->routeIs('transport') ? 'active' : '' }}" href="{{ route('transport') }}">Transport Registration</a>
+                                    <a class="nav-link {{ request()->routeIs('transportvehicle') ? 'active' : '' }}" href="{{ route('transportvehicle') }}">Vehicle</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link {{ request()->routeIs('transportInspection') ? 'active' : '' }}" href="{{ route('transportInspection') }}">Transport Inspection</a>

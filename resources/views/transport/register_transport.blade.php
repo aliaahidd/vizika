@@ -3,8 +3,8 @@
 @section('content')
 <div class="page-header row no-gutters pb-4">
     <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
-        <h1 class="page-title mb-3">Transport</h1>
-        <h6><a href="{{ route('transport') }}">List Transport </a> /
+        <h1 class="page-title mb-3">Contractor</h1>
+        <h6><a href="{{ route('contractortransport') }}">List Transport </a> /
             <a>Register Transport</a>
         </h6>
     </div>
@@ -20,7 +20,7 @@
 <div class="card">
     <div class="card-body">
         <!-- form create new briefing -->
-        <form method="POST" action="{{ route('storetransportregistration') }}" enctype="multipart/form-data" id="transport">
+        <form method="POST" action="{{ route('storetransportregistration') }}" enctype="multipart/form-data" id="contractortransport">
             @csrf
             <div class="row mb-3">
                 <div class="col-md-6 mb-3">

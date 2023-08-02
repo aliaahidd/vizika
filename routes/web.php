@@ -155,6 +155,8 @@ Route::get('/briefingsession/{id}', [App\Http\Controllers\BriefingController::cl
 Route::get('/Update-Validity-Pass/{id}', [App\Http\Controllers\BriefingController::class, 'updatepassdate'])->name('updatepassdate');
 //delete the participant record
 Route::get('/Delete-participant/{id}', [App\Http\Controllers\BriefingController::class, 'deleterecord'])->name('deleterecord');
+//expiry pass list 
+Route::get('/Expiry-Pass-List', [App\Http\Controllers\BriefingController::class, 'expirypasslist'])->name('expirypasslist');
 
 //REPORT
 //report list
@@ -229,9 +231,9 @@ Route::post('/visitor-form', [App\Http\Controllers\QRCodeController::class, 'sto
 
 //TRANSPORT 
 //transport list 
-Route::get('/Transport', [App\Http\Controllers\TransportController::class, 'transport'])->name('transport');
+Route::get('/Contractor-Transport', [App\Http\Controllers\TransportController::class, 'contractortransport'])->name('contractortransport');
 //regsiter transport
-Route::get('/Transport/Register-Transport', [App\Http\Controllers\TransportController::class, 'registerTransport'])->name('transport/registerTransport');
+Route::get('/Contractor-Transport/Register-Transport', [App\Http\Controllers\TransportController::class, 'registerTransport'])->name('contractortransport/registerTransport');
 //store transport registration with contractor 
 Route::post('/Store-Transport-Registration', [App\Http\Controllers\TransportController::class, 'storetransportregistration'])->name('storetransportregistration');
 //transport inspection list 
@@ -240,6 +242,12 @@ Route::get('/Transport-Inspection', [App\Http\Controllers\TransportController::c
 Route::get('/Transport-Inspection/InspectionForm', [App\Http\Controllers\TransportController::class, 'inspectionform'])->name('transportInspection/inspectionform');
 //store inspection
 Route::post('/Store-Inspection', [App\Http\Controllers\TransportController::class, 'storeinspection'])->name('storeinspection');
+//vehicle list 
+Route::get('/Vehicle', [App\Http\Controllers\TransportController::class, 'transportvehicle'])->name('transportvehicle');
+//regsiter transport
+Route::get('/Vehicle/Register-Vehicle', [App\Http\Controllers\TransportController::class, 'registerVehicle'])->name('transport/registerVehicle');
+//store transport registration with contractor 
+Route::post('/Store-Vehicle-Registration', [App\Http\Controllers\TransportController::class, 'storevehicleregistration'])->name('storevehicleregistration');
 
 
 

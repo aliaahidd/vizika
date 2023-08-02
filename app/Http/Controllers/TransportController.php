@@ -10,7 +10,7 @@ use Carbon\Carbon;
 
 class TransportController extends Controller
 {
-    public function transport()
+    public function contractortransport()
     {
         $transportList = DB::table('transport')
             ->join('companyinfo', 'companyinfo.id', '=', 'transport.companyID')
@@ -61,9 +61,9 @@ class TransportController extends Controller
             'companyID' => $companyID,
             'vehicleRegNo' => $vehicleRegNo,
             'contractorID' => $contractorID, // Convert the contractor IDs to JSON and store it in the database
-            'plant' => 'Painting', 
-            'passNo' => '123', 
-            'checkInTime' => $time_now, 
+            'plant' => 'Painting',
+            'passNo' => '123',
+            'checkInTime' => $time_now,
         );
 
         // insert query
@@ -127,5 +127,53 @@ class TransportController extends Controller
         DB::table('transportinspection')->insert($data);
 
         return redirect()->route('transportInspection');
+    }
+
+    public function transportvehicle()
+    {
+        $vehicleList = DB::table('vehicle')
+            ->join('companyinfo', 'companyinfo.id', '=', 'vehicle.companyID')
+            ->select([
+                'companyinfo.id AS companyID',
+                'vehicle.id AS vehicleID', 'vehicle.*', 'companyinfo.*'
+            ])
+            ->orderBy('vehicleID', 'desc')
+            ->get();
+
+        return view('transport.list_vehicle', compact('vehicleList'));
+    }
+
+    public function registerVehicle()
+    {
+        $companylist = DB::table('companyinfo')
+            ->orderBy('companyName', 'asc')
+            ->get();
+
+        return view('transport.register_vehicle', compact('companylist'));
+    }
+
+    public function storevehicleregistration(Request $request)
+    {
+        // store vehicle
+        $companyID = $request->input('companyID');
+        $vehicleRegNo = $request->input('vehicleRegNo');
+        $vehicleType = $request->input('vehicleType');
+        $vehicleCC = $request->input('vehicleCC');
+        $vehicleColour = $request->input('vehicleColour');
+        $vehicleWeight = $request->input('vehicleWeight');
+
+        $data = array(
+            'vehicleRegNo' => $vehicleRegNo,
+            'vehicleType' => $vehicleType,
+            'vehicleCC' => $vehicleCC,
+            'vehicleColour' => $vehicleColour,
+            'vehicleWeight' => $vehicleWeight,
+            'companyID' => $companyID,
+        );
+
+        // insert query
+        DB::table('vehicle')->insert($data);
+
+        return redirect()->route('transportvehicle');
     }
 }

@@ -193,4 +193,7 @@ class BriefingController extends Controller
             return response()->json(array('success' => true));
         }
     }
+    public function expirypasslist()
+    {
+    }
 }

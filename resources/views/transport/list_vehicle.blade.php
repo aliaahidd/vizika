@@ -4,8 +4,8 @@
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <div class="page-header row no-gutters">
     <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
-        <h1 class="page-title mb-3">Contractor</h1>
-        <h6>List Transport</h6>
+        <h1 class="page-title mb-3">Transport</h1>
+        <h6>List Vehicle</h6>
     </div>
 </div>
 
@@ -30,10 +30,10 @@
 
         @if( auth()->user()->category== "SHEQ Guard")
 
-        @if(request()->routeIs('contractortransport'))
+        @if(request()->routeIs('transportvehicle'))
         <div class="col-lg-12 col-md-6 col-sm-3 justify-content-end d-flex">
-            <a class="btn btn-primary" style="width:170px;" role="button" href="{{ route('contractortransport/registerTransport') }}">
-                <i class="fas fa-plus"></i>&nbsp; Register Transport</a>
+            <a class="btn btn-primary" style="width:170px;" role="button" href="{{ route('transport/registerVehicle') }}">
+                <i class="fas fa-plus"></i>&nbsp; Register Vehicle</a>
         </div>
         @endif
 
@@ -54,26 +54,24 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
+                                <th>Plate No.</th>
+                                <th>Type</th>
+                                <th>CC</th>
+                                <th>Colour</th>
+                                <th>Weight</th>
                                 <th>Company</th>
-                                <th>Reg. No</th>
-                                <th>Name</th>
-                                <th>IC No</th>
-                                <th>Plant</th>
-                                <th>Check-In</th>
-                                <th>CheckOut</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($transportList As $key=>$data)
+                            @foreach($vehicleList As $key=>$data)
                             <tr id="row{{$data->id}}">
-                                <td>{{ $data->transportID }}</td>
-                                <td>{{ $data->companyName }}</td>
+                                <td>{{ $data->vehicleID }}</td>
                                 <td>{{ $data->vehicleRegNo }}</td>
-                                <td>{{ $data->name }}</td>
-                                <td>{{ $data->icNo }}</td>
-                                <td>{{ $data->plant }}</td>
-                                <td>{{ $data->checkInDate }} {{ $data->checkInTime }}</td>
-                                <td>{{ $data->checkOutDate }} {{ $data->checkOutTime }}</td>
+                                <td>{{ $data->vehicleType }}</td>
+                                <td>{{ $data->vehicleCC }}</td>
+                                <td>{{ $data->vehicleColour }}</td>
+                                <td>{{ $data->vehicleWeight }}</td>
+                                <td>{{ $data->companyName }}</td>
                             </tr>
                             @endforeach
                         </tbody>
@@ -103,7 +101,7 @@
             ],
             "language": {
                 search: '<i class="fa fa-search" aria-hidden="true"></i>',
-                searchPlaceholder: 'Search transport'
+                searchPlaceholder: 'Search vehicle'
             }
         });
 
