@@ -52,6 +52,9 @@
                                     <tr class="text-center">
                                         <th>No</th>
                                         <th>Name</th>
+                                        <th>IC</th>
+                                        <th>Plant</th>
+                                        <th>Pass No</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -66,6 +69,9 @@
                                                 @endforeach
                                             </select>
                                         </td>
+                                        <td><input type="text" name="noIC[]" class="form-control"></td>
+                                        <td><input type="text" name="plant[]" class="form-control"></td>
+                                        <td><input type="text" name="passNo[]" class="form-control"></td>
                                         <td>
                                             <button type="button" class="btn btn-danger remove-row-btn">Remove</button>
                                         </td>
@@ -77,7 +83,6 @@
                     </div>
                 </div>
             </div>
-            <input type="hidden" name="selectedContractorIDs" id="selectedContractorIDs">
 
             <div class="row justify-content-end">
                 <a href="javascript:history.go(-1)" class="btn btn-danger pull-right mr-2">Cancel</a>
@@ -109,29 +114,7 @@
     // Make the input field read-only
     document.getElementById("txtDate").readOnly = true;
 </script>
-<script>
-    // to search the appointment 
-    $(document).ready(function() {
-        $('#dataTable').DataTable({
-            "order": [
-                [1, "asc"]
-            ],
-            "language": {
-                search: '<i class="fa fa-search" aria-hidden="true"></i>',
-                searchPlaceholder: 'Search contractor'
-            }
-        });
 
-        // filter appointment
-        $('.dataTables_filter input[type="search"]').css({
-            'width': '300px',
-            'display': 'inline-block',
-            'font-size': '15px',
-            'font-weight': '400'
-        });
-
-    });
-</script>
 <script>
     $(document).ready(function() {
         var rowCount = 1;
@@ -155,6 +138,9 @@
                             @endforeach
                         </select>
                     </td>
+                    <td><input type="text" name="noIC[]" class="form-control"></td>
+                    <td><input type="text" name="plant[]" class="form-control"></td>
+                    <td><input type="text" name="passNo[]" class="form-control"></td>
                     <td>
                         <button type="button" class="btn btn-danger remove-row-btn">Remove</button>
                     </td>
@@ -194,9 +180,6 @@
                     }
                 });
             });
-
-            // Update hidden input with selected contractor IDs
-            $("#selectedContractorIDs").val(selectedOptions.join("/"));
         });
     });
 </script>

@@ -232,8 +232,12 @@ Route::post('/visitor-form', [App\Http\Controllers\QRCodeController::class, 'sto
 //TRANSPORT 
 //transport list 
 Route::get('/Contractor-Transport', [App\Http\Controllers\TransportController::class, 'contractortransport'])->name('contractortransport');
+//contractor transport details
+Route::get('/Contractor-Transport-Details/{id}', [App\Http\Controllers\TransportController::class, 'contractortransportdetails'])->name('contractortransportdetails');
 //regsiter transport
 Route::get('/Contractor-Transport/Register-Transport', [App\Http\Controllers\TransportController::class, 'registerTransport'])->name('contractortransport/registerTransport');
+//checkout trasnport 
+Route::get('/checkout-transport/{id}', [App\Http\Controllers\TransportController::class, 'checkoutTransport'])->name('checkoutTransport');
 //store transport registration with contractor 
 Route::post('/Store-Transport-Registration', [App\Http\Controllers\TransportController::class, 'storetransportregistration'])->name('storetransportregistration');
 //transport inspection list 

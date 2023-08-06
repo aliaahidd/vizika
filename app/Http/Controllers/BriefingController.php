@@ -195,5 +195,21 @@ class BriefingController extends Controller
     }
     public function expirypasslist()
     {
+        // Set the timezone to Kuala Lumpur
+        $kl_timezone = 'Asia/Kuala_Lumpur';
+        $today_date = Carbon::now($kl_timezone)->toDateString();
+
+        // Calculate the date one week from today
+        $one_week_from_today = Carbon::now($kl_timezone)->addWeek()->toDateString();
+
+        $expirypasslist = DB::table('contractorinfo')
+            ->join('users', 'users.id', '=', 'contractorinfo.userID')
+            ->where(function ($query) use ($today_date, $one_week_from_today) {
+                $query->where('passExpiryDate', '<=', $today_date) // Pass is expired
+                    ->orWhereBetween('passExpiryDate', [$today_date, $one_week_from_today]); // Pass is expiring within a week
+            })
+            ->get();
+
+        return view('briefing.list_expiry_pass', compact('expirypasslist', 'today_date'));
     }
 }

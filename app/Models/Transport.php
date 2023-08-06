@@ -14,6 +14,7 @@ class Transport extends Model
         'companyID',
         'vehicleRegNo',
         'contractorID',
+        'noIC',
         'plant',
         'passNo',
         'checkInDate',

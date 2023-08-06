@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use App\Models\Transport;
 
 
 class TransportController extends Controller
@@ -15,14 +16,61 @@ class TransportController extends Controller
         $transportList = DB::table('transport')
             ->join('companyinfo', 'companyinfo.id', '=', 'transport.companyID')
             ->select([
-                'companyinfo.id AS companyID',
-                'transport.id AS transportID', 'transport.*', 'companyinfo.*'
+                'transport.checkInTime', 'companyinfo.companyName', 'transport.vehicleRegNo', 'transport.visitDate', 'transport.checkOutTime',
+                DB::raw('COUNT(transport.id) AS totalTransport'),
+                DB::raw('COUNT(companyinfo.id) AS totalCompanyInfo'),
+                DB::raw('MAX(transport.id) AS transportID')
             ])
-            ->orderBy('transportID', 'desc')
+            ->groupBy('transport.checkInTime', 'companyinfo.companyName', 'transport.vehicleRegNo', 'transport.visitDate', 'transport.checkOutTime')
+            ->orderBy('transport.id', 'desc')
             ->get();
+
 
         return view('transport.list_transport', compact('transportList'));
     }
+
+    public function contractortransportdetails($id)
+    {
+        $transportInfo = DB::table('transport')
+            ->join('companyinfo', 'companyinfo.id', '=', 'transport.companyID')
+            ->where('transport.id', '=', $id)
+            ->first();
+
+        $contractorInfo = DB::table('transport')
+            ->join('users', 'users.id', '=', 'transport.contractorID')
+            ->where('transport.checkInTime', '=', $transportInfo->checkInTime)
+            ->get();
+
+        return view('transport.contractor_transport_details', compact('transportInfo', 'contractorInfo'));
+    }
+
+    public function checkoutTransport($id)
+    {
+        // Set the timezone to Kuala Lumpur
+        $kl_timezone = 'Asia/Kuala_Lumpur';
+        $time_now = Carbon::now($kl_timezone)->toTimeString();
+
+        // Find the record by id
+        $checkoutInfo = Transport::find($id);
+
+        // If the record exists, get the checkInTime value
+        if ($checkoutInfo) {
+            $checkInTime = $checkoutInfo->checkInTime;
+            $vehicleRegNo = $checkoutInfo->vehicleRegNo;
+
+            // Find all records with the same checkInTime and update their checkOutTime
+            Transport::where('checkInTime', $checkInTime)
+                ->where('vehicleRegNo', $vehicleRegNo)
+                ->update(['checkOutTime' => $time_now]);
+
+            // Display message box in the same page
+            return redirect()->back()->with('message', 'Checkout updated');
+        }
+
+        // If the record with the given id does not exist, redirect back with an error message
+        return redirect()->back()->with('error', 'Record not found');
+    }
+
 
     public function registerTransport()
     {
@@ -47,29 +95,36 @@ class TransportController extends Controller
         $today_date = Carbon::now($kl_timezone)->toDateString();
         $time_now = Carbon::now($kl_timezone)->toTimeString();
 
-        // store inspection
+        // Store inspection details
         $date = $request->input('visitDate');
         $companyID = $request->input('companyID');
         $vehicleRegNo = $request->input('vehicleRegNo');
 
         // Retrieve selected contractor IDs and split them using the delimiter "/"
-        $selectedContractorIDs = explode('/', $request->input('selectedContractorIDs'));
-        $contractorID = json_encode($selectedContractorIDs);
+        $contractorIDs = $request->input('contractorID');
 
-        $data = array(
-            'visitDate' => $date,
-            'companyID' => $companyID,
-            'vehicleRegNo' => $vehicleRegNo,
-            'contractorID' => $contractorID, // Convert the contractor IDs to JSON and store it in the database
-            'plant' => 'Painting',
-            'passNo' => '123',
-            'checkInTime' => $time_now,
-        );
+        // Loop through each contractor ID and save the records
+        foreach ($contractorIDs as $index => $contractorID) {
+            $noIC = $request->input('noIC')[$index];
+            $plant = $request->input('plant')[$index];
+            $passNo = $request->input('passNo')[$index];
 
-        // insert query
-        DB::table('transportinspection')->insert($data);
+            $data = array(
+                'visitDate' => $date,
+                'companyID' => $companyID,
+                'vehicleRegNo' => $vehicleRegNo,
+                'contractorID' => $contractorID,
+                'noIC' => $noIC,
+                'plant' => $plant,
+                'passNo' => $passNo,
+                'checkInTime' => $time_now,
+            );
 
-        return redirect()->route('transportInspection');
+            // insert query
+            DB::table('transport')->insert($data);
+        }
+
+        return redirect()->route('contractortransport');
     }
 
     public function transportInspection()

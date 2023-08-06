@@ -17,6 +17,9 @@ use App\Models\VisitRecord;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 use Carbon\Carbon;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
+use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 
 
 
@@ -232,59 +235,6 @@ class ProfileController extends Controller
 
         sleep(1);
         return redirect()->route('userlist');
-    }
-
-    public function registerbulkfile(Request $request)
-    {
-        $id = Auth::user()->id;
-        $category = $request->input('category');
-        $password = Hash::make('visitor123');
-        $companyID = $request->input('companyID');
-
-        if ($request->hasFile('file') && $request->file('file')->getClientOriginalExtension() === 'csv') {
-            $file = $request->file('file');
-            $handle = fopen($file->getPathname(), "r");
-            $firstRowSkipped = false; // Flag to track if the first row has been skipped
-
-            while ($data = fgetcsv($handle)) {
-                if (!$firstRowSkipped) {
-                    $firstRowSkipped = true;
-                    continue; // Skip the first row and move to the next iteration
-                }
-
-                $data[0] = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $data[0]);
-                $nameCSV = $data[0];
-                $emailCSV = $data[1];
-                $empNoCSV = $data[2];
-                $phoneNoCSV = $data[3];
-                $passExpiryDateCSV = $data[4];
-                $birthDateCSV = $data[5];
-                $addressCSV = $data[6];
-                $validityPassPhotoCSV = $data[7];
-
-                //change format date 
-                $carbonBirthDate = Carbon::createFromFormat('d/m/Y', $birthDateCSV);
-                $birthDate = $carbonBirthDate->format('Y-m-d');
-
-                $carbonPassExpiryDate = Carbon::createFromFormat('d/m/Y', $passExpiryDateCSV);
-                $passExpiryDate = $carbonPassExpiryDate->format('Y-m-d');
-
-
-                $query = "INSERT INTO users(name, email, password, category, status, recommendedBy) VALUES (?, ?, ?, ?, ?, ?)";
-                DB::insert($query, [$nameCSV, $emailCSV, $password, $category, 'Pending', $id]);
-
-                // Get the last inserted ID (primary key) from 'users' table
-                $contractorID = DB::getPdo()->lastInsertId();
-
-                $query = "INSERT INTO contractorinfo(userID, companyID, employeeNo, phoneNo, passExpiryDate, birthDate, address, validityPassPhoto) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-                DB::insert($query, [$contractorID, $companyID, $empNoCSV, $phoneNoCSV, $passExpiryDate, $birthDate, $addressCSV, $validityPassPhotoCSV]);
-            }
-
-            fclose($handle);
-            return redirect()->back()->with('success', 'Success');
-        } else {
-            return redirect()->back()->with('error', 'Sila muat naik fail CSV sahaja');
-        }
     }
 
     public function updateProfileContractor(Request $request, $id)
@@ -602,6 +552,80 @@ class ProfileController extends Controller
 
         // If the file doesn't exist, return an error response or redirect to an error page.
         abort(404, 'File not found');
+    }
+
+    public function registerbulkfile(Request $request)
+    {
+        $id = Auth::user()->id;
+        $category = $request->input('category');
+        $password = Hash::make('visitor123');
+        $companyID = $request->input('companyID');
+
+        if ($request->hasFile('file') && $request->file('file')->getClientOriginalExtension() === 'xlsx') {
+            $file = $request->file('file');
+            $spreadsheet = IOFactory::load($file->getPathname());
+            $worksheet = $spreadsheet->getActiveSheet();
+            $data = $worksheet->toArray();
+
+            $firstRowSkipped = false; // Flag to track if the first row has been skipped
+
+            foreach ($data as $row) {
+                if (!$firstRowSkipped) {
+                    $firstRowSkipped = true;
+                    continue; // Skip the first row and move to the next iteration
+                }
+
+                $nameCSV = $row[0];
+                $emailCSV = $row[1];
+                $empNoCSV = $row[2];
+                $phoneNoCSV = $row[3];
+                $passExpiryDateCSV = $row[4];
+                $birthDateCSV = $row[5];
+                $addressCSV = $row[6];
+                $validityPassPhotoCSV = $row[7]; // Assuming the image data is in column 8 (0-based index)
+
+                // Generate a unique filename for the photo to avoid conflicts
+                $photoFilename = time() . '.png'; // You can assume it's a PNG file, or use the correct extension based on your actual data
+
+                if ($validityPassPhotoCSV) {
+                    // Assuming the image URL is provided in the cell, download the image and save it to the folder
+                    $imageData = file_get_contents($validityPassPhotoCSV);
+
+                    if ($imageData === false) {
+                        // Failed to download the image, handle the error or log it for debugging
+                        return redirect()->back()->with('success', 'Failed to download the image.');
+                    }
+
+                    // Save the image to the public/assets/pass folder
+                    if (!file_put_contents(public_path('assets/pass/' . $photoFilename), $imageData)) {
+                        // Failed to save the image, handle the error or log it for debugging
+                        return redirect()->back()->with('success', 'Failed to save the image.');
+                    }
+                } else {
+                    return redirect()->back()->with('success', 'Not exists');
+                }
+
+                // Change format date 
+                $carbonBirthDate = Carbon::createFromFormat('d/m/Y', $birthDateCSV);
+                $birthDate = $carbonBirthDate->format('Y-m-d');
+
+                $carbonPassExpiryDate = Carbon::createFromFormat('d/m/Y', $passExpiryDateCSV);
+                $passExpiryDate = $carbonPassExpiryDate->format('Y-m-d');
+
+                $query = "INSERT INTO users(name, email, password, category, status, recommendedBy) VALUES (?, ?, ?, ?, ?, ?)";
+                DB::insert($query, [$nameCSV, $emailCSV, $password, $category, 'Pending', $id]);
+
+                // Get the last inserted ID (primary key) from 'users' table
+                $contractorID = DB::getPdo()->lastInsertId();
+
+                $query = "INSERT INTO contractorinfo(userID, companyID, employeeNo, phoneNo, passExpiryDate, birthDate, address, validityPassPhoto) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                DB::insert($query, [$contractorID, $companyID, $empNoCSV, $phoneNoCSV, $passExpiryDate, $birthDate, $addressCSV, $photoFilename]);
+            }
+
+            return redirect()->back()->with('success', 'Success');
+        } else {
+            return redirect()->back()->with('error', 'Sila muat naik fail XLSX sahaja');
+        }
     }
 
     public function contractordetail(Request $request)

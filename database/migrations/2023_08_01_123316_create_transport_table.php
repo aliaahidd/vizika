@@ -16,7 +16,8 @@ return new class extends Migration
             $table->date('visitDate');
             $table->bigInteger('companyID');
             $table->string('vehicleRegNo');
-            $table->string('contractorID');
+            $table->bigInteger('contractorID');
+            $table->string('noIC');
             $table->string('plant');
             $table->string('passNo');
             $table->time('checkInTime');

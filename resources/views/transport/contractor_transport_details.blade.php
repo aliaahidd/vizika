@@ -5,7 +5,9 @@
 <div class="page-header row no-gutters">
     <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
         <h1 class="page-title mb-3">Contractor</h1>
-        <h6>List Transport</h6>
+        <h6><a href="{{ route('contractortransport') }}">List Transport </a> /
+            <a>Contractor Transport</a>
+        </h6>
     </div>
 </div>
 
@@ -46,6 +48,26 @@
         </div>
 
         <div class="card-body">
+            <div class="row">
+                <div class="col-md-2">
+                    <label>Company</label>
+                </div>
+                <div class="col-md-10">
+                    <h6>{{$transportInfo->companyName}}</h6>
+                </div>
+                <div class="col-md-2">
+                    <label>Date</label>
+                </div>
+                <div class="col-md-10">
+                    <h6>{{$transportInfo->visitDate}}</h6>
+                </div>
+                <div class="col-md-2">
+                    <label>Plate No</label>
+                </div>
+                <div class="col-md-10">
+                    <h6>{{$transportInfo->vehicleRegNo}}</h6>
+                </div>
+            </div>
             <div class="overflow-auto" style="overflow:auto;">
                 <div class="table-responsive">
                     <!-- FOR SHEQ GUARD TO VIEW TRANSPORT LIST START -->
@@ -54,35 +76,27 @@
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>Company</th>
-                                <th>Date</th>
-                                <th>Reg. No</th>
-                                <th>Check-In</th>
-                                <th>CheckOut</th>
-                                <th></th>
+                                <th>Name</th>
+                                <th>IC No</th>
+                                <th>Plant</th>
+                                <th>Pass No</th>
+                                <th>Check In Time</th>
+                                <th>Check Out Time</th>
                             </tr>
                         </thead>
                         <tbody>
                             @php
                             $count = 1; // Initialize a count variable
                             @endphp
-                            @foreach($transportList As $key=>$data)
+                            @foreach($contractorInfo As $key=>$data)
                             <tr>
                                 <td>{{ $count++ }}</td>
-                                <td>{{ $data->companyName }}</td>
-                                <td>{{ $data->visitDate }}</td>
-                                <td>{{ $data->vehicleRegNo }}</td>
+                                <td>{{ $data->name }}</td>
+                                <td>{{ $data->noIC }}</td>
+                                <td>{{ $data->plant }}</td>
+                                <td>{{ $data->passNo }}</td>
                                 <td>{{ $data->checkInTime }}</td>
-                                <td>
-                                    @if($data->checkOutTime == NULL)
-                                    <div class="btn-group">
-                                        <a class="btn btn-primary" style="color: white" href="{{ route('checkoutTransport', $data->transportID) }}">Check Out</a>&nbsp
-                                    </div>
-                                    @else
-                                    {{ $data->checkOutTime }}
-                                    @endif
-                                </td>
-                                <td><a class="btn btn-primary" href="{{ route('contractortransportdetails', $data->transportID) }}">View</a></td>
+                                <td>{{ $data->checkOutTime }}</td>
                             </tr>
                             @endforeach
                         </tbody>
@@ -103,28 +117,6 @@
 <script src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>
 
-<script>
-    // to search the transport 
-    $(document).ready(function() {
-        $('#dataTable').DataTable({
-            "order": [
-                [1, "desc"]
-            ],
-            "language": {
-                search: '<i class="fa fa-search" aria-hidden="true"></i>',
-                searchPlaceholder: 'Search transport'
-            }
-        });
-
-        // filter appointment
-        $('.dataTables_filter input[type="search"]').css({
-            'width': '300px',
-            'display': 'inline-block',
-            'font-size': '15px',
-            'font-weight': '400'
-        });
-    });
-</script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function() {
