@@ -42,7 +42,6 @@ class BiometricController extends Controller
 
     public function saveImage(Request $request)
     {
-
         $userID = Auth::user()->id;
 
         // Check if the user ID already exists

@@ -104,7 +104,7 @@
             labels.map(async label => {
                 const descriptions = []
                 for (let i = 1; i <= 1; i++) {
-                    const img = await faceapi.fetchImage(`http://127.0.0.1:8000/assets/${label}/1685445966.png`);
+                    const img = await faceapi.fetchImage(`https://vizika.online/assets/${label}/1685445966.png`);
 
                     const detections = await faceapi.detectSingleFace(img).withFaceLandmarks().withFaceDescriptor()
                     descriptions.push(detections.descriptor)

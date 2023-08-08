@@ -194,7 +194,7 @@
                 console.log('imgURL:', imgURL);
 
                 const encodedName = encodeURIComponent(name);
-                const imageURL = `http://127.0.0.1:8000/assets/${encodedName}/${imgURL}`;
+                const imageURL = `https://vizika.online/assets/${encodedName}/${imgURL}`;
                 console.log('imageURL:', imageURL);
 
 

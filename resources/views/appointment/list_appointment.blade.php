@@ -72,6 +72,7 @@
                                 <th>Time</th>
                                 <th>Purpose</th>
                                 <th>Agenda</th>
+                                <th>Company</th>
                                 <th>Visitor</th>
                                 <th>Status</th>
                                 <th>Bring laptop?</th>
@@ -87,6 +88,7 @@
                                 <td>{{ $data->appointmentTime }}</td>
                                 <td>{{ $data->appointmentPurpose }}</td>
                                 <td>{{ $data->appointmentAgenda }}</td>
+                                <td>{{ $data->companyName }}</td>
                                 <td>{{ $data->name }}</td>
                                 <td>
                                     <div class="btn-group">

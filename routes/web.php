@@ -124,6 +124,16 @@ Route::get('/visitor/{id}', [App\Http\Controllers\AppointmentController::class, 
 //show modal contractor
 Route::get('/contractor/{id}', [App\Http\Controllers\AppointmentController::class, 'todayAppointmentContractor'])->name('contractor.showC');
 
+//APPOINTMENT
+//contract page
+Route::get('/Contract', [App\Http\Controllers\ContractController::class, 'contract'])->name('contract');
+//contractor transport details
+Route::get('/Contract-Details/{id}', [App\Http\Controllers\ContractController::class, 'contractdetails'])->name('contractdetails');
+//regsiter transport
+Route::get('/Contract/Register-Contract', [App\Http\Controllers\ContractController::class, 'registerContract'])->name('contract/createcontract');
+//store transport registration with contractor 
+Route::post('/Store-Contract', [App\Http\Controllers\ContractController::class, 'storecontract'])->name('storecontract');
+
 //RECORD VISIT
 //past record lisr
 Route::get('/Record', [App\Http\Controllers\RecordController::class, 'record'])->name('record');

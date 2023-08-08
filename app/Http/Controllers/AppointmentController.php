@@ -20,15 +20,23 @@ class AppointmentController extends Controller
     {
         //staff view 
         $appointmentStaff = DB::table('appointmentinfo')
-            ->join('users', 'users.id', '=', 'appointmentinfo.contVisitID')
+            ->join('users AS staff', 'staff.id', '=', 'appointmentinfo.contVisitID')
             ->leftJoin('laptopinfo', 'laptopinfo.appointmentID', '=', 'appointmentinfo.id')
+            ->leftJoin('contractorinfo', 'contractorinfo.userID', '=', 'staff.id') // Use leftJoin if needed
+            ->leftJoin('visitorinfo', 'visitorinfo.userID', '=', 'staff.id') // Use leftJoin if needed
+            ->leftJoin('companyinfo', function ($join) {
+                $join->on('companyinfo.id', '=', 'contractorinfo.companyID')
+                    ->orOn('companyinfo.id', '=', 'visitorinfo.companyID');
+            })
             ->select([
-                'users.id AS staffID',
-                'appointmentinfo.id AS appointID', 'users.*', 'appointmentinfo.*', 'laptopinfo.*'
+                'staff.id AS staffID',
+                'appointmentinfo.id AS appointID', 'staff.*', 'appointmentinfo.*', 'laptopinfo.*',
+                'companyinfo.companyName AS companyName' // Select the company name using an alias
             ])
             ->where('staffID', Auth::user()->id)
             ->orderBy('appointmentinfo.id', 'desc')
             ->get();
+
 
         //visitor view
         $appointmentVisitor = DB::table('appointmentinfo')

@@ -19,7 +19,12 @@ use Illuminate\Support\Facades\Response;
 use Carbon\Carbon;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
+use PhpOffice\PhpSpreadsheet\Worksheet\MemoryDrawing;
 use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
+use Illuminate\Support\Facades\Storage;
+use PhpOffice\PhpSpreadsheet\Reader\Exception;
+
+
 
 
 
@@ -536,17 +541,17 @@ class ProfileController extends Controller
     public function exceldownload($fileType)
     {
         // Replace 'public/excels/your_file.xlsx' with the actual path to your Excel file.
-        $contractorFilePath  = public_path('excel/guideline_contractor_registration.csv');
-        $visitorFilePath = public_path('excel/guideline_visitor_registration.csv');
+        $contractorFilePath  = public_path('excel/guideline_contractor_registration.xlsx');
+        $visitorFilePath = public_path('excel/guideline_visitor_registration.xlsx');
 
 
         if ($fileType === 'contractor') {
             if (file_exists($contractorFilePath)) {
-                return response()->download($contractorFilePath, 'guideline_contractor_registration.csv');
+                return response()->download($contractorFilePath, 'guideline_contractor_registration.xlsx');
             }
         } elseif ($fileType === 'visitor') {
             if (file_exists($visitorFilePath)) {
-                return response()->download($visitorFilePath, 'guideline_visitor_registration.csv');
+                return response()->download($visitorFilePath, 'guideline_visitor_registration.xlsx');
             }
         }
 
@@ -561,71 +566,98 @@ class ProfileController extends Controller
         $password = Hash::make('visitor123');
         $companyID = $request->input('companyID');
 
-        if ($request->hasFile('file') && $request->file('file')->getClientOriginalExtension() === 'xlsx') {
-            $file = $request->file('file');
-            $spreadsheet = IOFactory::load($file->getPathname());
-            $worksheet = $spreadsheet->getActiveSheet();
-            $data = $worksheet->toArray();
+        // Validate the uploaded files
+        $request->validate([
+            'file' => 'required|mimes:xls,xlsx',
+            'zipfile' => 'required|mimes:zip',
+        ]);
 
-            $firstRowSkipped = false; // Flag to track if the first row has been skipped
+        // Process the Excel file
+        $excelFile = $request->file('file');
+        $excelData = $this->readExcelData($excelFile->getPathname());
 
-            foreach ($data as $row) {
-                if (!$firstRowSkipped) {
-                    $firstRowSkipped = true;
-                    continue; // Skip the first row and move to the next iteration
+        // Process the Zip file
+        $zipFile = $request->file('zipfile');
+        $zipData = $this->readZipData($zipFile->getPathname());
+
+        // Example: Save contractor details and associate images with their names
+        foreach ($excelData as $row) {
+
+            $nameCSV = $row['Name'];
+            $emailCSV = $row['Email'];
+            $empNoCSV = $row['EmpNo'];
+            $phoneNoCSV = $row['PhoneNo'];
+            $passExpiryDateCSV = $row['PassExpiryDate'];
+            $birthDateCSV = $row['BirthDate'];
+            $addressCSV = $row['Address'];
+
+            // Change format date 
+            $carbonBirthDate = Carbon::createFromFormat('d/m/Y', $birthDateCSV);
+            $birthDate = $carbonBirthDate->format('Y-m-d');
+
+            $carbonPassExpiryDate = Carbon::createFromFormat('d/m/Y', $passExpiryDateCSV);
+            $passExpiryDate = $carbonPassExpiryDate->format('Y-m-d');
+
+            $query = "INSERT INTO users(name, email, password, category, status, recommendedBy) VALUES (?, ?, ?, ?, ?, ?)";
+            DB::insert($query, [$nameCSV, $emailCSV, $password, $category, 'Pending', $id]);
+
+            // Get the last inserted ID (primary key) from 'users' table
+            $contractorID = DB::getPdo()->lastInsertId();
+
+            // Example: Save the associated image to a directory
+            if (isset($zipData[$nameCSV])) {
+                $biometricPhotoSubfolderPath = public_path('assets/' . $nameCSV);
+
+                if (!file_exists($biometricPhotoSubfolderPath)) {
+                    mkdir($biometricPhotoSubfolderPath, 0777, true);
                 }
-
-                $nameCSV = $row[0];
-                $emailCSV = $row[1];
-                $empNoCSV = $row[2];
-                $phoneNoCSV = $row[3];
-                $passExpiryDateCSV = $row[4];
-                $birthDateCSV = $row[5];
-                $addressCSV = $row[6];
-                $validityPassPhotoCSV = $row[7]; // Assuming the image data is in column 8 (0-based index)
-
-                // Generate a unique filename for the photo to avoid conflicts
-                $photoFilename = time() . '.png'; // You can assume it's a PNG file, or use the correct extension based on your actual data
-
-                if ($validityPassPhotoCSV) {
-                    // Assuming the image URL is provided in the cell, download the image and save it to the folder
-                    $imageData = file_get_contents($validityPassPhotoCSV);
-
-                    if ($imageData === false) {
-                        // Failed to download the image, handle the error or log it for debugging
-                        return redirect()->back()->with('success', 'Failed to download the image.');
-                    }
-
-                    // Save the image to the public/assets/pass folder
-                    if (!file_put_contents(public_path('assets/pass/' . $photoFilename), $imageData)) {
-                        // Failed to save the image, handle the error or log it for debugging
-                        return redirect()->back()->with('success', 'Failed to save the image.');
-                    }
-                } else {
-                    return redirect()->back()->with('success', 'Not exists');
-                }
-
-                // Change format date 
-                $carbonBirthDate = Carbon::createFromFormat('d/m/Y', $birthDateCSV);
-                $birthDate = $carbonBirthDate->format('Y-m-d');
-
-                $carbonPassExpiryDate = Carbon::createFromFormat('d/m/Y', $passExpiryDateCSV);
-                $passExpiryDate = $carbonPassExpiryDate->format('Y-m-d');
-
-                $query = "INSERT INTO users(name, email, password, category, status, recommendedBy) VALUES (?, ?, ?, ?, ?, ?)";
-                DB::insert($query, [$nameCSV, $emailCSV, $password, $category, 'Pending', $id]);
-
-                // Get the last inserted ID (primary key) from 'users' table
-                $contractorID = DB::getPdo()->lastInsertId();
-
-                $query = "INSERT INTO contractorinfo(userID, companyID, employeeNo, phoneNo, passExpiryDate, birthDate, address, validityPassPhoto) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-                DB::insert($query, [$contractorID, $companyID, $empNoCSV, $phoneNoCSV, $passExpiryDate, $birthDate, $addressCSV, $photoFilename]);
+                $imageContents = $zipData[$nameCSV];
+                // Save the image to the public folder
+                $biometricPhotoFilename = time() . '.' . 'jpg';
+                file_put_contents(public_path('assets/'. $nameCSV . '/' . $biometricPhotoFilename), $imageContents);
             }
 
-            return redirect()->back()->with('success', 'Success');
-        } else {
-            return redirect()->back()->with('error', 'Sila muat naik fail XLSX sahaja');
+            $query2 = "INSERT INTO contractorinfo(userID, companyID, employeeNo, phoneNo, passExpiryDate, birthDate, address, validityPassPhoto) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            DB::insert($query2, [$contractorID, $companyID, $empNoCSV, $phoneNoCSV, $passExpiryDate, $birthDate, $addressCSV, 'aaa']);
+
+            $query3 = "INSERT INTO biometricinfo(userID, facialRecognition) VALUES (?, ?)";
+            DB::insert($query3, [$contractorID, $biometricPhotoFilename]);
         }
+
+        return redirect()->back()->with('success', 'Upload and processing completed.');
+    }
+
+    private function readExcelData($filePath)
+    {
+        try {
+            $spreadsheet = IOFactory::load($filePath);
+            $worksheet = $spreadsheet->getActiveSheet();
+            $rows = $worksheet->toArray();
+            $header = array_shift($rows);
+            $data = [];
+            foreach ($rows as $row) {
+                $data[] = array_combine($header, $row);
+            }
+            return $data;
+        } catch (Exception $e) {
+            // Handle exceptions if necessary
+            return [];
+        }
+    }
+
+    private function readZipData($filePath)
+    {
+        $zipData = [];
+        $zip = new \ZipArchive;
+        if ($zip->open($filePath) === true) {
+            for ($i = 0; $i < $zip->numFiles; $i++) {
+                $filename = $zip->getNameIndex($i);
+                $fileContents = $zip->getFromIndex($i);
+                $zipData[pathinfo($filename, PATHINFO_FILENAME)] = $fileContents;
+            }
+            $zip->close();
+        }
+        return $zipData;
     }
 
     public function contractordetail(Request $request)

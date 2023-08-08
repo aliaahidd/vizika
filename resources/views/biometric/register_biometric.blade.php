@@ -113,16 +113,19 @@
 
                     const csrfToken = document.head.querySelector('meta[name="csrf-token"]').content;
 
+                    console.log('CSRF Token:', csrfToken);
+                    console.log('CSRF Token:', csrfToken);
+
                     // Send the captured image data to the server for processing or storing in the database
-                    fetch('/save-image', {
+                    fetch('/save-image', { 
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': csrfToken
+                                'X-CSRF-TOKEN': csrfToken 
                             },
                             body: JSON.stringify({
                                 image: capturedImageData,
-                                userId: userId
+                                userId: userId,
                             }),
                         })
                         .then(response => {

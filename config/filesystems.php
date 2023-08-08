@@ -56,6 +56,15 @@ return [
             'throw' => false,
         ],
 
+        'pass_photos' => [
+            'driver' => 'local',
+            'root' => public_path('assets/pass'), // This sets the root path for the 'pass_photos' disk
+            'url' => env('APP_URL').'/public',
+            'visibility' => 'public',
+            'throw' => false,
+        ],
+        
+
     ],
 
     /*

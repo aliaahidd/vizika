@@ -202,6 +202,12 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('contract*') ? 'active' : '' }}" href="{{ route('contract') }}">
+                            <i class="material-icons">description</i>
+                            <span>Contract</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('record*') ? 'active' : '' }}" href="{{ route('record') }}">
                             <i class="material-icons">today</i>
                             <span>Record History</span>

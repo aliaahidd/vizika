@@ -55,8 +55,12 @@
                     </select>
                     <br>
 
-                    <label>CSV File<span style="color: red; margin-left: 5px">*</span></label>
+                    <label>Excel File<span style="color: red; margin-left: 5px">*</span></label>
                     <input type="file" name="file" class="form-control" required>
+                    <br>
+
+                    <label>Zip File<span style="color: red; margin-left: 5px">*</span></label>
+                    <input type="file" name="zipfile" class="form-control" required>
                     <br>
                 </div>
             </div>

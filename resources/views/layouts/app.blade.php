@@ -3,6 +3,8 @@
 
 <head>
     @include('layouts.partials.head')
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 
 <body>
@@ -11,7 +13,7 @@
             <div class="container-fluid " align="center" style="padding:50px">
                 <div class="row justify-content-center">
                     <div class="col-sm-6 ">
-                    <img src=" {{ asset('frontend') }}/images/logo.png" width="120">
+                        <img src=" {{ asset('frontend') }}/images/logo.png" width="120">
                     </div>
                 </div>
             </div>
