@@ -4,7 +4,7 @@
 <!-- Page Header -->
 <div class="page-header row no-gutters pb-4">
     <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
-        <h1 class="page-title mb-3">Visitor & Contractor</h1>
+        <h1 class="page-title mb-3">View Registered User</h1>
         <h6>List Visitor & Contractor</h6>
     </div>
 </div>
@@ -17,20 +17,6 @@
     {{ session()->get('message') }}
 </div>
 @endif
-
-<div class="row mb-3 justify-content-end">
-    <!-- if user == committee, then have add new appointment button  -->
-    @if( auth()->user()->category=="Staff")
-    <div class="col-lg-6 col-md-6 col-sm-6 d-flex justify-content-end">
-        <a class="btn btn-primary mr-3" style="width:140px;" role="button" href="{{ route('bulkregistration') }}">
-            <i class="fas fa-plus"></i>&nbsp; Bulk Registration</a>
-        <a class="btn btn-primary" style="width:140px;" role="button" href="{{ route('registeruserform') }}">
-            <i class="fas fa-plus"></i>&nbsp; User Registration</a>
-    </div>
-    @endif
-</div>
-
-
 
 <div class="card">
     <div class="card-header pb-0">

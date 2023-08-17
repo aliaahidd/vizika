@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Models\CompanyInfo;
 
@@ -18,6 +19,11 @@ class CompanyController extends Controller
         return view('company.list_company', compact('companylist'));
     }
 
+    public function companydetail(Request $request)
+    {
+        return view('company.company_detail');
+    }
+
     public function createcompany()
     {
         return view('company.create_company');
@@ -26,30 +32,38 @@ class CompanyController extends Controller
     public function storecompanyinfo(Request $request)
     {
         // create company
-        $name = $request->input('name');
-        $email = $request->input('email');
-        $phoneNo = $request->input('phoneNo');
-        $address = $request->input('address');
+        $userID = $id = Auth::user()->id;
+        $companyName = $request->input('companyName');
+        $companyRegNo = $request->input('companyRegNo');
+        $companyEmail = $request->input('companyEmail');
+        $companyPhoneNo = $request->input('companyPhoneNo');
+        $companyAddress = $request->input('companyAddress');
+        $companyIndustries = $request->input('companyIndustries');
+        $phoneNoPIC = $request->input('phoneNoPIC');
 
-        $Email = CompanyInfo::where('companyEmail', $email)->first();
+        $Email = CompanyInfo::where('companyName', $companyName)->first();
         if ($Email) {
             return redirect()
-                ->route('createcompany')
-                ->with('message', 'Email is already exists.');
+                ->route('companydetail')
+                ->with('message', 'Company is already exists.');
         }
 
         $data = array(
-            'companyName' => $name,
-            'companyEmail' => $email,
-            'companyPhoneNo' => $phoneNo,
-            'companyAddress' => $address,
+            'userID' => $userID,
+            'companyName' => $companyName,
+            'companyRegNo' => $companyRegNo,
+            'companyPhoneNo' => $companyPhoneNo,
+            'companyEmail' => $companyEmail,
+            'companyAddress' => $companyAddress,
+            'companyIndustries' => $companyIndustries,
+            'phoneNoPIC' => $phoneNoPIC,
         );
 
         // insert query
         DB::table('companyinfo')->insert($data);
 
         sleep(1);
-        return redirect()->route('company');
+        return redirect()->route('finishform');
     }
 
     public function editcompany($id)

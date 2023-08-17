@@ -24,7 +24,7 @@ class EmailAccountRegistered extends Mailable
 
     public function build()
     {
-        return $this->from('john@webslesson.info')->subject('Account Registered')->view('email.email_account_registered')->with('data', $this->data);
+        return $this->from('john@webslesson.info')->subject('Registration for Kaneka Account')->view('email.email_account_registered')->with('data', $this->data);
     }
 
     /**

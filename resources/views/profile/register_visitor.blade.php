@@ -3,9 +3,9 @@
 @section('content')
 <div class="page-header row no-gutters pb-4">
     <div class="col-12 col-sm-12 text-center text-sm-left mb-0">
-        <h1 class="page-title mb-3">Visitor & Contractor</h1>
+        <h1 class="page-title mb-3">Send Registration Link</h1>
         <h6><a href="{{ route('userlist') }}">List Visitor & Contractor</a> /
-            <a>Create New Visitor & Contractor</a>
+            <a>Send Registration Link Form</a>
         </h6>
     </div>
 </div>
@@ -20,14 +20,14 @@
 <div class="card">
     <div class="card-body">
         <!-- form register new visitor -->
-        <form method="POST" action="{{ route('registervisitor') }}" enctype="multipart/form-data" id="appointment">
+        <form method="POST" action="{{ route('sendinvitationemail') }}" enctype="multipart/form-data" id="appointment">
             @csrf
             <div class="row">
                 <div class="col">
-                    <label>Name<span style="color: red; margin-left: 5px">*</span></label>
+                    <label>Name / Person In Charge<span style="color: red; margin-left: 5px">*</span></label>
                     <input type="text" name="name" class="form-control" placeholder="Name" required>
                     <br>
-                    <label>Email<span style="color: red; margin-left: 5px">*</span></label>
+                    <label>Email / Email In Charge<span style="color: red; margin-left: 5px">*</span></label>
                     <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" placeholder="Email" value="{{ old('email') }}" required autocomplete="email">
                     @error('email')
                     <span class="invalid-feedback" role="alert">
@@ -38,6 +38,7 @@
                     <label>User Type<span style="color: red; margin-left: 5px">*</span></label>
                     <select class="form-control" id="userType" name="category" onchange="toggleDropdown()">
                         <option value="">Please select</option>
+                        <option value="Visitor">Company</option>
                         <option value="Contractor">Contractor</option>
                         <option value="Visitor">Visitor</option>
                     </select>
@@ -46,7 +47,7 @@
             <br>
             <div class="row justify-content-end">
                 <a href="javascript:history.go(-1)" class="btn btn-danger pull-right mr-2">Cancel</a>
-                <input type="submit" value="Register" onclick="register(this)" name="submit" class="btn btn-primary" id="registerVisitor" style="float: right;">
+                <input type="submit" value="Send Invitation" onclick="register(this)" name="submit" class="btn btn-primary" id="registerVisitor" style="float: right;">
             </div>
         </form>
     </div>
@@ -60,8 +61,8 @@
 <script>
     function register(e) {
         Swal.fire({
-            title: 'Visitor account created',
-            text: "Visitor registration successfully",
+            title: 'Registration Link Sent',
+            text: "Registration links has been successfully",
             icon: 'success',
             timer: 5000
         });

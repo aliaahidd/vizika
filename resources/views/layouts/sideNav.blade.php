@@ -67,6 +67,34 @@
 
                     @if( auth()->user()->category== "SHEQ Officer")
                     <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('registeredby*') ? 'active' : '' }}" href="{{ route('registeredby') }}">
+                            <i class="material-icons">event</i>
+                            <span>Registration Approval</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('briefing*') ? 'active' : '' }}" data-toggle="collapse" data-target="#briefingSubMenu">
+                            <i class="material-icons">work</i>
+                            <span>Safety Briefing</span>
+                        </a>
+                        <div class="collapse" id="briefingSubMenu" style="margin-left: 20px">
+                            <ul class="nav flex-column">
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('briefing') ? 'active' : '' }}" href="{{ route('briefing') }}">Briefing List</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('briefing') ? 'active' : '' }}" href="{{ route('briefing') }}">Briefing Slot</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('briefing/createbriefinginfo') ? 'active' : '' }}" href="{{ route('briefing/createbriefinginfo') }}">Create New Briefing Slot</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('expirypasslist') ? 'active' : '' }}" href="{{ route('expirypasslist') }}">Expiry Pass List</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('appointment*') ? 'active' : '' }}" data-toggle="collapse" data-target="#appointmentSubMenu">
                             <i class="material-icons">today</i>
                             <span>Appointment</span>
@@ -81,6 +109,12 @@
                                 </li>
                             </ul>
                         </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('report*') ? 'active' : '' }}" href="{{ route('report') }}">
+                            <i class="material-icons">assessment</i>
+                            <span>Report</span>
+                        </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('calendar*') ? 'active' : '' }}" href="{{ route('calendar') }}">
@@ -104,34 +138,12 @@
                             </ul>
                         </div>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('report*') ? 'active' : '' }}" href="{{ route('report') }}">
-                            <i class="material-icons">assessment</i>
-                            <span>Report</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('briefing*') ? 'active' : '' }}" data-toggle="collapse" data-target="#briefingSubMenu">
-                            <i class="material-icons">work</i>
-                            <span>Safety Briefing</span>
-                        </a>
-                        <div class="collapse" id="briefingSubMenu" style="margin-left: 20px">
-                            <ul class="nav flex-column">
-                                <li class="nav-item">
-                                    <a class="nav-link {{ request()->routeIs('briefing') ? 'active' : '' }}" href="{{ route('briefing') }}">Briefing List</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link {{ request()->routeIs('expirypasslist') ? 'active' : '' }}" href="{{ route('expirypasslist') }}">Expiry Pass List</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li class="nav-item">
+                    <!-- <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('company*') ? 'active' : '' }}" href="{{ route('company') }}">
                             <i class="material-icons">corporate_fare</i>
                             <span>Company</span>
                         </a>
-                    </li>
+                    </li> -->
                     @endif
 
                     @if( auth()->user()->category== "SHEQ Guard")
@@ -214,10 +226,23 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('userlist*') ? 'active' : '' }}" href="{{ route('userlist') }}">
+                        <a class="nav-link {{ request()->routeIs('userlist*') ? 'active' : '' }}" data-toggle="collapse" data-target="#registration">
                             <i class="material-icons">person</i>
-                            <span>Visitor & Contractor</span>
+                            <span>Invitation for Registration</span>
                         </a>
+                        <div class="collapse" id="registration" style="margin-left: 20px">
+                            <ul class="nav flex-column">
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('registeruserform') ? 'active' : '' }}" href="{{ route('registeruserform') }}">Send Registration Link</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('userlist') ? 'active' : '' }}" href="{{ route('userlist') }}">View Registered User</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('bulkregistration') ? 'active' : '' }}" href="{{ route('bulkregistration') }}">Bulk Registration</a>
+                                </li>
+                            </ul>
+                        </div>
                     </li>
                     @endif
 

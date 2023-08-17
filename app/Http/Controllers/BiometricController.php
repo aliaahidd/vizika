@@ -87,25 +87,19 @@ class BiometricController extends Controller
         $image->facialRecognition = $fileName;
         $image->save();
 
-        //send email
-        $staff = DB::table('users')
-        ->join('users as staff', 'users.recommendedby', '=', 'staff.id')
-        ->where('users.id', Auth::user()->id)
-        ->first();
+        // $data = array(
+        //     'name'                =>  $staff->name,
+        //     'email'               =>  $staff->email,
+        // );
 
-        $data = array(
-            'name'                =>  $staff->name,
-            'email'               =>  $staff->email,
-        );
+        // $to = [
+        //     [
+        //         'email' => $staff->email,
+        //     ]
+        // ];
 
-        $to = [
-            [
-                'email' => $staff->email,
-            ]
-        ];
-
-        //send email 
-        Mail::to($to)->send(new EmailWaitingApproval($data));
+        // //send email 
+        // Mail::to($to)->send(new EmailWaitingApproval($data));
 
         return response()->json(['message' => 'Image saved successfully']);
     }

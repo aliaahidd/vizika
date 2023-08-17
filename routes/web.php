@@ -44,6 +44,8 @@ Route::get('/Dashboard/SHEQ-Officer', [App\Http\Controllers\DashboardController:
 Route::get('/Dashboard-SHEQ-Guard', [App\Http\Controllers\DashboardController::class, 'guardDashboard'])->name('dashboardGuard');
 //dashboard for staff
 Route::get('/Dashboard-Staff', [App\Http\Controllers\DashboardController::class, 'staffDashboard'])->name('dashboardStaff');
+//dashboard for contractor
+Route::get('/Dashboard-Company', [App\Http\Controllers\DashboardController::class, 'companyDashboard'])->name('dashboardCompany');
 
 
 //PROFILE 
@@ -53,18 +55,22 @@ Route::get('/Profile/{id}', [App\Http\Controllers\ProfileController::class, 'loa
 Route::get('/Profile/Edit-Profile/{id}', [App\Http\Controllers\ProfileController::class, 'editprofile'])->name('editprofile');
 //choose visitor page load
 Route::get('/User-List', [App\Http\Controllers\ProfileController::class, 'userlist'])->name('userlist');
-//choose visitor page load
+//registration approval by officer
 Route::get('/Registered-List', [App\Http\Controllers\ProfileController::class, 'registeredby'])->name('registeredby');
 //view detail for approval from staff
 Route::get('/Registered-User-Profile/{id}', [App\Http\Controllers\ProfileController::class, 'registeredprofile'])->name('registeredprofile');
 //approve user 
 Route::get('approveuser/{id}', [App\Http\Controllers\ProfileController::class, 'approveuser'])->name('approveuser');
+//approve user all 
+Route::get('approveallregistration', [App\Http\Controllers\ProfileController::class, 'approveallregistration'])->name('approveallregistration');
 //register visitor page load
 Route::get('/Register-User', [App\Http\Controllers\ProfileController::class, 'registeruserform'])->name('registeruserform');
 //bulk registration form
 Route::get('/Bulk-Registration', [App\Http\Controllers\ProfileController::class, 'bulkregistration'])->name('bulkregistration');
 //downlaod guideline excel
 Route::get('/Excel-Download/{fileType}', [App\Http\Controllers\ProfileController::class, 'exceldownload'])->name('exceldownload');
+//send invitation using email
+Route::post('/send-invitation', [App\Http\Controllers\ProfileController::class, 'sendinvitationemail'])->name('sendinvitationemail');
 //register visitor (insert)
 Route::post('/register-visitor', [App\Http\Controllers\ProfileController::class, 'registervisitor'])->name('registervisitor');
 //register bulk using excel store
@@ -207,6 +213,8 @@ Route::get('/Profile-Contractor/{id}', [App\Http\Controllers\BlacklistController
 //COMPANY
 //company list
 Route::get('/Company', [App\Http\Controllers\CompanyController::class, 'company'])->name('company');
+//display page company detail
+Route::get('/Company-Detail', [App\Http\Controllers\CompanyController::class, 'companydetail'])->name('companydetail');
 //query insert appointment multiple 
 Route::post('/storecompanyinfo', [App\Http\Controllers\CompanyController::class, 'storecompanyinfo'])->name('storecompanyinfo');
 //create appointment page load
@@ -269,12 +277,7 @@ Route::post('/Store-Vehicle-Registration', [App\Http\Controllers\TransportContro
 //FINISH FORM
 //get data from scan image
 Route::get('/finish-form', function () {
-    $recommend = DB::table('users')
-        ->join('users as recommended', 'users.recommendedby', '=', 'recommended.id')
-        ->where('users.id', Auth::user()->id)
-        ->first();
-
-    return view('layouts.finishform',  compact('recommend'));
+    return view('layouts.finishform');
 })->name('finishform');
 
 Route::get('/complete-form-visit', function () {

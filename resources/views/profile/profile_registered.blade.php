@@ -4,8 +4,8 @@
 <!-- Page Header -->
 <div class="page-header row no-gutters pb-4">
     <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
-        <h1 class="page-title mb-3">Visitor & Contractor</h1>
-        <h6><a href="{{ route('registeredby') }}">List Visitor & Contractor (Registered by me) </a>/ Profile</h6>
+        <h1 class="page-title mb-3">Registration Approval</h1>
+        <h6><a href="{{ route('registeredby') }}">Registration Approval List </a>/ Profile</h6>
     </div>
 </div>
 

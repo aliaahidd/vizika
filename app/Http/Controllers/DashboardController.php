@@ -37,6 +37,9 @@ class DashboardController extends Controller
         if ($category == 'Visitor') {
             return redirect()->route('dashboardVisitor');
         }
+        if ($category == 'Company') {
+            return redirect()->route('dashboardCompany');
+        }
     }
 
     public function visitorDashboard()
@@ -273,5 +276,52 @@ class DashboardController extends Controller
         ksort($totalVisitLine);
 
         return view('dashboard.staff', compact('totalTodayAppt', 'totalUpcomingAppt', 'totalPastAppt', 'todayAppointment', 'totalVisitor', 'totalContractor', 'totalVisitLine'));
+    }
+
+    public function companyDashboard()
+    {
+        $id = Auth::user()->id;
+
+        //if contractor info exists in the table 
+        if (DB::table('users')
+            ->where('id', $id)
+            ->where('status', 'Active')
+            ->exists()
+        ) {
+            // Set the timezone to Kuala Lumpur
+            $kl_timezone = 'Asia/Kuala_Lumpur';
+
+            // Get today's date in Kuala Lumpur timezone
+            $today_date = Carbon::now($kl_timezone)->toDateString();
+            $upcomingDate = Carbon::now($kl_timezone)->addDay();
+
+            //count total today appointment 
+            $totalTodayAppt = DB::table('appointmentinfo')->where('appointmentDateStart', '<=', $today_date)->where('appointmentDateEnd', '>=', $today_date)->where('contVisitID', $id)->count();
+            //count Total Tomorrow Appointment 
+            $totalUpcomingAppt = DB::table('appointmentinfo')->whereDate('appointmentDateStart', $upcomingDate)->where('contVisitID', $id)->count();
+            //count total past appointment 
+            $totalPastAppt = DB::table('visitrecord')
+                ->join('appointmentinfo', 'appointmentinfo.id', '=', 'visitrecord.appointmentID')
+                ->whereNotNull('visitrecord.checkOutDate')->where('contVisitID', $id)->count();
+
+            //today appointment data
+            $todayAppointment = DB::table('appointmentinfo')
+                ->join('users as cont_visit_user', 'appointmentinfo.contVisitID', '=', 'cont_visit_user.id')
+                ->join('users as staff_user', 'appointmentinfo.staffID', '=', 'staff_user.id')
+                ->select('appointmentinfo.*', 'appointmentinfo.id as appointmentID', 'cont_visit_user.*', 'cont_visit_user.id as contVisitID', 'cont_visit_user.name as cont_visit_name', 'staff_user.name as staff_name')
+                ->where('appointmentDateStart', '<=', $today_date) // Check if appointmentDateStart is less than or equal to today's date
+                ->where('appointmentDateEnd', '>=', $today_date)   // Check if appointmentDateEnd is greater than or equal to today's date
+                ->where('contVisitID', $id)->get();
+
+            return view('dashboard.contractor', compact('totalTodayAppt', 'totalUpcomingAppt', 'totalPastAppt', 'todayAppointment'));
+        } elseif (DB::table('users')
+            ->where('id', $id)
+            ->where('status', 'Registered')
+            ->exists()
+        ) {
+            return redirect()->route('companydetail');
+        } else {
+            return redirect()->route('finishform');
+        }
     }
 }

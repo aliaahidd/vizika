@@ -108,9 +108,7 @@ class ProfileController extends Controller
         $id = Auth::user()->id;
 
         $visitorlist = DB::table('users')
-            ->where('category', 'Visitor')
-            ->orwhere('category', 'Contractor')
-            ->where('recommendedBy', $id)
+            ->where('status', 'Pending')
             ->orderBy('name', 'asc')
             ->get();
 
@@ -175,9 +173,69 @@ class ProfileController extends Controller
         return redirect()->route('registeredby');
     }
 
+    public function approveallregistration()
+    {
+        $userStatus = User::where('status', 'Pending')->get();
+        $userStatus->status = 'Active';
+        $userStatus->update();
+
+        //send email
+        // $data = array(
+        //     'name'                =>  $userStatus->name,
+        //     'email'               =>  $userStatus->email,
+        // );
+
+        // $to = [
+        //     [
+        //         'email' => $userStatus->email,
+        //     ]
+        // ];
+
+        // //send email 
+        // Mail::to($to)->send(new EmailUserApproval($data));
+
+        return redirect()->route('registeredby');
+    }
+
     public function registeruserform()
     {
         return view('profile.register_visitor');
+    }
+
+    //register visitor (by staff)
+    public function sendinvitationemail(Request $request)
+    {
+        // create visitor account 
+        // get user auth
+        $id = Auth::user()->id;
+
+        $name = $request->input('name');
+        $email = $request->input('email');
+        $category = $request->input('category');
+
+        $data = array(
+            'name' => $name,
+            'email' => $email,
+            'category' => $category,
+        );
+
+        //send email
+        $data = array(
+            'name'                =>  $name,
+            'email'               =>  $email,
+        );
+
+        $to = [
+            [
+                'email' => $email,
+            ]
+        ];
+
+        //send email 
+        Mail::to($to)->send(new EmailAccountRegistered($data));
+
+        sleep(1);
+        return redirect()->route('userlist');
     }
 
     //register visitor (by staff)
@@ -216,30 +274,14 @@ class ProfileController extends Controller
             'password' => Hash::make('visitor123'),
             'category' => $category,
             'status' => 'Registered',
-            'recommendedBy' => $id,
+            'recommendedBy' => '0',
         );
 
         // insert query
         DB::table('users')->insert($data);
 
-        //send email
-        $data = array(
-            'name'                =>  $name,
-            'email'               =>  $email,
-        );
-
-        $to = [
-            [
-                'email' => $email,
-            ]
-        ];
-
-        //send email 
-        Mail::to($to)->send(new EmailAccountRegistered($data));
-
-
         sleep(1);
-        return redirect()->route('userlist');
+        return redirect()->route('login');
     }
 
     public function updateProfileContractor(Request $request, $id)

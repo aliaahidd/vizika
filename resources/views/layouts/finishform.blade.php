@@ -7,6 +7,7 @@
 </form>
 @section('content')
 <div class="container">
+    @if( auth()->user()->category != "Company")
     <ul class="steps">
         <li class="step step--complete step--inactive">
             <span class="step__icon"></span>
@@ -21,6 +22,18 @@
             <span class="step__label">Step 3: Finish</span>
         </li>
     </ul>
+    @else
+    <ul class="steps">
+        <li class="step step--complete step--inactive">
+            <span class="step__icon"></span>
+            <span class="step__label">Step 1: User details</span>
+        </li>
+        <li class="step step--incomplete step--active">
+            <span class="step__icon"></span>
+            <span class="step__label">Step 2: Finish</span>
+        </li>
+    </ul>
+    @endif
     <br>
 
     <div class="card">
@@ -31,18 +44,7 @@
             <div class="row justify-content-center mt-4" style="margin-bottom: 50">
                 <h6>Your registration is currently pending approval. Please wait for up to 24 hours for the approval process to be completed. </h6>
 
-                <h6>In the meantime, we kindly request you to reach out to the recommended person for registration approval.</h6>
-
                 <h6>We appreciate your patience and understanding.</h6>
-            </div>
-            <div class="row justify-content-center mt-4">
-                <h6>Recommended by:</h6>
-            </div>
-            <div class="row justify-content-center mt-4">
-                <h6>Name: {{ $recommend->name }}</h6>
-            </div>
-            <div class="row justify-content-center" style="margin-bottom: 50">
-                <h6>Email: {{ $recommend->email }}</h6>
             </div>
         </div>
     </div>

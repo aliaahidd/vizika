@@ -4,8 +4,8 @@
 <!-- Page Header -->
 <div class="page-header row no-gutters pb-4">
     <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
-        <h1 class="page-title mb-3">Visitor & Contractor</h1>
-        <h6>List Visitor & Contractor (Registered by me)</h6>
+        <h1 class="page-title mb-3">Registration Approval</h1>
+        <h6>Registration Approval List</h6>
     </div>
 </div>
 
@@ -18,16 +18,6 @@
 </div>
 @endif
 
-<div class="row mb-3">
-    <!-- if user == committee, then have add new appointment button  -->
-    @if( auth()->user()->category=="Staff")
-    <div class="col-lg-12 col-md-6 col-sm-3 justify-content-end d-flex">
-        <a class="btn btn-primary" style="width:140px;" role="button" href="{{ route('registeruserform') }}">
-            <i class="fas fa-plus"></i>&nbsp; Register User</a>
-    </div>
-    @endif
-</div>
-
 <div class="card">
     <div class="card-header pb-0">
         <div class="row">
@@ -35,10 +25,7 @@
                 <nav class="">
                     <ul class="nav nav-tabs" id="myTab" role="tablist">
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('userlist') && !request()->has('type') ? 'active' : '' }}" href="{{ route('userlist') }}" role="tab" aria-selected="true">All user</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('registeredby') && !request()->has('type') ? 'active' : '' }}" href="{{ route('registeredby') }}" role="tab" aria-selected="true">Registered by me</a>
+                            <a class="nav-link {{ request()->routeIs('registeredby') && !request()->has('type') ? 'active' : '' }}" href="{{ route('registeredby') }}" role="tab" aria-selected="true">Waiting Approval</a>
                         </li>
                     </ul>
                 </nav>
@@ -48,9 +35,12 @@
 
     <div class="card-body">
         <div class="overflow-auto" style="overflow:auto;">
+            <div class="mb-3">
+                <a href="{{ route('approveallregistration') }}" class="btn btn-success" style="float: right;">Approve all</a>
+            </div>
             <div class="table-responsive">
                 <!-- FOR STAFF TO VIEW RECORD APPOINTMENT LIST START -->
-                @if( auth()->user()->category== "Staff")
+                @if( auth()->user()->category== "SHEQ Officer")
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                         <tr>
@@ -59,7 +49,7 @@
                             <th>Email</th>
                             <th>Type</th>
                             <th>Status</th>
-                            <th></th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -91,7 +81,10 @@
                             @if( $data->status == 'Registered')
                             <td><button class="btn btn-primary" disabled>View</button></td>
                             @else
-                            <td><a class="btn btn-primary" href="{{ route('registeredprofile', [$data->id]) }}">View</a></td>
+                            <td class="text-center">
+                                <a class="btn btn-primary" href="{{ route('registeredprofile', [$data->id]) }}">View</a>
+                                <a href="{{ route('approveuser', [$data->id]) }}" class="btn btn-success">Approve</a>
+                            </td>
                             @endif
                         </tr>
                         @endforeach
@@ -122,7 +115,7 @@
             ],
             "language": {
                 search: '<i class="fa fa-search" aria-hidden="true"></i>',
-                searchPlaceholder: 'Search Visitor Contractor'
+                searchPlaceholder: 'Search name'
             }
         });
 
