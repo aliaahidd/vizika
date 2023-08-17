@@ -197,7 +197,7 @@
     var today = new Date();
 
     // add 3 days to the current date
-    var minDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 4);
+    var minDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
 
     // convert the date to ISO format
     var minDateISO = minDate.toISOString().slice(0, 10);

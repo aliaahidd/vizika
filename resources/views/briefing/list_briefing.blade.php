@@ -16,20 +16,6 @@
     </div>
     @endif
 
-    <div class="row justify-content-end mb-3">
-
-        @if( auth()->user()->category== "SHEQ Officer")
-
-        @if(request()->routeIs('briefing'))
-        <div class="col-lg-12 col-md-6 col-sm-3 justify-content-end d-flex">
-            <a class="btn btn-primary" style="width:170px;"role="button" href="{{ route('briefing/createbriefinginfo') }}">
-                <i class="fas fa-plus"></i>&nbsp; Create Briefing</a>
-        </div>
-        @endif
-
-        @endif
-    </div>
-
     <div class="card">
         <div class="card-header pb-0">
 

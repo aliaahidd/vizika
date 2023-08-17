@@ -17,6 +17,7 @@ return new class extends Migration
             $table->time('briefingTimeStart');
             $table->time('briefingTimeEnd');
             $table->bigInteger('maxParticipant');
+            $table->string('briefingStatus');
             $table->timestamps();
         });
     }

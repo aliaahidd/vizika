@@ -159,6 +159,8 @@ Route::get('/checkout-QR/{id}', [App\Http\Controllers\RecordController::class, '
 //SAFTEY BRIEFING
 //safety briefing list 
 Route::get('/Briefing-List', [App\Http\Controllers\BriefingController::class, 'briefing'])->name('briefing');
+//safety briefing slot default and create new one 
+Route::get('/Briefing-Slot', [App\Http\Controllers\BriefingController::class, 'briefingSlot'])->name('briefingSlot');
 // session list 
 Route::get('/Biefing/Briefing-Session/{id}', [App\Http\Controllers\BriefingController::class, 'briefingsession'])->name('briefingsession');
 //create briefing info 
@@ -167,6 +169,8 @@ Route::get('/Briefing/Create-Briefing-Info', [App\Http\Controllers\BriefingContr
 Route::post('/set-briefing', [App\Http\Controllers\BriefingController::class, 'storebriefinginfo'])->name('storebriefinginfo');
 //enroll briefing session
 Route::get('/briefingsession/{id}', [App\Http\Controllers\BriefingController::class, 'enrollbriefing'])->name('enrollbriefing');
+//cancel briefing session
+Route::get('/cancelsession/{id}', [App\Http\Controllers\BriefingController::class, 'cancelsession'])->name('cancelsession');
 //update validity pass date
 Route::get('/Update-Validity-Pass/{id}', [App\Http\Controllers\BriefingController::class, 'updatepassdate'])->name('updatepassdate');
 //delete the participant record

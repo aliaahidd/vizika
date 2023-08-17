@@ -83,7 +83,7 @@
                                     <a class="nav-link {{ request()->routeIs('briefing') ? 'active' : '' }}" href="{{ route('briefing') }}">Briefing List</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link {{ request()->routeIs('briefing') ? 'active' : '' }}" href="{{ route('briefing') }}">Briefing Slot</a>
+                                    <a class="nav-link {{ request()->routeIs('briefingSlot') ? 'active' : '' }}" href="{{ route('briefingSlot') }}">Briefing Slot</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link {{ request()->routeIs('briefing/createbriefinginfo') ? 'active' : '' }}" href="{{ route('briefing/createbriefinginfo') }}">Create New Briefing Slot</a>
@@ -243,6 +243,20 @@
                                 </li>
                             </ul>
                         </div>
+                    </li>
+                    @endif
+                    @if( auth()->user()->category== "Company")
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('userlist*') ? 'active' : '' }}" href="{{ route('userlist') }}">
+                            <i class="material-icons">person</i>
+                            <span>Staff List</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('bulkregistration*') ? 'active' : '' }}" href="{{ route('bulkregistration') }}">
+                            <i class="material-icons">description</i>
+                            <span>Bulk Registration</span>
+                        </a>
                     </li>
                     @endif
 

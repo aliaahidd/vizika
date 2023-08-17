@@ -98,6 +98,14 @@ class BriefingController extends Controller
         }
     }
 
+    public function briefingSlot()
+    {
+        $briefingSlot = DB::table('safetybriefinginfo')
+            ->get();
+
+        return view('briefing.briefing_slot', compact('briefingSlot'));
+    }
+
     public function briefingsession($id)
     {
         $sessionlist = DB::table('briefingsession')
@@ -143,6 +151,7 @@ class BriefingController extends Controller
             'briefingTimeStart' => $timeStart,
             'briefingTimeEnd' => $timeEnd,
             'maxParticipant' => $participant,
+            'briefingStatus' => 'Active',
         );
 
         // insert query
@@ -167,6 +176,15 @@ class BriefingController extends Controller
 
         sleep(1);
         return redirect()->route('briefing');
+    }
+
+    public function cancelsession($id)
+    {
+        $briefingstatus = SafetyBriefingInfo::where('id', $id)->first();
+        $briefingstatus->briefingstatus = 'Cancelled';
+        $briefingstatus->update();
+
+        return redirect()->route('briefingSlot');
     }
 
     public function updatepassdate($id)

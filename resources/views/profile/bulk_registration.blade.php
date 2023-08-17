@@ -3,9 +3,8 @@
 @section('content')
 <div class="page-header row no-gutters pb-4">
     <div class="col-12 col-sm-12 text-center text-sm-left mb-0">
-        <h1 class="page-title mb-3">Visitor & Contractor</h1>
-        <h6><a href="{{ route('userlist') }}">List Visitor & Contractor</a> /
-            <a>Bulk Registration</a>
+        <h1 class="page-title mb-3">Bulk Registration</h1>
+        <h6>Create Bulk Registration</a>
         </h6>
     </div>
 </div>
