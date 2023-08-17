@@ -27,9 +27,6 @@
                         <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('userlist') && !request()->has('type') ? 'active' : '' }}" href="{{ route('userlist') }}" role="tab" aria-selected="true">All user</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('registeredby') && !request()->has('type') ? 'active' : '' }}" href="{{ route('registeredby') }}" role="tab" aria-selected="true">Registered by me</a>
-                        </li>
                     </ul>
                 </nav>
             </div>

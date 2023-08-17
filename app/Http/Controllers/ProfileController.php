@@ -96,6 +96,7 @@ class ProfileController extends Controller
         $visitorlist = DB::table('users')
             ->where('category', 'Visitor')
             ->orwhere('category', 'Contractor')
+            ->orwhere('category', 'Company')
             ->orderBy('name', 'asc')
             ->get();
 
@@ -175,9 +176,13 @@ class ProfileController extends Controller
 
     public function approveallregistration()
     {
-        $userStatus = User::where('status', 'Pending')->get();
-        $userStatus->status = 'Active';
-        $userStatus->update();
+
+        $pendingUsers = User::where('status', 'Pending')->get();
+
+        foreach ($pendingUsers as $user) {
+            $user->status = 'Active';
+            $user->update();
+        }
 
         //send email
         // $data = array(
@@ -273,7 +278,7 @@ class ProfileController extends Controller
             'email' => $email,
             'password' => Hash::make('visitor123'),
             'category' => $category,
-            'status' => 'Registered',
+            'status' => 'Pending',
             'recommendedBy' => '0',
         );
 
@@ -656,7 +661,7 @@ class ProfileController extends Controller
                 $imageContents = $zipData[$nameCSV];
                 // Save the image to the public folder
                 $biometricPhotoFilename = time() . '.' . 'jpg';
-                file_put_contents(public_path('assets/'. $nameCSV . '/' . $biometricPhotoFilename), $imageContents);
+                file_put_contents(public_path('assets/' . $nameCSV . '/' . $biometricPhotoFilename), $imageContents);
             }
 
             $query2 = "INSERT INTO contractorinfo(userID, companyID, employeeNo, phoneNo, passExpiryDate, birthDate, address, validityPassPhoto) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
