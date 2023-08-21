@@ -17,10 +17,10 @@ return new class extends Migration
             $table->bigInteger('companyID');
             $table->string('employeeNo');
             $table->string('phoneNo');
-            $table->date('passExpiryDate');
+            $table->date('passExpiryDate')->nullable();
             $table->date('birthDate');
             $table->string('address');
-            $table->string('validityPassPhoto');
+            $table->string('validityPassPhoto')->nullable();
             $table->timestamps();
         });
     }

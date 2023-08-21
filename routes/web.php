@@ -28,7 +28,8 @@ Route::get('/', function () {
 });
 
 Auth::routes();
-Route::get('/login-user', function () {
+Route::get('/register-external-user', function () {
+    Auth::logout();
     return view('auth.login_user');
 })->name('loginuser');
 
@@ -85,6 +86,8 @@ Route::get('/Contractor-Detail', [App\Http\Controllers\ProfileController::class,
 Route::get('/Visitor-Detail', [App\Http\Controllers\ProfileController::class, 'visitordetail'])->name('visitordetail');
 //store additional contractor info
 Route::post('/contractor-info', [App\Http\Controllers\ProfileController::class, 'storecontractorinfo'])->name('storecontractorinfo');
+//store additional contractor info
+Route::post('/safety-briefing-contractor-info', [App\Http\Controllers\ProfileController::class, 'updatesafetybriefing'])->name('updatesafetybriefing');
 //store additional visitor info
 Route::post('/visitor-info', [App\Http\Controllers\ProfileController::class, 'storevisitorinfo'])->name('storevisitorinfo');
 //change password
@@ -169,6 +172,8 @@ Route::get('/Briefing/Create-Briefing-Info', [App\Http\Controllers\BriefingContr
 Route::post('/set-briefing', [App\Http\Controllers\BriefingController::class, 'storebriefinginfo'])->name('storebriefinginfo');
 //enroll briefing session
 Route::get('/briefingsession/{id}', [App\Http\Controllers\BriefingController::class, 'enrollbriefing'])->name('enrollbriefing');
+//enroll briefing first timer
+Route::get('/enroll-briefing-first-timer/{id}', [App\Http\Controllers\BriefingController::class, 'enrollbriefingfirsttimer'])->name('enrollbriefingfirsttimer');
 //cancel briefing session
 Route::get('/cancelsession/{id}', [App\Http\Controllers\BriefingController::class, 'cancelsession'])->name('cancelsession');
 //update validity pass date
@@ -177,6 +182,9 @@ Route::get('/Update-Validity-Pass/{id}', [App\Http\Controllers\BriefingControlle
 Route::get('/Delete-participant/{id}', [App\Http\Controllers\BriefingController::class, 'deleterecord'])->name('deleterecord');
 //expiry pass list 
 Route::get('/Expiry-Pass-List', [App\Http\Controllers\BriefingController::class, 'expirypasslist'])->name('expirypasslist');
+//book briefing
+Route::get('/Book-Briefing', [App\Http\Controllers\BriefingController::class, 'bookbriefing'])->name('bookbriefing');
+
 
 //REPORT
 //report list

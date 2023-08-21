@@ -317,15 +317,15 @@ class ProfileController extends Controller
 
         if ($request->hasFile('validityPassImg')) {
             //unlink the old contractorinfo file from assets folder
-            $path = public_path() . '/assets/pass' . $contractorinfo->validityPassPhoto;
-            if (file_exists($path)) {
-                unlink($path);
-            }
+            // $path = public_path() . '/assets/pass' . $contractorinfo->validityPassPhoto;
+            // if (file_exists($path)) {
+            //     unlink($path);
+            // }
 
-            $contractorinfo->validityPassPhoto = $request->file('validityPassImg');
+            // $contractorinfo->validityPassPhoto = $request->file('validityPassImg');
 
             //to rename the contractorinfo file
-            $filename2 = time() . '.' . $contractorinfo->validityPassPhoto->getClientOriginalExtension();
+            $filename2 = time() . '.' . $request->file('validityPassImg')->getClientOriginalExtension();
 
             // to store the new file by moving to assets folder
             $request->file('validityPassImg')->move('assets/pass', $filename2);
@@ -419,27 +419,10 @@ class ProfileController extends Controller
             //     $contractorinfo->passportPhoto = $filename;
             // }
 
-            if ($request->hasFile('validityPassImg')) {
-                //unlink the old contractorinfo file from assets folder
-                $path = public_path() . '/assets/pass' . $contractorinfo->validityPassPhoto;
-                if (file_exists($path)) {
-                    unlink($path);
-                }
-
-                $contractorinfo->validityPassPhoto = $request->file('validityPassImg');
-
-                //to rename the contractorinfo file
-                $filename2 = time() . '.' . $contractorinfo->validityPassPhoto->getClientOriginalExtension();
-
-                // to store the new file by moving to assets folder
-                $request->file('validityPassImg')->move('assets/pass', $filename2);
-
-                $contractorinfo->validityPassPhoto = $filename2;
-            }
 
             $contractorinfo->companyID = $request->input('companyID');
             $contractorinfo->phoneNo = $request->input('phoneNo');
-            $contractorinfo->passExpiryDate = $request->input('passExpiryDate');
+            // $contractorinfo->passExpiryDate = $request->input('passExpiryDate');
             $contractorinfo->birthDate = $request->input('birthDate');
             $contractorinfo->address = $request->input('address');
 
@@ -456,11 +439,11 @@ class ProfileController extends Controller
         $companyID = $request->input('companyID');
         $employeeNo = $request->input('employeeNo');
         $phonenumber = $request->input('phoneNo');
-        $expiryDate = $request->input('validityPass');
+        // $expiryDate = $request->input('validityPass');
         $birthDate = $request->input('birthDate');
         $address = $request->input('address');
         // $passportPhoto = $request->file('contractorImg');
-        $validityPass = $request->file('validityPassImg');
+        // $validityPass = $request->file('validityPassImg');
 
         // $name = Auth::user()->name;
 
@@ -470,29 +453,32 @@ class ProfileController extends Controller
         // // to store the file by moving to assets folder
         // $passportPhoto->move('assets/' . $name, $filename);
 
+        // GUNA NANTI
         // to rename the contractorinfo file
-        $filename2 = time() . '.' . $validityPass->getClientOriginalExtension();
+        // $filename2 = time() . '.' . $validityPass->getClientOriginalExtension();
 
-        // to store the file by moving to assets folder
-        $validityPass->move('assets/pass', $filename2);
+        // // to store the file by moving to assets folder
+        // $validityPass->move('assets/pass', $filename2);
 
         $data = array(
             'userID' => $id,
             'employeeNo' => $employeeNo,
             'companyID' => $companyID,
             'phoneNo' => $phonenumber,
-            'passExpiryDate' => $expiryDate,
+            // 'passExpiryDate' => $expiryDate,
             'birthDate' => $birthDate,
             'address' => $address,
             // 'passportPhoto' => $filename,
-            'validityPassPhoto' => $filename2,
+            // 'validityPassPhoto' => $filename2,
         );
 
         // insert query
         DB::table('contractorinfo')->insert($data);
 
-        return redirect()->route('registerBiometric');
+        return redirect()->route('bookbriefing');
     }
+
+
 
     public function storevisitorinfo(Request $request)
     {

@@ -238,9 +238,6 @@
                                 <li class="nav-item">
                                     <a class="nav-link {{ request()->routeIs('userlist') ? 'active' : '' }}" href="{{ route('userlist') }}">View Registered User</a>
                                 </li>
-                                <li class="nav-item">
-                                    <a class="nav-link {{ request()->routeIs('bulkregistration') ? 'active' : '' }}" href="{{ route('bulkregistration') }}">Bulk Registration</a>
-                                </li>
                             </ul>
                         </div>
                     </li>

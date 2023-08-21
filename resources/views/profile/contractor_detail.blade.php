@@ -15,7 +15,11 @@
         </li>
         <li class="step step--incomplete step--inactive">
             <span class="step__icon"></span>
-            <span class="step__label">Step 2: Capture Picture</span>
+            <span class="step__label">Step 2: Safety Briefing</span>
+        </li>
+        <li class="step step--incomplete step--inactive">
+            <span class="step__icon"></span>
+            <span class="step__label">Step 3: Capture Picture</span>
         </li>
         <li class="step step--incomplete step--inactive">
             <span class="step__icon"></span>
@@ -45,35 +49,18 @@
                             <input id="phoneNo" type="text" class="form-control" name="phoneNo" placeholder="Ex: 0123456789" required autofocus>
                         </div>
                         <div class="mb-3">
-                            <label for="validityPass" class="col-form-label text-md-end">{{ __('Validity Pass Expiry Date') }}<span style="color: red; margin-left: 5px">*</span></label>
-                            <input id="validityDate" type="date" class="form-control" name="validityPass" required autofocus>
-                        </div>
-                        <div class="mb-3">
                             <label for="employeeNo" class="col-form-label text-md-end">{{ __('Employee No') }}<span style="color: red; margin-left: 5px">*</span></label>
                             <input id="employeeNo" type="text" class="form-control" name="employeeNo" placeholder="Ex: ABC123" required autofocus>
-                        </div>
-                        <div class="mb-3">
-                            <label for="birthDate" class="col-form-label text-md-end">{{ __('Date of Birth') }}<span style="color: red; margin-left: 5px">*</span></label>
-                            <input id="birthDate" type="date" class="form-control" name="birthDate" required autofocus>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="mb-3">
+                            <label for="birthDate" class="col-form-label text-md-end">{{ __('Date of Birth') }}<span style="color: red; margin-left: 5px">*</span></label>
+                            <input id="birthDate" type="date" class="form-control" name="birthDate" required autofocus>
+                        </div>
+                        <div class="mb-3">
                             <label for="address" class="col-form-label text-md-end">{{ __('Address') }}<span style="color: red; margin-left: 5px">*</span></label>
                             <textarea id="address" type="text" class="form-control" name="address" rows="1" cols="50" placeholder="Ex: Pekan, Pahang" required></textarea>
-                        </div>
-                        <div class="row mb-3">
-                            <label for="image" class="col-form-label text-md-end">{{ __('Validity Pass Photo') }}<span style="color: red; margin-left: 5px">*</span></label>
-                            <input type="file" name="validityPassImg" class="form-control" id="image" accept="image/*" onchange="loadImage2(this)" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="image" class="col-form-label text-md-end">{{ __('Preview') }}</label>
-                        </div>
-                        <div class="mb-3">
-                            <!-- to preview the file from the input type in div -->
-                            <div style="border-style: dashed; margin:auto;">
-                                <img id="imgPreview2" style="height: 250px; margin:auto; display:flex;">
-                            </div>
                         </div>
                     </div>
                 </div>

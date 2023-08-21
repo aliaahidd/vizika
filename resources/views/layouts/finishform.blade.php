@@ -13,9 +13,13 @@
             <span class="step__icon"></span>
             <span class="step__label">Step 1: User details</span>
         </li>
-        <li class="step step--complete step--inactive">
+        <li class="step step--complete step--active">
             <span class="step__icon"></span>
-            <span class="step__label">Step 2: Capture Picture</span>
+            <span class="step__label">Step 2: Safety Briefing</span>
+        </li>
+        <li class="step step--complete step--active">
+            <span class="step__icon"></span>
+            <span class="step__label">Step 3: Capture Picture</span>
         </li>
         <li class="step step--incomplete step--active">
             <span class="step__icon"></span>

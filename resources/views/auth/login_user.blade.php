@@ -15,7 +15,7 @@
                             <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Name / PIC Name') }}</label>
 
                             <div class="col-md-6">
-                                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+                            <input id="name" type="text" class="form-control" name="name">
 
                                 @error('name')
                                     <span class="invalid-feedback" role="alert">
@@ -103,4 +103,18 @@
         </div>
     </div>
 </div>
+
+<script>
+    window.addEventListener('DOMContentLoaded', function () {
+        // Retrieve the name value from the query parameter
+        const urlParams = new URLSearchParams(window.location.search);
+        const name = urlParams.get('name');
+
+        // Populate the readonly input field with the name value
+        const nameInput = document.getElementById('name');
+        if (nameInput) {
+            nameInput.value = name;
+        }
+    });
+</script>
 @endsection

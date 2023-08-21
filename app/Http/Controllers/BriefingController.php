@@ -178,6 +178,22 @@ class BriefingController extends Controller
         return redirect()->route('briefing');
     }
 
+    public function enrollbriefingfirsttimer($id)
+    {
+        //check the expiry date pass for contractor
+        $userID = Auth::user()->id;
+
+        $data = array(
+            'briefingID' => $id,
+            'contractorID' => $userID,
+        );
+
+        // insert query
+        DB::table('briefingsession')->insert($data);
+
+        return redirect()->route('registerBiometric');
+    }
+
     public function cancelsession($id)
     {
         $briefingstatus = SafetyBriefingInfo::where('id', $id)->first();
@@ -229,5 +245,46 @@ class BriefingController extends Controller
             ->get();
 
         return view('briefing.list_expiry_pass', compact('expirypasslist', 'today_date'));
+    }
+
+    public function bookbriefing()
+    {
+        $briefinginfo = DB::table('safetybriefinginfo')
+            ->get();
+
+        // Set the timezone to Kuala Lumpur
+        $kl_timezone = 'Asia/Kuala_Lumpur';
+
+        // Get today's date in Kuala Lumpur timezone
+        $today_date = Carbon::now($kl_timezone)->toDateString();
+
+        if (Auth::user()->category == 'Contractor') {
+
+            $alreadyenroll = DB::table('briefingsession')
+                ->where('contractorID', Auth::user()->id)
+                ->first();
+
+            $briefinginfolist = DB::table('safetybriefinginfo')
+                ->orderBy('id', 'desc')
+                ->get();
+
+            foreach ($briefinginfolist as $briefingInfo) {
+                $enrollmentOpen = true;
+
+                $totalParticipant = DB::table('briefingsession')
+                    ->where('briefingID', $briefingInfo->id)
+                    ->distinct('contractorID')
+                    ->count('contractorID');
+
+                if ($totalParticipant >= $briefingInfo->maxParticipant) {
+                    $enrollmentOpen = false;
+                }
+
+                $briefingInfo->totalParticipants = $totalParticipant;
+                $briefingInfo->enrollmentOpen = $enrollmentOpen;
+            }
+
+            return view('briefing.book_briefing', compact('briefinginfolist', 'totalParticipant', 'alreadyenroll'));
+        }
     }
 }
