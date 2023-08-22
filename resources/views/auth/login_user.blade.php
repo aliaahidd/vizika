@@ -15,7 +15,7 @@
                             <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Name / PIC Name') }}</label>
 
                             <div class="col-md-6">
-                            <input id="name" type="text" class="form-control" name="name">
+                            <input id="name" type="text" class="form-control" name="name" readonly>
 
                                 @error('name')
                                     <span class="invalid-feedback" role="alert">
@@ -29,7 +29,7 @@
                             <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Email Address / PIC Email') }}</label>
 
                             <div class="col-md-6">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
+                                <input id="email" type="text" class="form-control" name="email" readonly>
 
                                 @error('email')
                                     <span class="invalid-feedback" role="alert">
@@ -63,8 +63,9 @@
 
                         <div class="row mb-3">
                             <label for="category" class="col-md-4 col-form-label text-md-end">{{ __('User Type') }}</label>
+                            <input id="category" type="text" class="form-control" name="category" readonly>
 
-                            <div class="col-md-6">
+                            <!-- <div class="col-md-6">
                                 <select class="form-control" name="category">
                                     <option value="">Please select</option>
                                     <option value="Contractor">Contractor</option>
@@ -76,8 +77,7 @@
                                     <strong>{{ $message }}</strong>
                                 </span>
                                 @enderror
-
-                            </div>
+                            </div> -->
                         </div>
 
                         <div class="row mb-0">
@@ -109,11 +109,21 @@
         // Retrieve the name value from the query parameter
         const urlParams = new URLSearchParams(window.location.search);
         const name = urlParams.get('name');
+        const email = urlParams.get('emaail');
+        const category = urlParams.get('category');
 
         // Populate the readonly input field with the name value
         const nameInput = document.getElementById('name');
         if (nameInput) {
             nameInput.value = name;
+        }
+        const emailInput = document.getElementById('email');
+        if (emailInput) {
+            emailInput.value = email;
+        }
+        const categoryInput = document.getElementById('category');
+        if (categoryInput) {
+            categoryInput.value = category;
         }
     });
 </script>

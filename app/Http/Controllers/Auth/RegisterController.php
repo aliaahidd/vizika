@@ -70,7 +70,7 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'category' => $data['category'],
-            'status' => 'Registered',
+            'status' => 'Pending',
         ]);
     }
 }

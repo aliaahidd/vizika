@@ -228,6 +228,7 @@ class ProfileController extends Controller
         $data = array(
             'name'                =>  $name,
             'email'               =>  $email,
+            'category'            =>  $category,
         );
 
         $to = [
