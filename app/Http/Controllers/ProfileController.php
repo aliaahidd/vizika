@@ -138,14 +138,15 @@ class ProfileController extends Controller
             ->join('users', 'users.id', '=', 'contractorinfo.userID')
             ->join('companyinfo', 'companyinfo.id', '=', 'contractorinfo.companyID')
             ->join('biometricinfo', 'biometricinfo.userID', '=', 'users.id')
+            ->leftJoin('briefingsession', 'briefingsession.contractorID', '=', 'users.id')
+            ->leftJoin('safetybriefinginfo', 'safetybriefinginfo.id', '=', 'briefingsession.briefingID')
             ->select([
                 'users.id AS sessionID',
                 'companyinfo.id AS companyID',
-                'contractorinfo.id AS contID', 'users.*', 'contractorinfo.*', 'companyinfo.*', 'biometricinfo.*'
+                'contractorinfo.id AS contID', 'users.*', 'contractorinfo.*', 'companyinfo.*', 'biometricinfo.*', 'briefingsession.*', 'safetybriefinginfo.*'
             ])
             ->where('users.id', $id)
             ->first();
-
 
         return view('profile.profile_registered', compact('usertype', 'visitor', 'contractor'));
     }

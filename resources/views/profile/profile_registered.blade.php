@@ -162,14 +162,6 @@
                 </div>
                 <div class="row">
                     <div class="col-4">
-                        <label for="expiryPass">Pass Expiry Date</label>
-                    </div>
-                    <div class="col">
-                        <label for="expiryPass">{{ $contractor->passExpiryDate }} <a data-toggle="modal" data-target="#viewPassModal" style="color: blue;" id="viewPass">View Pass</a></label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-4">
                         <label for="address">Address</label>
                     </div>
                     <div class="col">
@@ -184,6 +176,25 @@
                         <label for="birthdate">{{ $contractor->birthDate }}</label>
                     </div>
                 </div>
+                @if ($contractor->passExpiryDate != NULL)
+                <div class="row">
+                    <div class="col-4">
+                        <label for="expiryPass">Pass Expiry Date</label>
+                    </div>
+                    <div class="col">
+                        <label for="expiryPass">{{ $contractor->passExpiryDate }} <a data-toggle="modal" data-target="#viewPassModal" style="color: blue;" id="viewPass">View Pass</a></label>
+                    </div>
+                </div>
+                @else
+                <div class="row">
+                    <div class="col-4">
+                        <label for="expiryPass">Booking Slot</label>
+                    </div>
+                    <div class="col">
+                        <label for="expiryPass">{{ $contractor->briefingDate }} ({{ $contractor->briefingTimeStart }} - {{ $contractor->briefingTimeEnd }})  </label>
+                    </div>
+                </div>
+                @endif
             </div>
         </div>
     </div>
