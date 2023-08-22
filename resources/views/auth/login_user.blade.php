@@ -111,7 +111,7 @@
         // Retrieve the name value from the query parameter
         const urlParams = new URLSearchParams(window.location.search);
         const name = urlParams.get('name');
-        const email = urlParams.get('emaail');
+        const email = urlParams.get('email');
         const category = urlParams.get('category');
 
         // Populate the readonly input field with the name value
