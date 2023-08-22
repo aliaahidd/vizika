@@ -45,7 +45,12 @@
                     <br>
                     <div id="companyInput" style="display: none;">
                         <label>Company<span style="color: red; margin-left: 5px">*</span></label>
-                        <input type="text" name="company" class="form-control" placeholder="Company">
+                        <select id="companyID" class="form-control" name="companyID" required>
+                            <option value="">Please select</option>
+                            @foreach ($companylist as $data)
+                            <option value="{{ $data->id }}">{{ $data->companyName }}</option>
+                            @endforeach
+                        </select>
                     </div>
 
                 </div>

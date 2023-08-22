@@ -204,7 +204,11 @@ class ProfileController extends Controller
 
     public function registeruserform()
     {
-        return view('profile.register_visitor');
+        $companylist = DB::table('companyinfo')
+            ->orderBy('companyName', 'asc')
+            ->get();
+
+        return view('profile.register_visitor', compact('companylist'));
     }
 
     //register visitor (by staff)
