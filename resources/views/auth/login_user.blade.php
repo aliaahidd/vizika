@@ -15,12 +15,12 @@
                             <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Name / PIC Name') }}</label>
 
                             <div class="col-md-6">
-                            <input id="name" type="text" class="form-control" name="name" readonly>
+                                <input id="name" type="text" class="form-control" name="name" readonly>
 
                                 @error('name')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
                                 @enderror
                             </div>
                         </div>
@@ -32,9 +32,9 @@
                                 <input id="email" type="text" class="form-control" name="email" readonly>
 
                                 @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
                                 @enderror
                             </div>
                         </div>
@@ -46,9 +46,9 @@
                                 <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
 
                                 @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
                                 @enderror
                             </div>
                         </div>
@@ -63,7 +63,9 @@
 
                         <div class="row mb-3">
                             <label for="category" class="col-md-4 col-form-label text-md-end">{{ __('User Type') }}</label>
-                            <input id="category" type="text" class="form-control" name="category" readonly>
+                            <div class="col-md-6">
+                                <input id="category" type="text" class="form-control" name="category" readonly>
+                            </div>
 
                             <!-- <div class="col-md-6">
                                 <select class="form-control" name="category">
@@ -105,7 +107,7 @@
 </div>
 
 <script>
-    window.addEventListener('DOMContentLoaded', function () {
+    window.addEventListener('DOMContentLoaded', function() {
         // Retrieve the name value from the query parameter
         const urlParams = new URLSearchParams(window.location.search);
         const name = urlParams.get('name');
