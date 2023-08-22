@@ -81,7 +81,7 @@ class DashboardController extends Controller
             return view('dashboard.visitor', compact('totalTodayAppt', 'totalUpcomingAppt', 'totalPastAppt', 'todayAppointment'));
         } elseif (DB::table('users')
             ->where('id', $id)
-            ->where('status', 'Registered')
+            ->where('status', 'Pending')
             ->exists()
         ) {
             return redirect()->route('visitordetail');
@@ -129,7 +129,7 @@ class DashboardController extends Controller
             return view('dashboard.contractor', compact('totalTodayAppt', 'totalUpcomingAppt', 'totalPastAppt', 'todayAppointment'));
         } elseif (DB::table('users')
             ->where('id', $id)
-            ->where('status', 'Registered')
+            ->where('status', 'Pending')
             ->exists()
         ) {
             return redirect()->route('contractordetail');
@@ -316,7 +316,7 @@ class DashboardController extends Controller
             return view('dashboard.contractor', compact('totalTodayAppt', 'totalUpcomingAppt', 'totalPastAppt', 'todayAppointment'));
         } elseif (DB::table('users')
             ->where('id', $id)
-            ->where('status', 'Registered')
+            ->where('status', 'Pending')
             ->exists()
         ) {
             return redirect()->route('companydetail');

@@ -249,18 +249,14 @@ class ProfileController extends Controller
     {
         // create visitor account 
         // get user auth
-        $id = Auth::user()->id;
-
         $name = $request->input('name');
         $email = $request->input('email');
         $category = $request->input('category');
-        $password = Str::random(10);
+        $password = $request->input('password');
 
         $Email = User::where('email', $email)->first();
         if ($Email) {
-            return redirect()
-                ->route('registeruserform')
-                ->with('message', 'Email is already exists.');
+            return redirect()->back()->with('success', 'Email already exists');
         }
 
         $publicFolderPath = public_path('assets/' . $name);
@@ -277,7 +273,7 @@ class ProfileController extends Controller
         $data = array(
             'name' => $name,
             'email' => $email,
-            'password' => Hash::make('visitor123'),
+            'password' => Hash::make($password),
             'category' => $category,
             'status' => 'Pending',
             'recommendedBy' => '0',

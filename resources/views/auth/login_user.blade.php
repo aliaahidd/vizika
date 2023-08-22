@@ -8,7 +8,7 @@
                 <div class="card-header d-flex justify-content-center">{{ __('Register') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('register') }}">
+                    <form method="POST" action="{{ route('registervisitor') }}">
                         @csrf
 
                         <div class="row mb-3">

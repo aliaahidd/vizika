@@ -4,7 +4,7 @@
 <div class="page-header row no-gutters pb-4">
     <div class="col-12 col-sm-12 text-center text-sm-left mb-0">
         <h1 class="page-title mb-3">Send Registration Link</h1>
-        <h6><a href="{{ route('userlist') }}">List Visitor & Contractor</a> /
+        <h6>
             <a>Send Registration Link Form</a>
         </h6>
     </div>
@@ -38,10 +38,16 @@
                     <label>User Type<span style="color: red; margin-left: 5px">*</span></label>
                     <select class="form-control" id="userType" name="category" onchange="toggleDropdown()">
                         <option value="">Please select</option>
-                        <option value="Visitor">Company</option>
+                        <option value="Company">Company</option>
                         <option value="Contractor">Contractor</option>
                         <option value="Visitor">Visitor</option>
                     </select>
+                    <br>
+                    <div id="companyInput" style="display: none;">
+                        <label>Company<span style="color: red; margin-left: 5px">*</span></label>
+                        <input type="text" name="company" class="form-control" placeholder="Company">
+                    </div>
+
                 </div>
             </div>
             <br>
@@ -86,4 +92,18 @@
         $('#txtDate').attr('min', maxDate);
     });
 </script>
+<script>
+    function toggleDropdown() {
+        var userTypeSelect = document.getElementById("userType");
+        var companyInput = document.getElementById("companyInput");
+
+        if (userTypeSelect.value === "Contractor" || userTypeSelect.value === "Visitor") {
+            companyInput.style.display = "block";
+        } else if (userTypeSelect.value === "Company") {
+            companyInput.style.display = "none";
+        }
+    }
+</script>
+
+
 @endsection
