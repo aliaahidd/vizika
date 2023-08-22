@@ -252,6 +252,10 @@ class BriefingController extends Controller
         $briefinginfo = DB::table('safetybriefinginfo')
             ->get();
 
+        $contractorID = DB::table('contractorinfo')
+            ->where('userID', Auth::user()->id)
+            ->first();
+
         // Set the timezone to Kuala Lumpur
         $kl_timezone = 'Asia/Kuala_Lumpur';
 
@@ -284,7 +288,7 @@ class BriefingController extends Controller
                 $briefingInfo->enrollmentOpen = $enrollmentOpen;
             }
 
-            return view('briefing.book_briefing', compact('briefinginfolist', 'totalParticipant', 'alreadyenroll'));
+            return view('briefing.book_briefing', compact('briefinginfolist', 'totalParticipant', 'alreadyenroll', 'contractorID'));
         }
     }
 }

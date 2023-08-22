@@ -37,7 +37,7 @@
     <div class="card mt-20" id="activePass" style="display: none;">
         <div class="card-body">
             <!-- form add proposal -->
-            <form method="POST" action="{{ route('updateProfileContractor', Auth::user()->id) }}" enctype="multipart/form-data">
+            <form method="POST" action="{{ route('updateBriefingInfo', $contractorID->id) }}" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 <div class="row mb-">
@@ -71,6 +71,9 @@
 
 
     <div class="card mt-20" id="notActivePass" style="display: none;">
+        <div class="card-header">
+            <h3>Please book the safety briefing session<h3>
+        </div>
         <div class="card-body">
             <!-- form add proposal -->
             <form method="POST" action="{{ route('storecontractorinfo') }}" enctype="multipart/form-data">
@@ -296,13 +299,32 @@
         }
     </style>
     <script>
-    function toggleCards(cardToShow) {
-        if (cardToShow === 'activePass') {
-            document.getElementById('activePass').style.display = 'block';
-            document.getElementById('notActivePass').style.display = 'none';
-        } else {
-            document.getElementById('activePass').style.display = 'none';
-            document.getElementById('notActivePass').style.display = 'block';
+        function toggleCards(cardToShow) {
+            if (cardToShow === 'activePass') {
+                document.getElementById('activePass').style.display = 'block';
+                document.getElementById('notActivePass').style.display = 'none';
+            } else {
+                document.getElementById('activePass').style.display = 'none';
+                document.getElementById('notActivePass').style.display = 'block';
+            }
         }
-    }
-</script>
+    </script>
+    <script src="{{ asset('frontend') }}/js/jquery.dataTables.js"></script>
+    <script src="{{ asset('frontend') }}/js/dataTables.bootstrap4.js"></script>
+    <script src="//code.jquery.com/jquery-1.12.3.js"></script>
+    <script src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>
+    <script>
+        // to search the appointment 
+        $(document).ready(function() {
+            $('#dataTable').DataTable({
+                "order": [
+                    [1, "desc"]
+                ],
+                "language": {
+                    search: '<i class="fa fa-search" aria-hidden="true"></i>',
+                    searchPlaceholder: 'Search briefing'
+                }
+            });
+        });
+    </script>

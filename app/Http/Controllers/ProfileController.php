@@ -426,7 +426,7 @@ class ProfileController extends Controller
             // upadate query in the database
             $contractorinfo->update();
 
-            return redirect()->route('registerBiometric');
+            return redirect()->route('bookbriefing');
         }
 
         $publicFolderPath = public_path('assets/' . Auth::user()->name);
@@ -486,7 +486,30 @@ class ProfileController extends Controller
         return redirect()->route('bookbriefing');
     }
 
+    public function updateBriefingInfo(Request $request, $id)
+    {
 
+        $contractorinfo = ContractorInfo::find($id);
+
+        if ($request->hasFile('validityPassImg')) {
+
+            //to rename the contractorinfo file
+            $filename2 = time() . '.' . $request->file('validityPassImg')->getClientOriginalExtension();
+
+            // to store the new file by moving to assets folder
+            $request->file('validityPassImg')->move('assets/pass', $filename2);
+
+            $contractorinfo->validityPassPhoto = $filename2;
+        }
+
+        $contractorinfo->passExpiryDate = $request->input('validityPass');
+
+        // upadate query in the database
+        $contractorinfo->update();
+
+        // display message box in the same page
+        return redirect()->route('registerBiometric');
+    }
 
     public function storevisitorinfo(Request $request)
     {

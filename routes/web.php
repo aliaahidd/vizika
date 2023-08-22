@@ -78,6 +78,8 @@ Route::post('/register-visitor', [App\Http\Controllers\ProfileController::class,
 Route::post('/bulk-excel-file', [App\Http\Controllers\ProfileController::class, 'registerbulkfile'])->name('registerbulkfile');
 //query edit profile page (contractor)
 Route::put('updateprofilecontractor/{id}', [App\Http\Controllers\ProfileController::class, 'updateProfileContractor'])->name('updateProfileContractor');
+//query edit profile page (contractor)
+Route::put('updateBriefingInfo/{id}', [App\Http\Controllers\ProfileController::class, 'updateBriefingInfo'])->name('updateBriefingInfo');
 //query edit profile page (visitor)
 Route::put('updateprofilevisitor/{id}', [App\Http\Controllers\ProfileController::class, 'updateProfileVisitor'])->name('updateProfileVisitor');
 //display page contractor detail
