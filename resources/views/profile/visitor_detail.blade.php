@@ -41,6 +41,10 @@
                                 </select>
                             </div>
                             <div class="mb-3">
+                                <label for="icNo" class="col-form-label text-md-end">{{ __('IC No. / Passport No.') }}<span style="color: red; margin-left: 5px">*</span></label>
+                                <input id="icNo" type="text" class="form-control" name="icNo" placeholder="Ic Number / Passport Number" required autofocus>
+                            </div>
+                            <div class="mb-3">
                                 <label for="employeeNo" class="col-form-label text-md-end">{{ __('Employee ID') }}<span style="color: red; margin-left: 5px">*</span></label>
                                 <input id="employeeNo" type="text" class="form-control" name="employeeNo" placeholder="Ex: ABC123" required autofocus>
                             </div>

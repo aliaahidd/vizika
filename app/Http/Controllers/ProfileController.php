@@ -423,6 +423,7 @@ class ProfileController extends Controller
 
 
             $contractorinfo->companyID = $request->input('companyID');
+            $contractorinfo->icNo = $request->input('icNo');
             $contractorinfo->phoneNo = $request->input('phoneNo');
             // $contractorinfo->passExpiryDate = $request->input('passExpiryDate');
             $contractorinfo->birthDate = $request->input('birthDate');
@@ -450,6 +451,7 @@ class ProfileController extends Controller
         $userStatus->update();
 
         $companyID = $request->input('companyID');
+        $icNo = $request->input('icNo');
         $employeeNo = $request->input('employeeNo');
         $phonenumber = $request->input('phoneNo');
         // $expiryDate = $request->input('validityPass');
@@ -477,6 +479,7 @@ class ProfileController extends Controller
             'userID' => $id,
             'employeeNo' => $employeeNo,
             'companyID' => $companyID,
+            'icNo' => $icNo,
             'phoneNo' => $phonenumber,
             // 'passExpiryDate' => $expiryDate,
             'birthDate' => $birthDate,
@@ -549,6 +552,7 @@ class ProfileController extends Controller
             // }
 
             $visitorinfo->companyID = $request->input('companyID');
+            $visitorinfo->icNo = $request->input('icNo');
             $visitorinfo->phoneNo = $request->input('phoneNo');
             $visitorinfo->employeeNo = $request->input('employeeNo');
             $visitorinfo->occupation = $request->input('occupation');
@@ -567,6 +571,7 @@ class ProfileController extends Controller
 
         $employeeNo = $request->input('employeeNo');
         $companyID = $request->input('companyID');
+        $icNo = $request->input('icNo');
         $occupation = $request->input('occupation');
         $phonenumber = $request->input('phoneNo');
         $birthDate = $request->input('birthDate');
@@ -585,6 +590,7 @@ class ProfileController extends Controller
             'userID' => $id,
             'employeeNo' => $employeeNo,
             'companyID' => $companyID,
+            'icNo' => $icNo,
             'occupation' => $occupation,
             'phoneNo' => $phonenumber,
             'birthDate' => $birthDate,

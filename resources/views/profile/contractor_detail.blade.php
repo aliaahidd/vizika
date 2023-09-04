@@ -45,8 +45,8 @@
                             </select>
                         </div>
                         <div class="mb-3">
-                            <label for="phoneNo" class="col-form-label text-md-end">{{ __('Phone Number') }}<span style="color: red; margin-left: 5px">*</span></label>
-                            <input id="phoneNo" type="text" class="form-control" name="phoneNo" placeholder="Ex: 0123456789" required autofocus>
+                            <label for="icNo" class="col-form-label text-md-end">{{ __('IC No. / Passport No.') }}<span style="color: red; margin-left: 5px">*</span></label>
+                            <input id="icNo" type="text" class="form-control" name="icNo" placeholder="Ic Number / Passport Number" required autofocus>
                         </div>
                         <div class="mb-3">
                             <label for="employeeNo" class="col-form-label text-md-end">{{ __('Employee No') }}<span style="color: red; margin-left: 5px">*</span></label>
@@ -54,6 +54,10 @@
                         </div>
                     </div>
                     <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="phoneNo" class="col-form-label text-md-end">{{ __('Phone Number') }}<span style="color: red; margin-left: 5px">*</span></label>
+                            <input id="phoneNo" type="text" class="form-control" name="phoneNo" placeholder="Ex: 0123456789" required autofocus>
+                        </div>
                         <div class="mb-3">
                             <label for="birthDate" class="col-form-label text-md-end">{{ __('Date of Birth') }}<span style="color: red; margin-left: 5px">*</span></label>
                             <input id="birthDate" type="date" class="form-control" name="birthDate" required autofocus>
