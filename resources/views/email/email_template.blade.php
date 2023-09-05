@@ -10,7 +10,7 @@
     <br>Time : <strong> {{ $data['appointmentTime'] }} </strong>
 </p>
 
-<p>Website Link: <a href="https://vizika.online/login-user">Click here</a></p>
+<p>Website Link: <a href="https://vizika.online/login">Click here</a></p>
 
 <p>Please login using the username and password you set during registration</p>
 
