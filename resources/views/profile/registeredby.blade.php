@@ -48,6 +48,7 @@
                             <th>Name</th>
                             <th>Email</th>
                             <th>Type</th>
+                            <th>Booking Slot</th>
                             <th>Status</th>
                             <th>Action</th>
                         </tr>
@@ -59,6 +60,13 @@
                             <td>{{ $data->name }}</td>
                             <td>{{ $data->email }}</td>
                             <td>{{ $data->category }}</td>
+                            <td>
+                            @if ($data->passExpiryDate != NULL)
+                            {{ $data->passExpiryDate }} 
+                            @else
+                            {{ $data->briefingDate }} ({{ $data->briefingTimeStart }} - {{ $data->briefingTimeEnd }}) 
+                            @endif
+                            </td>
                             @if( $data->status == 'Registered')
                             <td>
                                 <div style="background-color: #dff0fa; border-radius: 10px; display: flex; justify-content: center; align-items: center; margin: auto; width: 100px">
@@ -84,6 +92,7 @@
                             <td class="text-center">
                                 <a class="btn btn-primary" href="{{ route('registeredprofile', [$data->id]) }}">View</a>
                                 <a href="{{ route('approveuser', [$data->id]) }}" class="btn btn-success">Approve</a>
+                                <a href="{{ route('rejectuser', [$data->id]) }}" class="btn btn-danger">Reject</a>
                             </td>
                             @endif
                         </tr>

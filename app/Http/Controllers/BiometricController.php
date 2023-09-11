@@ -48,11 +48,11 @@ class BiometricController extends Controller
         $existingBiometric = DB::table('biometricinfo')->where('userID', $userID)->first();
         if ($existingBiometric) {
             $user = DB::table('users')->where('id', $userID)->first();
-            $name = $user->name;
+            $icNo = $user->icNo;
 
             $imageData = $request->input('image');
             $fileName = uniqid() . '.jpg';
-            $path = 'assets/' . $name . '/' . $fileName;
+            $path = 'assets/' . $icNo . '/' . $fileName;
 
             // Unlink the previous file
             if (file_exists(public_path($path))) {
@@ -70,7 +70,7 @@ class BiometricController extends Controller
         }
 
         $user = DB::table('users')->where('id', $userID)->first();
-        $name = $user->name; // Access the name property of the retrieved user object
+        $icNo = $user->icNo; // Access the name property of the retrieved user object
 
         $imageData = $request->input('image');
 
@@ -78,7 +78,7 @@ class BiometricController extends Controller
         $fileName = uniqid() . '.jpg';
 
         // Save the image file in the assets directory
-        $path = 'assets/' . $name . '/' . $fileName; // Add a separator (/) between name and filename
+        $path = 'assets/' . $icNo . '/' . $fileName; // Add a separator (/) between name and filename
         file_put_contents(public_path($path), base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $imageData)));
 
         // Save the file name (path) to the database

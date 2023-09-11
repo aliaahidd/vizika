@@ -32,7 +32,7 @@
                     <div class="card mb-4" style="padding: 30px;">
                         <div class="col-md-12">
                             <label for="name">Passport Photo</label>
-                            <img id="imgPreview" src="/assets/{{Auth::user()->name}}/{{$contractor->facialRecognition}}" width="100%">
+                            <img id="imgPreview" src="/assets/{{Auth::user()->icNo}}/{{$contractor->facialRecognition}}" width="100%">
                         </div>
                     </div>
                 </div>
@@ -118,7 +118,7 @@
                     <div class="card mb-4" style="padding: 30px;">
                         <div class="col-md-12">
                             <label for="name">Passport Photo</label>
-                            <img id="imgPreview" src="/assets/{{Auth::user()->name}}/{{$visitor->facialRecognition}}" width="100%">
+                            <img id="imgPreview" src="/assets/{{Auth::user()->icNo}}/{{$visitor->facialRecognition}}" width="100%">
                         </div>
                     </div>
                 </div>

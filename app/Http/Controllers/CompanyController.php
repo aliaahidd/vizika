@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Models\CompanyInfo;
+use App\Models\User;
 
 use Illuminate\Http\Request;
 
@@ -34,29 +35,23 @@ class CompanyController extends Controller
         // create company
         $userID = $id = Auth::user()->id;
         $companyName = $request->input('companyName');
-        $companyRegNo = $request->input('companyRegNo');
-        $companyEmail = $request->input('companyEmail');
         $companyPhoneNo = $request->input('companyPhoneNo');
         $companyAddress = $request->input('companyAddress');
         $companyIndustries = $request->input('companyIndustries');
-        $phoneNoPIC = $request->input('phoneNoPIC');
 
-        $Email = CompanyInfo::where('companyName', $companyName)->first();
-        if ($Email) {
-            return redirect()
-                ->route('companydetail')
-                ->with('message', 'Company is already exists.');
-        }
+        //update name
+        $userinfo = User::where('id', $userID)->first();
+        $userinfo->name = $request->input('companyName');
+        // upadate query in the database
+        $userinfo->update();
 
         $data = array(
             'userID' => $userID,
             'companyName' => $companyName,
-            'companyRegNo' => $companyRegNo,
             'companyPhoneNo' => $companyPhoneNo,
-            'companyEmail' => $companyEmail,
+            'companyEmail' => $userinfo->email,
             'companyAddress' => $companyAddress,
             'companyIndustries' => $companyIndustries,
-            'phoneNoPIC' => $phoneNoPIC,
         );
 
         // insert query

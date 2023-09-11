@@ -32,6 +32,7 @@
                                 <th>Date</th>
                                 <th>Time Start</th>
                                 <th>Time End</th>
+                                <th>Max Participant</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
@@ -43,6 +44,7 @@
                                 <td>{{ $data->briefingDate }}</td>
                                 <td>{{ $data->briefingTimeStart }}</td>
                                 <td>{{ $data->briefingTimeEnd }}</td>
+                                <td>{{ $data->maxParticipant }}</td>
                                 <td> @if ($data->briefingStatus == "Active")
                                     <div style="background-color: #d9f3ea; border-radius: 10px; display: flex; justify-content: center; align-items: center; margin: auto;">
                                         <label style="color: #0bb37a; text-align: center; font-weight: bold" class="mb-1 mt-1">Active</label>
@@ -54,6 +56,7 @@
                                     @endif
                                 </td>
                                 <td>
+                                    <a href="{{ route('editbriefing', $data->id )}}" class="btn btn-primary" style="justify-content: center; align-items: center; margin: auto; color: white">Edit</a>
                                     <a href="{{ route('cancelsession', $data->id )}}" class="btn btn-danger" style="justify-content: center; align-items: center; margin: auto; color: white">Cancel</a>
                                 </td>
 

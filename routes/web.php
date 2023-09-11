@@ -28,10 +28,18 @@ Route::get('/', function () {
 });
 
 Auth::routes();
-Route::get('/register-external-user', function () {
+Route::get('/register-contractor', function () {
     Auth::logout();
-    return view('auth.login_user');
+    $companylist = DB::table('companyinfo')
+        ->orderBy('companyName', 'asc')
+        ->get();
+    return view('auth.register_contractor', compact('companylist'));
 })->name('loginuser');
+
+Route::get('/register-company', function () {
+    Auth::logout();
+    return view('auth.register_company');
+})->name('logincompany');
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home'); //nama kat url link / nama function / nama panggil kat interface
 Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'loadDashboard'])->name('dashboard');
@@ -62,6 +70,8 @@ Route::get('/Registered-List', [App\Http\Controllers\ProfileController::class, '
 Route::get('/Registered-User-Profile/{id}', [App\Http\Controllers\ProfileController::class, 'registeredprofile'])->name('registeredprofile');
 //approve user 
 Route::get('approveuser/{id}', [App\Http\Controllers\ProfileController::class, 'approveuser'])->name('approveuser');
+//reject user 
+Route::get('rejectuser/{id}', [App\Http\Controllers\ProfileController::class, 'rejectuser'])->name('rejectuser');
 //approve user all 
 Route::get('approveallregistration', [App\Http\Controllers\ProfileController::class, 'approveallregistration'])->name('approveallregistration');
 //register visitor page load
@@ -74,6 +84,8 @@ Route::get('/Excel-Download/{fileType}', [App\Http\Controllers\ProfileController
 Route::post('/send-invitation', [App\Http\Controllers\ProfileController::class, 'sendinvitationemail'])->name('sendinvitationemail');
 //register visitor (insert)
 Route::post('/register-visitor', [App\Http\Controllers\ProfileController::class, 'registervisitor'])->name('registervisitor');
+//register contractor (insert)
+Route::post('/register-contractor', [App\Http\Controllers\ProfileController::class, 'registercontractor'])->name('registercontractor');
 //register bulk using excel store
 Route::post('/bulk-excel-file', [App\Http\Controllers\ProfileController::class, 'registerbulkfile'])->name('registerbulkfile');
 //query edit profile page (contractor)
@@ -178,6 +190,10 @@ Route::get('/briefingsession/{id}', [App\Http\Controllers\BriefingController::cl
 Route::get('/enroll-briefing-first-timer/{id}', [App\Http\Controllers\BriefingController::class, 'enrollbriefingfirsttimer'])->name('enrollbriefingfirsttimer');
 //cancel briefing session
 Route::get('/cancelsession/{id}', [App\Http\Controllers\BriefingController::class, 'cancelsession'])->name('cancelsession');
+//edit briefing session
+Route::get('/editbriefing/{id}', [App\Http\Controllers\BriefingController::class, 'editbriefing'])->name('editbriefing');
+//update briefing session
+Route::post('/updatebriefinginfodata/{id}', [App\Http\Controllers\BriefingController::class, 'updatebriefinginfodata'])->name('updatebriefinginfodata');
 //update validity pass date
 Route::get('/Update-Validity-Pass/{id}', [App\Http\Controllers\BriefingController::class, 'updatepassdate'])->name('updatepassdate');
 //delete the participant record
@@ -229,6 +245,8 @@ Route::get('/Profile-Contractor/{id}', [App\Http\Controllers\BlacklistController
 Route::get('/Company', [App\Http\Controllers\CompanyController::class, 'company'])->name('company');
 //display page company detail
 Route::get('/Company-Detail', [App\Http\Controllers\CompanyController::class, 'companydetail'])->name('companydetail');
+//register company (insert)
+Route::post('/register-company', [App\Http\Controllers\CompanyController::class, 'registercompany'])->name('registercompany');
 //query insert appointment multiple 
 Route::post('/storecompanyinfo', [App\Http\Controllers\CompanyController::class, 'storecompanyinfo'])->name('storecompanyinfo');
 //create appointment page load

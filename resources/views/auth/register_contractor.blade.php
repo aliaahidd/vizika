@@ -5,31 +5,25 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header d-flex justify-content-center">{{ __('Register') }}</div>
+                <div class="card-header d-flex justify-content-center">{{ __('Register Contractor') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('registervisitor') }}">
+                    <form method="POST" action="{{ route('registercontractor') }}">
                         @csrf
 
                         <div class="row mb-3">
-                            <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Name / PIC Name') }}</label>
+                            <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('IC No / Passport No') }}</label>
 
                             <div class="col-md-6">
-                                <input id="name" type="text" class="form-control" name="name" readonly>
-
-                                @error('name')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                @enderror
+                                <input id="name" type="text" class="form-control" name="icNo">
                             </div>
                         </div>
 
                         <div class="row mb-3">
-                            <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Email Address / PIC Email') }}</label>
+                            <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Email Address') }}</label>
 
                             <div class="col-md-6">
-                                <input id="email" type="text" class="form-control" name="email" readonly>
+                                <input id="email" type="text" class="form-control" name="email">
 
                                 @error('email')
                                 <span class="invalid-feedback" role="alert">
@@ -61,49 +55,48 @@
                             </div>
                         </div>
 
-                        <div class="row mb-3">
+                        <!-- <div class="row mb-3">
                             <label for="category" class="col-md-4 col-form-label text-md-end">{{ __('User Type') }}</label>
                             <div class="col-md-6">
-                                <input id="category" type="text" class="form-control" name="category" readonly>
+                                <input id="category" type="text" class="form-control" name="category" readonly value="Contractor" placeholder="Contractor">
                             </div>
+                        </div> -->
 
-                            <!-- <div class="col-md-6">
-                                <select class="form-control" name="category">
+                        <div class="row mb-3">
+                            <label for="category" class="col-md-4 col-form-label text-md-end">{{ __('Company') }}</label>
+                            <div class="col-md-6">
+                                <select id="companyID" class="form-control" name="companyID" required>
                                     <option value="">Please select</option>
-                                    <option value="Contractor">Contractor</option>
-                                    <option value="Company">Company</option>
-                                    <option value="Visitor">Visitor</option>
+                                    @foreach ($companylist as $data)
+                                    <option value="{{ $data->id }}">{{ $data->companyName }}</option>
+                                    @endforeach
                                 </select>
-                                @error('category')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                @enderror
-                            </div> -->
-                        </div>
-
-                        <div class="row mb-0">
-                            <div class="col-md-6 offset-md-4 text-center">
-                                <button type="submit" class="btn btn-primary btn-block">
-                                    {{ __('Register') }}
-                                </button>
                             </div>
                         </div>
-
-                        <br>
-                        <div class="row mt-4">
-                            <div class="col-md-8 offset-md-4">
-                                <label for="register" style="font-weight:normal;">Have an account?</label>
-                                <a style="font-weight:normal;" href="{{ route('login') }}">
-                                    {{ __('Login') }}
-                                </a>
-                            </div>
-                        </div>
-                    </form>
                 </div>
+
+                <div class="row mb-0">
+                    <div class="col-md-6 offset-md-4 text-center">
+                        <button type="submit" class="btn btn-primary btn-block">
+                            {{ __('Register') }}
+                        </button>
+                    </div>
+                </div>
+
+                <br>
+                <div class="row mt-4">
+                    <div class="col-md-8 offset-md-4">
+                        <label for="register" style="font-weight:normal;">Have an account?</label>
+                        <a style="font-weight:normal;" href="{{ route('login') }}">
+                            {{ __('Login') }}
+                        </a>
+                    </div>
+                </div>
+                </form>
             </div>
         </div>
     </div>
+</div>
 </div>
 
 <script>

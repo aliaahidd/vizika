@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Mail\EmailUserApproval;
 use App\Mail\EmailAccountRegistered;
+use App\Mail\EmailUserRejection;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
@@ -108,9 +109,18 @@ class ProfileController extends Controller
     {
         $id = Auth::user()->id;
 
-        $visitorlist = DB::table('users')
+        $visitorlist = DB::table('contractorinfo')
+            ->join('users', 'users.id', '=', 'contractorinfo.userID')
+            ->join('companyinfo', 'companyinfo.id', '=', 'contractorinfo.companyID')
+            ->join('biometricinfo', 'biometricinfo.userID', '=', 'users.id')
+            ->leftJoin('briefingsession', 'briefingsession.contractorID', '=', 'users.id')
+            ->leftJoin('safetybriefinginfo', 'safetybriefinginfo.id', '=', 'briefingsession.briefingID')
+            ->select([
+                'users.id AS sessionID',
+                'companyinfo.id AS companyID',
+                'contractorinfo.id AS contID', 'users.*', 'contractorinfo.*', 'companyinfo.*', 'biometricinfo.*', 'briefingsession.*', 'safetybriefinginfo.*'
+            ])
             ->where('status', 'Pending')
-            ->orderBy('name', 'asc')
             ->get();
 
         return view('profile.registeredby', compact('visitorlist'));
@@ -157,6 +167,15 @@ class ProfileController extends Controller
         $userStatus->status = 'Active';
         $userStatus->update();
 
+        $currentDate = Carbon::today();
+        $sixMonthsAfter = $currentDate->addMonths(6);
+
+        $contractorinfo = ContractorInfo::find($id);
+        $contractorinfo->passExpiryDate = $sixMonthsAfter;
+
+        // upadate query in the database
+        $contractorinfo->update();
+
         //send email
         $data = array(
             'name'                =>  $userStatus->name,
@@ -171,6 +190,30 @@ class ProfileController extends Controller
 
         //send email 
         Mail::to($to)->send(new EmailUserApproval($data));
+
+        return redirect()->route('registeredby');
+    }
+
+    public function rejectuser($id)
+    {
+        $userStatus = User::where('id', $id)->first();
+        $userStatus->status = 'Pending';
+        $userStatus->update();
+
+        //send email
+        $data = array(
+            'name'                =>  $userStatus->name,
+            'email'               =>  $userStatus->email,
+        );
+
+        $to = [
+            [
+                'email' => $userStatus->email,
+            ]
+        ];
+
+        //send email 
+        Mail::to($to)->send(new EmailUserRejection($data));
 
         return redirect()->route('registeredby');
     }
@@ -258,6 +301,7 @@ class ProfileController extends Controller
         $email = $request->input('email');
         $category = $request->input('category');
         $password = $request->input('password');
+        $companyID = $request->input('companyID');
 
         $Email = User::where('email', $email)->first();
         if ($Email) {
@@ -281,7 +325,80 @@ class ProfileController extends Controller
             'password' => Hash::make($password),
             'category' => $category,
             'status' => 'Pending',
-            'recommendedBy' => '0',
+            'companyID' => $companyID,
+        );
+
+        // insert query
+        DB::table('users')->insert($data);
+
+        sleep(1);
+        return redirect()->route('login');
+    }
+
+    //register contractor
+    public function registercontractor(Request $request)
+    {
+        // create visitor account 
+        // get user auth
+        $icNo = $request->input('icNo');
+        $email = $request->input('email');
+        $password = $request->input('password');
+        $companyID = $request->input('companyID');
+
+        $Email = User::where('email', $email)->first();
+        if ($Email) {
+            return redirect()->back()->with('success', 'Email already exists');
+        }
+
+        $publicFolderPath = public_path('assets/' . $icNo);
+
+        // Create the folder
+        try {
+            if (!is_dir($publicFolderPath)) {
+                mkdir($publicFolderPath, 0755, true);
+            }
+        } catch (\Exception $e) {
+            return "An error occurred: " . $e->getMessage();
+        }
+
+        $data = array(
+            'icNo' => $icNo,
+            'name' => 'Default',
+            'email' => $email,
+            'password' => Hash::make($password),
+            'category' => 'Contractor',
+            'status' => 'Pending',
+            'companyID' => $companyID,
+        );
+
+        // insert query
+        DB::table('users')->insert($data);
+
+        sleep(1);
+        return redirect()->route('login');
+    }
+
+    //register company
+    public function registercompany(Request $request)
+    {
+        // create visitor account 
+        // get user auth
+        $companyRegNo = $request->input('companyRegNo');
+        $email = $request->input('email');
+        $password = $request->input('password');
+
+        $Email = User::where('email', $email)->first();
+        if ($Email) {
+            return redirect()->back()->with('success', 'Email already exists');
+        }
+
+        $data = array(
+            'companyRegNo' => $companyRegNo,
+            'name' => 'Default',
+            'email' => $email,
+            'password' => Hash::make($password),
+            'category' => 'Company',
+            'status' => 'Pending',
         );
 
         // insert query
@@ -423,7 +540,7 @@ class ProfileController extends Controller
 
 
             $contractorinfo->companyID = $request->input('companyID');
-            $contractorinfo->icNo = $request->input('icNo');
+            // $contractorinfo->icNo = $request->input('icNo');
             $contractorinfo->phoneNo = $request->input('phoneNo');
             // $contractorinfo->passExpiryDate = $request->input('passExpiryDate');
             $contractorinfo->birthDate = $request->input('birthDate');
@@ -435,7 +552,7 @@ class ProfileController extends Controller
             return redirect()->route('bookbriefing');
         }
 
-        $publicFolderPath = public_path('assets/' . Auth::user()->name);
+        $publicFolderPath = public_path('assets/' . Auth::user()->icNo);
 
         // Create the folder
         try {
@@ -451,7 +568,7 @@ class ProfileController extends Controller
         $userStatus->update();
 
         $companyID = $request->input('companyID');
-        $icNo = $request->input('icNo');
+        $name = $request->input('name');
         $employeeNo = $request->input('employeeNo');
         $phonenumber = $request->input('phoneNo');
         // $expiryDate = $request->input('validityPass');
@@ -475,11 +592,16 @@ class ProfileController extends Controller
         // // to store the file by moving to assets folder
         // $validityPass->move('assets/pass', $filename2);
 
+        $userinfo = User::where('id', $id)->first();
+        $userinfo->name = $request->input('name');
+
+        // upadate query in the database
+        $userinfo->update();
+
         $data = array(
             'userID' => $id,
             'employeeNo' => $employeeNo,
-            'companyID' => $companyID,
-            'icNo' => $icNo,
+            'companyID' => $userinfo->companyID,
             'phoneNo' => $phonenumber,
             // 'passExpiryDate' => $expiryDate,
             'birthDate' => $birthDate,
@@ -673,7 +795,7 @@ class ProfileController extends Controller
             $carbonPassExpiryDate = Carbon::createFromFormat('d/m/Y', $passExpiryDateCSV);
             $passExpiryDate = $carbonPassExpiryDate->format('Y-m-d');
 
-            $query = "INSERT INTO users(name, email, password, category, status, recommendedBy) VALUES (?, ?, ?, ?, ?, ?)";
+            $query = "INSERT INTO users(name, email, password, category, status, companyID) VALUES (?, ?, ?, ?, ?, ?)";
             DB::insert($query, [$nameCSV, $emailCSV, $password, $category, 'Pending', $id]);
 
             // Get the last inserted ID (primary key) from 'users' table

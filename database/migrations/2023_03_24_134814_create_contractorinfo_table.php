@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->bigInteger('userID');
             $table->bigInteger('companyID');
-            $table->string('icNo');
             $table->string('employeeNo');
             $table->string('phoneNo');
             $table->date('passExpiryDate')->nullable();

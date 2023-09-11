@@ -128,13 +128,14 @@ class DashboardController extends Controller
 
             return view('dashboard.contractor', compact('totalTodayAppt', 'totalUpcomingAppt', 'totalPastAppt', 'todayAppointment'));
         } elseif (DB::table('users')
-            ->where('id', $id)
+            ->join('contractorinfo', 'users.id', '=', 'contractorinfo.userID')
+            ->where('users.id', $id)
             ->where('status', 'Pending')
             ->exists()
         ) {
-            return redirect()->route('contractordetail');
-        } else {
             return redirect()->route('finishform');
+        } else {
+            return redirect()->route('contractordetail');
         }
     }
 

@@ -23,7 +23,7 @@
                         <h5>Passport Photo</h5>
                         <hr>
                         <div style="margin: auto;">
-                            <img src="/assets/{{$contractor->name}}/{{$contractor->facialRecognition}}" width="200px">
+                            <img src="/assets/{{$contractor->icNo}}/{{$contractor->facialRecognition}}" width="200px">
                         </div>
                     </div>
                 </div>

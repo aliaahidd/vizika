@@ -203,6 +203,27 @@ class BriefingController extends Controller
         return redirect()->route('briefingSlot');
     }
 
+    public function editbriefing($id)
+    {
+        $safetybriefinginfo = DB::table('safetybriefinginfo')
+            ->where('id', $id)
+            ->first();
+
+        return view('briefing.edit_briefing', compact('safetybriefinginfo'));
+    }
+
+    public function updatebriefinginfodata(Request $request, $id)
+    {
+        $briefinginfo = SafetyBriefingInfo::where('id', $id)->first();
+        $briefinginfo->briefingDate = $request->input('briefingDate');
+        $briefinginfo->briefingTimeStart = $request->input('briefingTimeStart');
+        $briefinginfo->briefingTimeEnd = $request->input('briefingTimeEnd');
+        $briefinginfo->maxParticipant = $request->input('participantNo');
+        $briefinginfo->update();
+
+        return redirect()->route('briefingSlot');
+    }
+
     public function updatepassdate($id)
     {
         $currentDate = Carbon::today();

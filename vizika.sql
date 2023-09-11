@@ -290,7 +290,7 @@ CREATE TABLE `users` (
   `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `category` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `status` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `recommendedBy` bigint(20) DEFAULT NULL,
+  `companyID` bigint(20) DEFAULT NULL,
   `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -300,7 +300,7 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `category`, `status`, `recommendedBy`, `remember_token`, `created_at`, `updated_at`) VALUES
+INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `category`, `status`, `companyID`, `remember_token`, `created_at`, `updated_at`) VALUES
 (1, 'Nurain Aleeya', 'nurainaleeyacz@gmail.com', NULL, '$2y$10$qv7cTmodwkPs801UpgawCez8Pmt4o9BoiaD3TEaZxAs2xBpyJrtmm', 'Staff', 'Active', NULL, NULL, '2023-07-16 22:24:19', '2023-07-16 22:24:19'),
 (2, 'Nur Alia Hidayah', 'aliahidayah00@gmail.com', NULL, '$2y$10$WSFwiTaybg2o4TmWiSRr5.VujMqHFtg/FQXxKJLoAy2zYQNQP80mW', 'Visitor', 'Blacklisted', 1, NULL, NULL, '2023-07-17 09:03:32'),
 (3, 'Nurin Azyyati', 'theocloud1479@gmail.com', NULL, '$2y$10$5hKtl5ewifIZiyDzD6D.fOHjPCxtvR9ps9wlRZJxltHPyRW2VKAle', 'SHEQ Officer', 'Active', NULL, NULL, '2023-07-16 22:34:01', '2023-07-16 22:34:01'),

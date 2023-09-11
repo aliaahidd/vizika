@@ -35,29 +35,21 @@
                 @csrf
                 <div class="row mb-">
                     <div class="col-md-6">
+                        
                         <div class="mb-3">
-                            <label for="companyID" class="col-form-label text-md-end">{{ __('Company Name') }}<span style="color: red; margin-left: 5px">*</span></label>
-                            <select id="companyID" class="form-control" name="companyID" required>
-                                <option value="">Please select</option>
-                                @foreach ($companylist as $data)
-                                <option value="{{ $data->id }}">{{ $data->companyName }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="icNo" class="col-form-label text-md-end">{{ __('IC No. / Passport No.') }}<span style="color: red; margin-left: 5px">*</span></label>
-                            <input id="icNo" type="text" class="form-control" name="icNo" placeholder="Ic Number / Passport Number" required autofocus>
+                            <label for="name" class="col-form-label text-md-end">{{ __('Name') }}<span style="color: red; margin-left: 5px">*</span></label>
+                            <input id="name" type="text" class="form-control" name="name" placeholder="Name" required autofocus>
                         </div>
                         <div class="mb-3">
                             <label for="employeeNo" class="col-form-label text-md-end">{{ __('Employee No') }}<span style="color: red; margin-left: 5px">*</span></label>
                             <input id="employeeNo" type="text" class="form-control" name="employeeNo" placeholder="Ex: ABC123" required autofocus>
                         </div>
-                    </div>
-                    <div class="col-md-6">
                         <div class="mb-3">
                             <label for="phoneNo" class="col-form-label text-md-end">{{ __('Phone Number') }}<span style="color: red; margin-left: 5px">*</span></label>
                             <input id="phoneNo" type="text" class="form-control" name="phoneNo" placeholder="Ex: 0123456789" required autofocus>
                         </div>
+                    </div>
+                    <div class="col-md-6">
                         <div class="mb-3">
                             <label for="birthDate" class="col-form-label text-md-end">{{ __('Date of Birth') }}<span style="color: red; margin-left: 5px">*</span></label>
                             <input id="birthDate" type="date" class="form-control" name="birthDate" required autofocus>

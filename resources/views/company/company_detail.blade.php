@@ -32,14 +32,6 @@
                                 <input id="companyName" type="text" class="form-control" name="companyName" placeholder="Ex: ABC Sdn. Bhd." required autofocus>
                             </div>
                             <div class="mb-3">
-                                <label for="companyRegNo" class="col-form-label text-md-end">{{ __('Company Reg No') }}<span style="color: red; margin-left: 5px">*</span></label>
-                                <input id="companyRegNo" type="text" class="form-control" name="companyRegNo" placeholder="Ex: ABC123" required autofocus>
-                            </div>
-                            <div class="mb-3">
-                                <label for="email" class="col-form-label text-md-end">{{ __('Company Email') }}<span style="color: red; margin-left: 5px">*</span></label>
-                                <textarea id="email" type="text" class="form-control" name="companyEmail" rows="1" cols="50" placeholder="abc@gmail.com" required></textarea>
-                            </div>
-                            <div class="mb-3">
                                 <label for="phoneNo" class="col-form-label text-md-end">{{ __('Company Phone Number') }}<span style="color: red; margin-left: 5px">*</span></label>
                                 <input id="phoneNo" type="text" class="form-control" name="companyPhoneNo" placeholder="Ex: 0123456789" required autofocus>
                             </div>
@@ -58,10 +50,6 @@
                                     <option value="Safety">Safety</option>
                                     <option value="Servicing">Servicing</option>
                                 </select>
-                            </div>
-                            <div class="mb-3">
-                                <label for="phoneNoPIC" class="col-form-label text-md-end">{{ __('PIC Phone Number') }}<span style="color: red; margin-left: 5px">*</span></label>
-                                <input id="phoneNoPIC" type="text" class="form-control" name="phoneNoPIC" placeholder="Ex: 0123456789" required autofocus>
                             </div>
                         </div>
                     </div>
