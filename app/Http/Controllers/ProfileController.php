@@ -194,16 +194,19 @@ class ProfileController extends Controller
         return redirect()->route('registeredby');
     }
 
-    public function rejectuser($id)
+    public function rejectuser(Request $request, $id)
     {
         $userStatus = User::where('id', $id)->first();
         $userStatus->status = 'Rejected';
         $userStatus->update();
 
+        $reasonReject = $request->input('reasonReject');
+
         //send email
         $data = array(
             'name'                =>  $userStatus->name,
             'email'               =>  $userStatus->email,
+            'reason'              =>  $reasonReject,
         );
 
         $to = [

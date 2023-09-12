@@ -61,11 +61,11 @@
                             <td>{{ $data->email }}</td>
                             <td>{{ $data->category }}</td>
                             <td>
-                            @if ($data->passExpiryDate != NULL)
-                            {{ $data->passExpiryDate }} 
-                            @else
-                            {{ $data->briefingDate }} ({{ $data->briefingTimeStart }} - {{ $data->briefingTimeEnd }}) 
-                            @endif
+                                @if ($data->passExpiryDate != NULL)
+                                {{ $data->passExpiryDate }}
+                                @else
+                                {{ $data->briefingDate }} ({{ $data->briefingTimeStart }} - {{ $data->briefingTimeEnd }})
+                                @endif
                             </td>
                             @if( $data->status == 'Registered')
                             <td>
@@ -92,7 +92,7 @@
                             <td class="text-center">
                                 <a class="btn btn-primary" href="{{ route('registeredprofile', [$data->sessionID]) }}">View</a>
                                 <a href="{{ route('approveuser', [$data->sessionID]) }}" class="btn btn-success">Approve</a>
-                                <a href="{{ route('rejectuser', [$data->sessionID]) }}" class="btn btn-danger">Reject</a>
+                                <a data-toggle="modal" data-target="#modalReasonReject" href="" class="btn btn-danger">Reject</a>
                             </td>
                             @endif
                         </tr>
@@ -105,6 +105,31 @@
             </div>
         </div>
     </div>
+
+    <!-- MODAL BOX -->
+    <!-- To display the modal box if reject button is clicked to enter the feedback comment -->
+    <div class="modal fade" id="modalReasonReject" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="myModalLabel">Reason</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form method="post" action="{{ route('rejectuser', [$data->sessionID]) }}">
+                    @csrf
+                    @method('PUT')
+                    <div class="modal-body">
+                        <textarea type="text" class="form-control" name="reasonReject" rows="5"></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 </div>

@@ -4,7 +4,7 @@
 
 <p>Your account has been rejected. Please book your safety briefing slot again.</p>
 
-<p>Reason: Not attend the booking slot</p>
+<p>Reason: {{ $data['reasonReject'] }}</p>
 
 <p>Website Link: <a href="https://vizika.online/login">Click here</a></p>
 
