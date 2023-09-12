@@ -185,6 +185,9 @@ class BriefingController extends Controller
         //check the expiry date pass for contractor
         $userID = Auth::user()->id;
 
+        //delete past enrollment to avoid duplicate 
+        BriefingSession::where('contractorID', '=', $userID)->delete();
+
         $data = array(
             'briefingID' => $id,
             'contractorID' => $userID,
