@@ -197,7 +197,7 @@ class ProfileController extends Controller
     public function rejectuser($id)
     {
         $userStatus = User::where('id', $id)->first();
-        $userStatus->status = 'Pending';
+        $userStatus->status = 'Rejected';
         $userStatus->update();
 
         //send email

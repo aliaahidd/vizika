@@ -134,6 +134,13 @@ class DashboardController extends Controller
             ->exists()
         ) {
             return redirect()->route('finishform');
+        } elseif (DB::table('users')
+            ->join('contractorinfo', 'users.id', '=', 'contractorinfo.userID')
+            ->where('users.id', $id)
+            ->where('status', 'Rejected')
+            ->exists()
+        ) {
+            return redirect()->route('bookbriefing');
         } else {
             return redirect()->route('contractordetail');
         }

@@ -191,7 +191,7 @@
                         <label for="expiryPass">Booking Slot</label>
                     </div>
                     <div class="col">
-                        <label for="expiryPass">{{ $contractor->briefingDate }} ({{ $contractor->briefingTimeStart }} - {{ $contractor->briefingTimeEnd }})  </label>
+                        <label for="expiryPass">{{ $contractor->briefingDate }} ({{ $contractor->briefingTimeStart }} - {{ $contractor->briefingTimeEnd }}) </label>
                     </div>
                 </div>
                 @endif
@@ -203,7 +203,8 @@
 @if( $contractor->status == 'Pending' )
 <div class="row justify-content-end">
     <div class="col-md-12">
-        <a href="{{ route('approveuser', $contractor->userID) }}" class="btn btn-success" style="float: right;">Approve</a>
+        <a href="{{ route('rejectuser', $contractor->userID) }}" class="btn btn-danger" style="float: right;">Reject</a>
+        <a href="{{ route('approveuser', $contractor->userID) }}" class="btn btn-success mr-2" style="float: right;">Approve</a>
     </div>
 </div>
 @endif

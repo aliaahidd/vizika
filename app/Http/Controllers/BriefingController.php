@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BiometricInfo;
 use App\Models\BriefingSession;
 use App\Models\ContractorInfo;
 use Illuminate\Http\Request;
@@ -191,7 +192,13 @@ class BriefingController extends Controller
         // insert query
         DB::table('briefingsession')->insert($data);
 
-        return redirect()->route('registerBiometric');
+        $checkbiometric = BiometricInfo::where('userID', $id)->exists();
+
+        if ($checkbiometric) {
+            return redirect()->route('finishform');
+        } else {
+            return redirect()->route('registerBiometric');
+        }
     }
 
     public function cancelsession($id)
