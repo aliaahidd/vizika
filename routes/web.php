@@ -71,7 +71,7 @@ Route::get('/Registered-User-Profile/{id}', [App\Http\Controllers\ProfileControl
 //approve user 
 Route::get('approveuser/{id}', [App\Http\Controllers\ProfileController::class, 'approveuser'])->name('approveuser');
 //reject user 
-Route::get('rejectuser/{id}', [App\Http\Controllers\ProfileController::class, 'rejectuser'])->name('rejectuser');
+Route::post('rejectuser/{id}', [App\Http\Controllers\ProfileController::class, 'rejectuser'])->name('rejectuser');
 //approve user all 
 Route::get('approveallregistration', [App\Http\Controllers\ProfileController::class, 'approveallregistration'])->name('approveallregistration');
 //register visitor page load
