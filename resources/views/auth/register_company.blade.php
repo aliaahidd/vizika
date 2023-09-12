@@ -15,7 +15,7 @@
                             <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Registration No') }}</label>
 
                             <div class="col-md-6">
-                                <input id="name" type="text" class="form-control" name="name">
+                                <input id="name" type="text" class="form-control" name="companyRegNo">
 
                                 @error('name')
                                 <span class="invalid-feedback" role="alert">

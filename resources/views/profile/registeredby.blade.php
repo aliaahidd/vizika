@@ -90,9 +90,9 @@
                             <td><button class="btn btn-primary" disabled>View</button></td>
                             @else
                             <td class="text-center">
-                                <a class="btn btn-primary" href="{{ route('registeredprofile', [$data->id]) }}">View</a>
-                                <a href="{{ route('approveuser', [$data->id]) }}" class="btn btn-success">Approve</a>
-                                <a href="{{ route('rejectuser', [$data->id]) }}" class="btn btn-danger">Reject</a>
+                                <a class="btn btn-primary" href="{{ route('registeredprofile', [$data->sessionID]) }}">View</a>
+                                <a href="{{ route('approveuser', [$data->sessionID]) }}" class="btn btn-success">Approve</a>
+                                <a href="{{ route('rejectuser', [$data->sessionID]) }}" class="btn btn-danger">Reject</a>
                             </td>
                             @endif
                         </tr>
