@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Models\SafetyBriefingInfo;
+use App\Models\User;
 use Carbon\Carbon;
 
 class BriefingController extends Controller
@@ -192,7 +193,11 @@ class BriefingController extends Controller
         // insert query
         DB::table('briefingsession')->insert($data);
 
-        $checkbiometric = BiometricInfo::where('userID', $id)->exists();
+        $userStatus = User::where('id', $userID)->first();
+        $userStatus->status = 'Pending';
+        $userStatus->update();
+
+        $checkbiometric = BiometricInfo::where('userID', $userID)->exists();
 
         if ($checkbiometric) {
             return redirect()->route('finishform');
