@@ -170,7 +170,7 @@ class ProfileController extends Controller
         $currentDate = Carbon::today();
         $sixMonthsAfter = $currentDate->addMonths(6);
 
-        $contractorinfo = ContractorInfo::find($id);
+        $contractorinfo = ContractorInfo::where('userID', $id)->first();
         $contractorinfo->passExpiryDate = $sixMonthsAfter;
 
         // upadate query in the database
