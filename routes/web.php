@@ -86,6 +86,8 @@ Route::post('/send-invitation', [App\Http\Controllers\ProfileController::class, 
 Route::post('/register-visitor', [App\Http\Controllers\ProfileController::class, 'registervisitor'])->name('registervisitor');
 //register contractor (insert)
 Route::post('/register-contractor', [App\Http\Controllers\ProfileController::class, 'registercontractor'])->name('registercontractor');
+//register company (insert)
+Route::post('/register-company', [App\Http\Controllers\ProfileController::class, 'registercompany'])->name('registercompany');
 //register bulk using excel store
 Route::post('/bulk-excel-file', [App\Http\Controllers\ProfileController::class, 'registerbulkfile'])->name('registerbulkfile');
 //query edit profile page (contractor)
@@ -245,8 +247,6 @@ Route::get('/Profile-Contractor/{id}', [App\Http\Controllers\BlacklistController
 Route::get('/Company', [App\Http\Controllers\CompanyController::class, 'company'])->name('company');
 //display page company detail
 Route::get('/Company-Detail', [App\Http\Controllers\CompanyController::class, 'companydetail'])->name('companydetail');
-//register company (insert)
-Route::post('/register-company', [App\Http\Controllers\CompanyController::class, 'registercompany'])->name('registercompany');
 //query insert appointment multiple 
 Route::post('/storecompanyinfo', [App\Http\Controllers\CompanyController::class, 'storecompanyinfo'])->name('storecompanyinfo');
 //create appointment page load
