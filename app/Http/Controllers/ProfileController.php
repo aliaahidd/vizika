@@ -15,6 +15,7 @@ use App\Models\ContractorInfo;
 use App\Models\VisitorInfo;
 use App\Models\AppointmentInfo;
 use App\Models\VisitRecord;
+use App\Models\UserChangeRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 use Carbon\Carbon;
@@ -415,7 +416,10 @@ class ProfileController extends Controller
     {
         // find the id from contractorinfo
 
-        $contractorinfo = ContractorInfo::find($id);
+        $contractorinfo = ContractorInfo::leftJoin('users', 'contractorinfo.userID', '=', 'users.id')
+            ->where('contractorinfo.id', $id)
+            ->first();
+
 
         // if ($request->hasFile('passportPhoto')) {
         //     $name = Auth::user()->name;
@@ -454,6 +458,90 @@ class ProfileController extends Controller
 
             $contractorinfo->validityPassPhoto = $filename2;
         }
+
+        // Initialize an array to store the changes
+        $changes = [];
+
+        // Compare each field with its old value
+        if ($request->input('name') !== $contractorinfo->name) {
+            $changes[] = [
+                'field' => 'name',
+                'old_value' => $contractorinfo->name,
+                'new_value' => $request->input('name'),
+            ];
+        }
+
+        if ($request->input('email') !== $contractorinfo->email) {
+            $changes[] = [
+                'field' => 'email',
+                'old_value' => $contractorinfo->email,
+                'new_value' => $request->input('email'),
+            ];
+        }
+
+        if ($request->input('phoneNo') !== $contractorinfo->phoneNo) {
+            $changes[] = [
+                'field' => 'phoneNo',
+                'old_value' => $contractorinfo->phoneNo,
+                'new_value' => $request->input('phoneNo'),
+            ];
+        }
+
+        if ($request->input('companyID') !== $contractorinfo->companyID) {
+            $changes[] = [
+                'field' => 'companyID',
+                'old_value' => $contractorinfo->companyID,
+                'new_value' => $request->input('companyID'),
+            ];
+        }
+
+        if ($request->input('address') !== $contractorinfo->address) {
+            $changes[] = [
+                'field' => 'address',
+                'old_value' => $contractorinfo->address,
+                'new_value' => $request->input('address'),
+            ];
+        }
+
+        if ($request->input('employeeNo') !== $contractorinfo->employeeNo) {
+            $changes[] = [
+                'field' => 'employeeNo',
+                'old_value' => $contractorinfo->employeeNo,
+                'new_value' => $request->input('employeeNo'),
+            ];
+        }
+
+        if ($request->input('passExpiryDate') !== $contractorinfo->passExpiryDate) {
+            $changes[] = [
+                'field' => 'passExpiryDate',
+                'old_value' => $contractorinfo->passExpiryDate,
+                'new_value' => $request->input('passExpiryDate'),
+            ];
+        }
+
+        if ($request->input('birthDate') !== $contractorinfo->birthDate) {
+            $changes[] = [
+                'field' => 'birthDate',
+                'old_value' => $contractorinfo->birthDate,
+                'new_value' => $request->input('birthDate'),
+            ];
+        }
+
+        // Repeat the above pattern for other fields as needed
+
+        // Store the changes in your database or log them
+        foreach ($changes as $change) {
+            $userChange = new UserChangeRequest();
+            $userChange->userID = $contractorinfo->id;
+            $userChange->field_changed = $change['field'];
+            $userChange->original_value = $change['old_value'];
+            $userChange->new_value = $change['new_value'];
+            $userChange->requestStatus = 'Pending';
+            $userChange->save();
+        }
+
+        // Update the user's data in the database with the new values
+        $contractorinfo->update($request->all());
 
         $contractorinfo->companyID = $request->input('companyID');
         $contractorinfo->phoneNo = $request->input('phoneNo');

@@ -101,7 +101,14 @@
                                     <button type="submit" class="btn btn-primary">Update</button>
                                 </div>
                             </div>
-
+                            <input type="hidden" name="field_changed_name" value="{{ $contractor->name }}">
+                            <input type="hidden" name="field_changed_email" value="{{ $contractor->email }}">
+                            <input type="hidden" name="field_changed_phoneNo" value="{{ $contractor->phoneNo }}">
+                            <input type="hidden" name="field_changed_companyID" value="{{ $contractor->companyID }}">
+                            <input type="hidden" name="field_changed_address" value="{{ $contractor->address }}">
+                            <input type="hidden" name="field_changed_employeeNo" value="{{ $contractor->employeeNo }}">
+                            <input type="hidden" name="field_changed_passExpiryDate" value="{{ $contractor->passExpiryDate }}">
+                            <input type="hidden" name="field_changed_birthDate" value="{{ $contractor->birthDate }}">
                         </div>
                     </div>
                 </div>
