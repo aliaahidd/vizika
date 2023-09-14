@@ -134,11 +134,10 @@ class ProfileController extends Controller
 
         $changerequests = DB::table('userchangerequests')
             ->join('users', 'users.id', '=', 'userchangerequests.userID')
-            ->join('companyinfo', 'companyinfo.id', '=', 'users.companyID')
+            ->leftjoin('companyinfo', 'companyinfo.id', '=', 'users.companyID')
             ->select([
                 'users.id AS sessionID',
                 'userchangerequests.id AS changeRequestID',
-                'companyinfo.id AS companyID',
                 'users.*', 'userchangerequests.*', 'companyinfo.*'
             ])
             ->where('userchangerequests.requestStatus', 'Pending')
@@ -456,6 +455,8 @@ class ProfileController extends Controller
     {
         // find the id from contractorinfo
 
+        $userID = Auth::user()->id;
+
         $contractorinfo = ContractorInfo::find($id);
 
 
@@ -531,7 +532,7 @@ class ProfileController extends Controller
         // Store the changes in your database or log them
         foreach ($changes as $change) {
             $userChange = new UserChangeRequest();
-            $userChange->userID = $contractorinfo->id;
+            $userChange->userID = $userID;
             $userChange->field_changed = $change['field'];
             $userChange->original_value = $change['old_value'];
             $userChange->new_value = $change['new_value'];
