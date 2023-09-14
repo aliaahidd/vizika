@@ -12,9 +12,11 @@ class ContractorInfo extends Model
     protected $fillable = [
         'id',
         'userID',
-        'companyName',
+        'companyID',
         'phoneNo',
+        'employeeNo',
         'passExpiryDate',
+        'passStatus',
         'birthDate',
         'address',
         'validityPassPhoto',

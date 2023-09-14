@@ -66,12 +66,16 @@ Route::get('/Profile/Edit-Profile/{id}', [App\Http\Controllers\ProfileController
 Route::get('/User-List', [App\Http\Controllers\ProfileController::class, 'userlist'])->name('userlist');
 //registration approval by officer
 Route::get('/Registered-List', [App\Http\Controllers\ProfileController::class, 'registeredby'])->name('registeredby');
+//registration approval by officer
+Route::get('/Edit-Profile-Approval-List', [App\Http\Controllers\ProfileController::class, 'editprofileapproval'])->name('editprofileapproval');
 //view detail for approval from staff
 Route::get('/Registered-User-Profile/{id}', [App\Http\Controllers\ProfileController::class, 'registeredprofile'])->name('registeredprofile');
 //approve user 
 Route::get('approveuser/{id}', [App\Http\Controllers\ProfileController::class, 'approveuser'])->name('approveuser');
 //reject user 
 Route::post('rejectuser/{id}', [App\Http\Controllers\ProfileController::class, 'rejectuser'])->name('rejectuser');
+//approve change requests  
+Route::get('approvechangerequestsprofile/{id}', [App\Http\Controllers\ProfileController::class, 'approvechangerequests'])->name('approvechangerequests');
 //approve user all 
 Route::get('approveallregistration', [App\Http\Controllers\ProfileController::class, 'approveallregistration'])->name('approveallregistration');
 //register visitor page load

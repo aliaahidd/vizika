@@ -12,14 +12,11 @@ class UserChangeRequest extends Model
     protected $fillable = [ 
         'id',
         'userID',
-        'visitDate',
-        'vehicleRegNo',
-        'primeMoverInside',
-        'primeMoverBack',
-        'trailerUnder',
-        'trailerBehind',
-        'trailerLeft',
-        'trailerRight',
-        'security',
+        'original_value',
+        'field_changed',
+        'new_value',
+        'request_date',
+        'requestStatus',
+        'passStatus',
     ];
 }

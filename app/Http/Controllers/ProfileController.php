@@ -127,6 +127,26 @@ class ProfileController extends Controller
         return view('profile.registeredby', compact('visitorlist'));
     }
 
+    //list name edit profile approval 
+    public function editprofileapproval()
+    {
+        $id = Auth::user()->id;
+
+        $changerequests = DB::table('userchangerequests')
+            ->join('users', 'users.id', '=', 'userchangerequests.userID')
+            ->join('companyinfo', 'companyinfo.id', '=', 'users.companyID')
+            ->select([
+                'users.id AS sessionID',
+                'userchangerequests.id AS changeRequestID',
+                'companyinfo.id AS companyID',
+                'users.*', 'userchangerequests.*', 'companyinfo.*'
+            ])
+            ->where('userchangerequests.requestStatus', 'Pending')
+            ->get();
+
+        return view('profile.edit_profile_requests', compact('changerequests'));
+    }
+
     public function registeredprofile($id)
     {
         $usertype = DB::table('users')
@@ -193,6 +213,26 @@ class ProfileController extends Controller
         Mail::to($to)->send(new EmailUserApproval($data));
 
         return redirect()->route('registeredby');
+    }
+
+    public function approvechangerequests($id)
+    {
+        // Update contractorinfo table
+        DB::table('contractorinfo')
+            ->join('userchangerequests', 'contractorinfo.userID', '=', 'userchangerequests.userID')
+            ->where('userchangerequests.id', $id)
+            ->update([
+                'contractorinfo.passStatus' => null,
+            ]);
+
+        // Update userchangerequests table
+        DB::table('userchangerequests')
+            ->where('id', $id)
+            ->update([
+                'requestStatus' => 'Approved',
+            ]);
+
+        return redirect()->route('editprofileapproval');
     }
 
     public function rejectuser(Request $request, $id)
@@ -416,30 +456,8 @@ class ProfileController extends Controller
     {
         // find the id from contractorinfo
 
-        $contractorinfo = ContractorInfo::leftJoin('users', 'contractorinfo.userID', '=', 'users.id')
-            ->where('contractorinfo.id', $id)
-            ->first();
+        $contractorinfo = ContractorInfo::find($id);
 
-
-        // if ($request->hasFile('passportPhoto')) {
-        //     $name = Auth::user()->name;
-        //     //unlink the old contractorinfo file from assets folder
-        //     $path = public_path() . '/assets/' . $name . $contractorinfo->passportPhoto;
-        //     if (file_exists($path)) {
-        //         unlink($path);
-        //     }
-
-        //     $name = Auth::user()->name;
-
-        //     $contractorinfo->passportPhoto = $request->file('passportPhoto');
-
-        //     //to rename the contractorinfo file
-        //     $filename = time() . '.' . $contractorinfo->passportPhoto->getClientOriginalExtension();
-        //     // to store the new file by moving to assets folder
-        //     $request->passportPhoto->move('assets/' . $name, $filename);
-
-        //     $contractorinfo->passportPhoto = $filename;
-        // }
 
         if ($request->hasFile('validityPassImg')) {
             //unlink the old contractorinfo file from assets folder
@@ -462,23 +480,6 @@ class ProfileController extends Controller
         // Initialize an array to store the changes
         $changes = [];
 
-        // Compare each field with its old value
-        if ($request->input('name') !== $contractorinfo->name) {
-            $changes[] = [
-                'field' => 'name',
-                'old_value' => $contractorinfo->name,
-                'new_value' => $request->input('name'),
-            ];
-        }
-
-        if ($request->input('email') !== $contractorinfo->email) {
-            $changes[] = [
-                'field' => 'email',
-                'old_value' => $contractorinfo->email,
-                'new_value' => $request->input('email'),
-            ];
-        }
-
         if ($request->input('phoneNo') !== $contractorinfo->phoneNo) {
             $changes[] = [
                 'field' => 'phoneNo',
@@ -487,7 +488,7 @@ class ProfileController extends Controller
             ];
         }
 
-        if ($request->input('companyID') !== $contractorinfo->companyID) {
+        if (trim($request->input('companyID')) !== trim($contractorinfo->companyID)) {
             $changes[] = [
                 'field' => 'companyID',
                 'old_value' => $contractorinfo->companyID,
@@ -527,8 +528,6 @@ class ProfileController extends Controller
             ];
         }
 
-        // Repeat the above pattern for other fields as needed
-
         // Store the changes in your database or log them
         foreach ($changes as $change) {
             $userChange = new UserChangeRequest();
@@ -540,18 +539,18 @@ class ProfileController extends Controller
             $userChange->save();
         }
 
-        // Update the user's data in the database with the new values
-        $contractorinfo->update($request->all());
-
         $contractorinfo->companyID = $request->input('companyID');
         $contractorinfo->phoneNo = $request->input('phoneNo');
         $contractorinfo->employeeNo = $request->input('employeeNo');
         $contractorinfo->passExpiryDate = $request->input('passExpiryDate');
         $contractorinfo->birthDate = $request->input('birthDate');
         $contractorinfo->address = $request->input('address');
+        $contractorinfo->passStatus = 'Inactive';
 
         // upadate query in the database
         $contractorinfo->update();
+
+
 
         // display message box in the same page
         return redirect()->back()->with('message', 'Contractor Info Updated Successfully');

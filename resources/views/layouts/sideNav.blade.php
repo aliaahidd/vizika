@@ -67,10 +67,20 @@
 
                     @if( auth()->user()->category== "SHEQ Officer")
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('registeredby*') ? 'active' : '' }}" href="{{ route('registeredby') }}">
+                        <a class="nav-link {{ request()->routeIs('briefing*') ? 'active' : '' }}" data-toggle="collapse" data-target="#approvalSubMenu">
                             <i class="material-icons">event</i>
-                            <span>Registration Approval</span>
+                            <span>Approval</span>
                         </a>
+                        <div class="collapse" id="approvalSubMenu" style="margin-left: 20px">
+                            <ul class="nav flex-column">
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('registeredby') ? 'active' : '' }}" href="{{ route('registeredby') }}">Registration Approval</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('editprofileapproval') ? 'active' : '' }}" href="{{ route('editprofileapproval') }}">Edit Profile Approval</a>
+                                </li>
+                            </ul>
+                        </div>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('briefing*') ? 'active' : '' }}" data-toggle="collapse" data-target="#briefingSubMenu">
