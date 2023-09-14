@@ -14,6 +14,7 @@ use App\Models\User;
 use App\Models\ContractorInfo;
 use App\Models\VisitorInfo;
 use App\Models\AppointmentInfo;
+use App\Models\CompanyInfo;
 use App\Models\VisitRecord;
 use App\Models\UserChangeRequest;
 use Illuminate\Http\Request;
@@ -490,10 +491,14 @@ class ProfileController extends Controller
         }
 
         if (trim($request->input('companyID')) !== trim($contractorinfo->companyID)) {
+            $companyinfoold = CompanyInfo::find($contractorinfo->companyID);
+
+            $companyinfonew = CompanyInfo::find($request->input('companyID'));
+
             $changes[] = [
                 'field' => 'companyID',
-                'old_value' => $contractorinfo->companyID,
-                'new_value' => $request->input('companyID'),
+                'old_value' => $companyinfoold->companyName,
+                'new_value' => $companyinfonew->companyName,
             ];
         }
 
