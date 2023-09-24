@@ -17,6 +17,7 @@ use App\Models\AppointmentInfo;
 use App\Models\CompanyInfo;
 use App\Models\VisitRecord;
 use App\Models\UserChangeRequest;
+use App\Rules\UniqueCompanyRegNo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 use Carbon\Carbon;
@@ -26,7 +27,8 @@ use PhpOffice\PhpSpreadsheet\Worksheet\MemoryDrawing;
 use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use Illuminate\Support\Facades\Storage;
 use PhpOffice\PhpSpreadsheet\Reader\Exception;
-
+use App\Rules\UniqueICNumber;
+use Illuminate\Validation\Rule;
 
 
 
@@ -382,6 +384,11 @@ class ProfileController extends Controller
     //register contractor
     public function registercontractor(Request $request)
     {
+        $request->validate([
+            'icNo' => ['required', 'string', 'max:255', new UniqueICNumber],
+            'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')],
+        ]);
+
         // create visitor account 
         // get user auth
         $icNo = $request->input('icNo');
@@ -392,17 +399,6 @@ class ProfileController extends Controller
         $Email = User::where('email', $email)->first();
         if ($Email) {
             return redirect()->back()->with('success', 'Email already exists');
-        }
-
-        $publicFolderPath = public_path('assets/' . $icNo);
-
-        // Create the folder
-        try {
-            if (!is_dir($publicFolderPath)) {
-                mkdir($publicFolderPath, 0755, true);
-            }
-        } catch (\Exception $e) {
-            return "An error occurred: " . $e->getMessage();
         }
 
         $data = array(
@@ -419,17 +415,27 @@ class ProfileController extends Controller
         DB::table('users')->insert($data);
 
         sleep(1);
-        return redirect()->route('login');
+        return redirect()->route('login')->with('success', 'Registration successful. Please login with your credentials.');
     }
 
     //register company
     public function registercompany(Request $request)
     {
+        $request->validate([
+            'companyRegNo' => ['required', 'string', 'max:255', new UniqueCompanyRegNo],
+            'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')],
+        ]);
         // create visitor account 
         // get user auth
         $companyRegNo = $request->input('companyRegNo');
         $email = $request->input('email');
         $password = $request->input('password');
+
+        $staffID = $request->input('staffID');
+        $mngtPICName = $request->input('mngtPICName');
+        $mngtPICEmail = $request->input('mngtPICEmail');
+        $safetyPICName = $request->input('safetyPICName');
+        $safetyPICEmail = $request->input('safetyPICEmail');
 
         $Email = User::where('email', $email)->first();
         if ($Email) {
@@ -446,10 +452,22 @@ class ProfileController extends Controller
         );
 
         // insert query
-        DB::table('users')->insert($data);
+        $userId = DB::table('users')->insertGetId($data);
+
+        $data = array(
+            'userID' => $userId,
+            'staffID' => $staffID,
+            'mngtPICName' => $mngtPICName,
+            'mngtPICEmail' => $mngtPICEmail,
+            'safetyPICName' => $safetyPICName,
+            'safetyPICEmail' => $safetyPICEmail,
+        );
+
+        // insert query
+        DB::table('companyinfo')->insert($data);
 
         sleep(1);
-        return redirect()->route('login');
+        return redirect()->route('login')->with('success', 'Registration successful. Please login with your credentials.');
     }
 
     public function updateProfileContractor(Request $request, $id)
@@ -648,7 +666,7 @@ class ProfileController extends Controller
             return redirect()->route('bookbriefing');
         }
 
-        $publicFolderPath = public_path('assets/' . Auth::user()->icNo);
+        $publicFolderPath = public_path('assets/' . Auth::user()->name);
 
         // Create the folder
         try {

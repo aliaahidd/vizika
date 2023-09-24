@@ -16,7 +16,7 @@ class GenerateSafetyBriefingSlots extends Command
      *
      * @var string
      */
-    protected $signature = 'app:generate-safety-briefing-slots';
+    protected $signature = 'GenerateSafetyBriefingSlots';
 
     /**
      * The console command description.
@@ -35,29 +35,38 @@ class GenerateSafetyBriefingSlots extends Command
 
         while ($startDate <= $endDate) {
             if (!$startDate->isWeekend()) {
-                // create briefing info
+                // Check if a record with the same date and time already exists
+                $existingRecord = DB::table('safetybriefinginfo')
+                    ->where('briefingDate', $startDate)
+                    ->whereIn('briefingTimeStart', ['09:00:00', '15:00:00'])
+                    ->whereIn('briefingTimeEnd', ['11:00:00', '17:00:00'])
+                    ->first();
 
-                $data = array(
-                    'briefingDate' => $startDate,
-                    'briefingTimeStart' => "09:00:00",
-                    'briefingTimeEnd' => "11:00:00",
-                    'maxParticipant' => 30,
-                    'briefingStatus' => "Active",
-                );
+                if (!$existingRecord) {
+                    // Create briefing info
 
-                // insert query 9 - 11 am
-                DB::table('safetybriefinginfo')->insert($data);
+                    // Insert query 9 - 11 am
+                    $data = [
+                        'briefingDate' => $startDate,
+                        'briefingTimeStart' => "09:00:00",
+                        'briefingTimeEnd' => "11:00:00",
+                        'maxParticipant' => 30,
+                        'briefingStatus' => "Active",
+                    ];
 
-                $data2 = array(
-                    'briefingDate' => $startDate,
-                    'briefingTimeStart' => "15:00:00",
-                    'briefingTimeEnd' => "17:00:00",
-                    'maxParticipant' => 30,
-                    'briefingStatus' => "Active",
-                );
+                    DB::table('safetybriefinginfo')->insert($data);
 
-                // insert query 3- 5 pm
-                DB::table('safetybriefinginfo')->insert($data2);
+                    // Insert query 3- 5 pm
+                    $data2 = [
+                        'briefingDate' => $startDate,
+                        'briefingTimeStart' => "15:00:00",
+                        'briefingTimeEnd' => "17:00:00",
+                        'maxParticipant' => 30,
+                        'briefingStatus' => "Active",
+                    ];
+
+                    DB::table('safetybriefinginfo')->insert($data2);
+                }
             }
 
             $startDate->addDay(); // Move to the next day

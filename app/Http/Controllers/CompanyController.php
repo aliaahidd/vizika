@@ -33,7 +33,7 @@ class CompanyController extends Controller
     public function storecompanyinfo(Request $request)
     {
         // create company
-        $userID = $id = Auth::user()->id;
+        $userID = Auth::user()->id;
         $companyName = $request->input('companyName');
         $companyPhoneNo = $request->input('companyPhoneNo');
         $companyAddress = $request->input('companyAddress');
@@ -46,16 +46,16 @@ class CompanyController extends Controller
         $userinfo->update();
 
         $data = array(
-            'userID' => $userID,
             'companyName' => $companyName,
             'companyPhoneNo' => $companyPhoneNo,
             'companyEmail' => $userinfo->email,
             'companyAddress' => $companyAddress,
             'companyIndustries' => $companyIndustries,
         );
-
-        // insert query
-        DB::table('companyinfo')->insert($data);
+        
+        // Update query
+        DB::table('companyinfo')->where('userID', $userID)->update($data);
+        
 
         sleep(1);
         return redirect()->route('finishform');

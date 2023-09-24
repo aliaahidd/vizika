@@ -46,9 +46,16 @@
                 <h4>Thank you for completing the form!</h4>
             </div>
             <div class="row justify-content-center mt-4" style="margin-bottom: 50">
-                <h6>Your registration is currently pending approval. Please wait for up to 24 hours for the approval process to be completed. </h6>
+                @if(Auth::check() && Auth::user()->category === 'Contractor')
+                <h6>Your registration currently pending for approval. </h6>
+                <h6>&nbsp;Your application will be approve once you attend the safety health briefing on-site. </h6>
+                <h6>Registration will be cancelled if you fail to attend to the safety briefing class you enrolled.</h6>
+                <h6>&nbsp;We appreciate your patience and understanding.</h6>
 
-                <h6>We appreciate your patience and understanding.</h6>
+                @else
+                <h6>Your registration currently pending for approval. </h6>
+                <h6>&nbsp;We appreciate your patience and understanding.</h6>
+                @endif
             </div>
         </div>
     </div>

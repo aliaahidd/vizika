@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\SafetyBriefingInfo;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\EmailExpiredPass;
 
 class BriefingController extends Controller
 {
@@ -281,6 +283,29 @@ class BriefingController extends Controller
             ->get();
 
         return view('briefing.list_expiry_pass', compact('expirypasslist', 'today_date'));
+    }
+
+    public function emailExpiredPass($id)
+    {
+        $contractorinfo = User::where('id', $id)->first();
+
+        //send email
+        $data = array(
+            'name'                =>  $contractorinfo->name,
+            'email'               =>  $contractorinfo->email,
+        );
+
+        $to = [
+            [
+                'email' => $contractorinfo->email,
+            ]
+        ];
+
+        //send email 
+        Mail::to($to)->send(new EmailExpiredPass($data));
+
+        return redirect()->route('expirypasslist')->with('success', 'Email has been sent successfully.');
+
     }
 
     public function bookbriefing()

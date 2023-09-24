@@ -34,6 +34,7 @@
                                 <th>Phone No</th>
                                 <th>Expiry Pass Date</th>
                                 <th>Status</th>
+                                <th>Email</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -55,6 +56,7 @@
                                     </div>
                                     @endif
                                 </td>
+                                <td><a href="{{ route('emailExpiredPass', $data->id) }}" class="btn btn-primary"><i class="material-icons" style="font-size: 14px;">mail</i></a></td>
                             </tr>
                             @endforeach
                         </tbody>

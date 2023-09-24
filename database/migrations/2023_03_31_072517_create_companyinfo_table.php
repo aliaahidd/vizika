@@ -14,13 +14,17 @@ return new class extends Migration
         Schema::create('companyinfo', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('userID');
+            $table->bigInteger('staffID');
+            $table->string('mngtPICName');
+            $table->string('mngtPICEmail');
+            $table->string('safetyPICName');
+            $table->string('safetyPICEmail');
             $table->string('companyName');
             $table->string('companyRegNo');
             $table->string('companyEmail');
             $table->string('companyPhoneNo');
             $table->string('companyAddress');
             $table->string('companyIndustries');
-            $table->string('phonenoPIC');
             $table->timestamps();
         });
     }

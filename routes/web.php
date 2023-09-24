@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,6 +21,8 @@ use Illuminate\Http\Request;
 Route::get('/', function () {
     if ($user = Auth::user()) {
         //if login
+        Artisan::call('GenerateSafetyBriefingSlots');
+        Artisan::call('DeleteExpiredSafetyBriefing');
         return redirect('/dashboard');
     } else {
         //if not login
@@ -38,7 +41,11 @@ Route::get('/register-contractor', function () {
 
 Route::get('/register-company', function () {
     Auth::logout();
-    return view('auth.register_company');
+    $stafflist = DB::table('users')
+        ->where('category', 'Staff')
+        ->orderBy('name', 'asc')
+        ->get();
+    return view('auth.register_company', compact('stafflist'));
 })->name('logincompany');
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home'); //nama kat url link / nama function / nama panggil kat interface
@@ -206,6 +213,8 @@ Route::get('/Update-Validity-Pass/{id}', [App\Http\Controllers\BriefingControlle
 Route::get('/Delete-participant/{id}', [App\Http\Controllers\BriefingController::class, 'deleterecord'])->name('deleterecord');
 //expiry pass list 
 Route::get('/Expiry-Pass-List', [App\Http\Controllers\BriefingController::class, 'expirypasslist'])->name('expirypasslist');
+//email expired pass 
+Route::get('/Email-Expired-Pass/{id}', [App\Http\Controllers\BriefingController::class, 'emailExpiredPass'])->name('emailExpiredPass');
 //book briefing
 Route::get('/Book-Briefing', [App\Http\Controllers\BriefingController::class, 'bookbriefing'])->name('bookbriefing');
 

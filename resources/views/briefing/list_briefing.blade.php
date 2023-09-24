@@ -2,9 +2,11 @@
 
 @section('content')
 <div class="page-header row no-gutters pb-4">
-    <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
+    <div class="col-12 col-sm-6 text-center text-sm-left mb-0">
         <h1 class="page-title mb-3">Safety Briefing</h1>
         <h6>List Briefing</h6>
+        <h6>List below shows 30 days of safety briefing slot from current date.</h6>
+
     </div>
 </div>
 

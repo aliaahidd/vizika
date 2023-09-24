@@ -67,6 +67,12 @@
 
                     @if( auth()->user()->category== "SHEQ Officer")
                     <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('logvisitor*') ? 'active' : '' }}" href="{{ route('logvisitor') }}">
+                            <i class="material-icons">book</i>
+                            <span>Visitor Log</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('briefing*') ? 'active' : '' }}" data-toggle="collapse" data-target="#approvalSubMenu">
                             <i class="material-icons">event</i>
                             <span>Approval</span>
@@ -77,7 +83,7 @@
                                     <a class="nav-link {{ request()->routeIs('registeredby') ? 'active' : '' }}" href="{{ route('registeredby') }}">Registration Approval</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link {{ request()->routeIs('editprofileapproval') ? 'active' : '' }}" href="{{ route('editprofileapproval') }}">Edit Profile Approval</a>
+                                    <a class="nav-link {{ request()->routeIs('editprofileapproval') ? 'active' : '' }}" href="{{ route('editprofileapproval') }}">Update Profile Approval</a>
                                 </li>
                             </ul>
                         </div>
@@ -164,6 +170,12 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('logvisitor*') ? 'active' : '' }}" href="#">
+                            <i class="material-icons">search</i>
+                            <span>Find Match</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('appointment*') ? 'active' : '' }}" data-toggle="collapse" data-target="#appointmentSubMenu">
                             <i class="material-icons">event</i>
                             <span>Appointment</span>
@@ -178,6 +190,12 @@
                                 </li>
                             </ul>
                         </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('calendar*') ? 'active' : '' }}" href="{{ route('calendar') }}">
+                            <i class="material-icons">event</i>
+                            <span>Calendar</span>
+                        </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('qrcode*') ? 'active' : '' }}" href="{{ route('qrcode') }}">

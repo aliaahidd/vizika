@@ -4,6 +4,7 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use App\Console\Commands\DeleteExpiredSafetyBriefing;
 use App\Console\Commands\GenerateSafetyBriefingSlots;
 
 class Kernel extends ConsoleKernel
@@ -16,7 +17,11 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')->hourly();
         $schedule->command(GenerateSafetyBriefingSlots::class)
             ->timezone('Asia/Kuala_Lumpur') // Set the time zone
-            ->dailyAt('00:00'); // Adjust the time as needed
+            ->dailyAt('22:54'); // Adjust the time as needed
+
+        $schedule->command(DeleteExpiredSafetyBriefing::class)
+            ->timezone('Asia/Kuala_Lumpur')
+            ->dailyAt('22:54'); // Adjust the time as needed
     }
 
     /**

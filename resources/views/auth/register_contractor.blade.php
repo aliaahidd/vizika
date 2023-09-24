@@ -15,7 +15,13 @@
                             <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('IC No / Passport No') }}</label>
 
                             <div class="col-md-6">
-                                <input id="name" type="text" class="form-control" name="icNo">
+                                <input id="name" type="text" class="form-control @error('icNo') is-invalid @enderror" name="icNo" value="{{ old('icNo') }}" required autocomplete="icNo" autofocus>
+
+                                @error('icNo')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
                             </div>
                         </div>
 
@@ -23,7 +29,7 @@
                             <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Email Address') }}</label>
 
                             <div class="col-md-6">
-                                <input id="email" type="text" class="form-control" name="email">
+                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
 
                                 @error('email')
                                 <span class="invalid-feedback" role="alert">
