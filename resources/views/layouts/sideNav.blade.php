@@ -170,7 +170,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('logvisitor*') ? 'active' : '' }}" href="#">
+                        <a class="nav-link {{ request()->routeIs('logvisitor*') ? 'active' : '' }}" href="{{ route('findMatch') }}">
                             <i class="material-icons">search</i>
                             <span>Find Match</span>
                         </a>

@@ -141,6 +141,25 @@ class BiometricController extends Controller
         ]);
     }
 
+    public function findMatch()
+    {
+
+        return view('biometric.biometric');
+    }
+
+    public function fetchDataLabel()
+    {
+        // Fetch data from the database, assuming you have a 'your_table_name' table with a 'column_name' column
+
+        $data = DB::table('users')
+            ->join('biometricinfo', 'users.id', '=', 'biometricinfo.userID')
+            ->select('users.name', 'biometricinfo.facialRecognition') // Replace 'column_name' with the actual column name from biometricInfo
+            ->where('users.category', '=', 'Contractor')
+            ->get();
+
+        return response()->json($data);
+    }
+
     public function getUserInformation($userID)
     {
         $user = DB::table('users')

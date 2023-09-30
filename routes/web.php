@@ -281,6 +281,11 @@ Route::post('/save-image', [App\Http\Controllers\BiometricController::class, 'sa
 Route::get('/Scan-Biometric/{id}', [App\Http\Controllers\BiometricController::class, 'scanBiometric'])->name('scanBiometric');
 //get data from scan image
 Route::get('/getPhoto/{userID}', [App\Http\Controllers\BiometricController::class, 'getUserInformation']);
+//scan biometric page
+Route::get('/Find-Match', [App\Http\Controllers\BiometricController::class, 'findMatch'])->name('findMatch');
+//fetch data
+Route::get('/fetch-data-label', [App\Http\Controllers\BiometricController::class, 'fetchDataLabel'])->name('fetchDataLabel');
+
 
 //QR CODE FOR VISITOR WITHOUT INVITATION
 //qr code for visitor that come without appointment
