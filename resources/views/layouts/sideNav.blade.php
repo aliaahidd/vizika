@@ -170,10 +170,20 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('logvisitor*') ? 'active' : '' }}" href="{{ route('findMatch') }}">
+                        <a class="nav-link {{ request()->routeIs('findMatch*') ? 'active' : '' }}" data-toggle="collapse" data-target="#findMatchSubMenu">
                             <i class="material-icons">search</i>
                             <span>Find Match</span>
                         </a>
+                        <div class="collapse" id="findMatchSubMenu" style="margin-left: 20px">
+                            <ul class="nav flex-column">
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('userlist') ? 'active' : '' }}" href="{{ route('userlist') }}">Search Profile</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('findMatch') ? 'active' : '' }}" href="{{ route('findMatch') }}">Scan Profile</a>
+                                </li>
+                            </ul>
+                        </div>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('appointment*') ? 'active' : '' }}" data-toggle="collapse" data-target="#appointmentSubMenu">

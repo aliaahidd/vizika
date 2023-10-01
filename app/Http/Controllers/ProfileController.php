@@ -105,7 +105,12 @@ class ProfileController extends Controller
             ->orderBy('name', 'asc')
             ->get();
 
-        return view('profile.user_list', compact('visitorlist'));
+        $contractorlist = DB::table('users')
+            ->where('category', 'Contractor')
+            ->orderBy('name', 'asc')
+            ->get();
+
+        return view('profile.user_list', compact('visitorlist', 'contractorlist'));
     }
 
     //choose visitor form page (registered by staff)
@@ -666,17 +671,7 @@ class ProfileController extends Controller
             return redirect()->route('bookbriefing');
         }
 
-        $publicFolderPath = public_path('assets/' . Auth::user()->name);
-
-        // Create the folder
-        try {
-            if (!is_dir($publicFolderPath)) {
-                mkdir($publicFolderPath, 0755, true);
-            }
-        } catch (\Exception $e) {
-            return "An error occurred: " . $e->getMessage();
-        }
-
+        
         $userStatus = User::where('id', $id)->first();
         $userStatus->status = 'Pending';
         $userStatus->update();
@@ -726,6 +721,17 @@ class ProfileController extends Controller
 
         // insert query
         DB::table('contractorinfo')->insert($data);
+
+        $publicFolderPath = public_path('assets/' . $name);
+
+        // Create the folder
+        try {
+            if (!is_dir($publicFolderPath)) {
+                mkdir($publicFolderPath, 0755, true);
+            }
+        } catch (\Exception $e) {
+            return "An error occurred: " . $e->getMessage();
+        }
 
         return redirect()->route('bookbriefing');
     }

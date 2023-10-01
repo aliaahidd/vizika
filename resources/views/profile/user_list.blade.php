@@ -5,7 +5,7 @@
 <div class="page-header row no-gutters pb-4">
     <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
         <h1 class="page-title mb-3">View Registered User</h1>
-        <h6>List Visitor & Contractor</h6>
+        <h6>List Users</h6>
     </div>
 </div>
 
@@ -59,6 +59,28 @@
                     </tbody>
                 </table>
 
+                @elseif( auth()->user()->category== "SHEQ Guard")
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Type</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($contractorlist As $key=>$data)
+                        <tr id="row{{$data->id}}">
+                            <td>{{ $data->id }}</td>
+                            <td>{{ $data->name }}</td>
+                            <td>{{ $data->email }}</td>
+                            <td>{{ $data->category }}</td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+
                 @endif
                 <!-- FOR STAFF TO VIEW RECORD APPOINTNMENT LIST END -->
             </div>
@@ -83,7 +105,7 @@
             ],
             "language": {
                 search: '<i class="fa fa-search" aria-hidden="true"></i>',
-                searchPlaceholder: 'Search Visitor Contractor'
+                searchPlaceholder: 'Search User'
             }
         });
 
