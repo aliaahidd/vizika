@@ -73,6 +73,22 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('findMatch*') ? 'active' : '' }}" data-toggle="collapse" data-target="#findMatchSubMenu">
+                            <i class="material-icons">search</i>
+                            <span>Find Match</span>
+                        </a>
+                        <div class="collapse" id="findMatchSubMenu" style="margin-left: 20px">
+                            <ul class="nav flex-column">
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('userlist') ? 'active' : '' }}" href="{{ route('userlist') }}">Search Profile</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('findMatch') ? 'active' : '' }}" href="{{ route('findMatch') }}">Scan Profile</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('briefing*') ? 'active' : '' }}" data-toggle="collapse" data-target="#approvalSubMenu">
                             <i class="material-icons">event</i>
                             <span>Approval</span>
@@ -154,6 +170,41 @@
                             </ul>
                         </div>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('qrcode*') ? 'active' : '' }}" href="{{ route('qrcode') }}">
+                            <i class="material-icons">qr_code_scanner</i>
+                            <span>QR Code</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('contractortransport*') ? 'active' : '' }}" data-toggle="collapse" data-target="#contractorSubMenu">
+                            <i class="material-icons">person</i>
+                            <span>Contractor</span>
+                        </a>
+                        <div class="collapse" id="contractorSubMenu" style="margin-left: 20px">
+                            <ul class="nav flex-column">
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('contractortransport') ? 'active' : '' }}" href="{{ route('contractortransport') }}">Transport Registration</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('transport*') ? 'active' : '' }}" data-toggle="collapse" data-target="#transportSubMenu">
+                            <i class="material-icons">local_shipping</i>
+                            <span>Transport</span>
+                        </a>
+                        <div class="collapse" id="transportSubMenu" style="margin-left: 20px">
+                            <ul class="nav flex-column">
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('transportvehicle') ? 'active' : '' }}" href="{{ route('transportvehicle') }}">Vehicle</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('transportInspection') ? 'active' : '' }}" href="{{ route('transportInspection') }}">Transport Inspection</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
                     <!-- <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('company*') ? 'active' : '' }}" href="{{ route('company') }}">
                             <i class="material-icons">corporate_fare</i>
@@ -186,6 +237,22 @@
                         </div>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('briefing*') ? 'active' : '' }}" data-toggle="collapse" data-target="#approvalSubMenu">
+                            <i class="material-icons">event</i>
+                            <span>Approval</span>
+                        </a>
+                        <div class="collapse" id="approvalSubMenu" style="margin-left: 20px">
+                            <ul class="nav flex-column">
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('registeredby') ? 'active' : '' }}" href="{{ route('registeredby') }}">Registration Approval</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('editprofileapproval') ? 'active' : '' }}" href="{{ route('editprofileapproval') }}">Update Profile Approval</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('appointment*') ? 'active' : '' }}" data-toggle="collapse" data-target="#appointmentSubMenu">
                             <i class="material-icons">event</i>
                             <span>Appointment</span>
@@ -206,6 +273,22 @@
                             <i class="material-icons">event</i>
                             <span>Calendar</span>
                         </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('user*') ? 'active' : '' }}" data-toggle="collapse" data-target="#visitorSubMenu">
+                            <i class="material-icons">person</i>
+                            <span>Users</span>
+                        </a>
+                        <div class="collapse" id="visitorSubMenu" style="margin-left: 20px">
+                            <ul class="nav flex-column">
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('useractive') ? 'active' : '' }}" href="{{ route('useractive') }}">Active User</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('userblacklist') ? 'active' : '' }}" href="{{ route('userblacklist') }}">Blacklist User</a>
+                                </li>
+                            </ul>
+                        </div>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('qrcode*') ? 'active' : '' }}" href="{{ route('qrcode') }}">

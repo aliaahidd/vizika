@@ -31,6 +31,10 @@
                 <div class="col videoScan">
                     <!-- Add a canvas element to display the video and overlay -->
                     <video id="video" autoplay muted></video>
+
+                </div>
+                <div class="col">
+                    <a class="btn btn-success" href="#">Next</a>
                 </div>
             </div>
         </div>
@@ -50,6 +54,8 @@
     ]).then(startVideo);
 
     async function startVideo() {
+        // Create a variable to store the detected person's label
+
         navigator.mediaDevices.getUserMedia({
                 video: true
             })
@@ -88,6 +94,8 @@
 
                 const results = resizedDetections.map(d => faceMatcher.findBestMatch(d.descriptor));
 
+                let detectedPersonLabel = '';
+
                 results.forEach((result, i) => {
                     const box = resizedDetections[i].detection.box;
                     const drawBox = new faceapi.draw.DrawBox(box, {
@@ -95,8 +103,18 @@
                     });
                     drawBox.draw(canvas);
 
+                    // Extract the label of the detected person
+                    const detectedLabel = result.toString();
+
+                    // Set the detected person's label to the variable
+                    detectedPersonLabel = detectedLabel;
 
                 });
+                // Construct the URL dynamically and set it as the href attribute
+                const nextButton = document.querySelector('.btn-success');
+                const baseUrl = '/nextButton'; // Replace with your actual Laravel route URL
+                const urlWithLabel = `${baseUrl}/${detectedPersonLabel}`;
+                nextButton.href = urlWithLabel;
             }, 100);
         });
     }

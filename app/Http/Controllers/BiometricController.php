@@ -160,6 +160,44 @@ class BiometricController extends Controller
         return response()->json($data);
     }
 
+    public function nextButton($name)
+    {
+        $cleanedName = preg_replace('/\(\d+(\.\d+)?\)/', '', $name);
+        $cleanedName = trim($cleanedName);
+
+        $usertype = DB::table('users')
+            ->where('name', $cleanedName)
+            ->first();
+
+        $visitor = DB::table('visitorinfo')
+            ->join('users', 'users.id', '=', 'visitorinfo.userID')
+            ->join('companyinfo', 'companyinfo.id', '=', 'visitorinfo.companyID')
+            ->join('biometricinfo', 'biometricinfo.userID', '=', 'users.id')
+            ->select([
+                'users.id AS sessionID',
+                'companyinfo.id AS companyID',
+                'visitorinfo.id AS visitID', 'users.*', 'visitorinfo.*', 'companyinfo.*', 'biometricinfo.*'
+            ])
+            ->where('users.name', $cleanedName)
+            ->first();
+
+        $contractor = DB::table('contractorinfo')
+            ->join('users', 'users.id', '=', 'contractorinfo.userID')
+            ->join('companyinfo', 'companyinfo.id', '=', 'contractorinfo.companyID')
+            ->join('biometricinfo', 'biometricinfo.userID', '=', 'users.id')
+            ->leftJoin('briefingsession', 'briefingsession.contractorID', '=', 'users.id')
+            ->leftJoin('safetybriefinginfo', 'safetybriefinginfo.id', '=', 'briefingsession.briefingID')
+            ->select([
+                'users.id AS sessionID',
+                'companyinfo.id AS companyID',
+                'contractorinfo.id AS contID', 'users.*', 'contractorinfo.*', 'companyinfo.*', 'biometricinfo.*', 'briefingsession.*', 'safetybriefinginfo.*'
+            ])
+            ->where('users.name', $cleanedName)
+            ->first();
+
+        return view('profile.profile_registered', compact('usertype', 'visitor', 'contractor'));
+    }
+
     public function getUserInformation($userID)
     {
         $user = DB::table('users')

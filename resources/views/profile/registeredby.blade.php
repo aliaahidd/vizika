@@ -40,7 +40,7 @@
             </div>
             <div class="table-responsive">
                 <!-- FOR STAFF TO VIEW RECORD APPOINTMENT LIST START -->
-                @if( auth()->user()->category== "SHEQ Officer")
+                @if( auth()->user()->category== "SHEQ Officer" || auth()->user()->category== "SHEQ Guard")
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                         <tr>

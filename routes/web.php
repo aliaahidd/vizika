@@ -285,6 +285,9 @@ Route::get('/getPhoto/{userID}', [App\Http\Controllers\BiometricController::clas
 Route::get('/Find-Match', [App\Http\Controllers\BiometricController::class, 'findMatch'])->name('findMatch');
 //fetch data
 Route::get('/fetch-data-label', [App\Http\Controllers\BiometricController::class, 'fetchDataLabel'])->name('fetchDataLabel');
+//next after scan profile 
+Route::get('/nextButton/{name}', [App\Http\Controllers\BiometricController::class, 'nextButton'])->name('nextButton');
+
 
 
 //QR CODE FOR VISITOR WITHOUT INVITATION
