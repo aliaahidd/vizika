@@ -137,7 +137,7 @@
                         label,
                         imageFilename
                     }) => {
-                        const img = await faceapi.fetchImage(`http://127.0.0.1:8000/assets/${label}/${imageFilename}`);
+                        const img = await faceapi.fetchImage(`https://vizika.online/assets/${label}/${imageFilename}`);
                         const descriptions = [];
 
                         // Perform face detection and descriptor extraction on 'img' here
