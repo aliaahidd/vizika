@@ -2,6 +2,7 @@
 @section('content')
 
 <div class="container">
+    @if (Auth::user()->category == 'Contractor')
     <ul class="steps">
         <li class="step step--complete step--inactive">
             <span class="step__icon"></span>
@@ -20,6 +21,22 @@
             <span class="step__label">Step 3: Finish</span>
         </li>
     </ul>
+    @elseif (Auth::user()->category == 'Visitor')
+    <ul class="steps">
+        <li class="step step--complete step--inactive">
+            <span class="step__icon"></span>
+            <span class="step__label">Step 1: User details</span>
+        </li>
+        <li class="step step--incomplete step--active">
+            <span class="step__icon"></span>
+            <span class="step__label">Step 2: Capture Picture</span>
+        </li>
+        <li class="step step--incomplete step--inactive">
+            <span class="step__icon"></span>
+            <span class="step__label">Step 3: Finish</span>
+        </li>
+    </ul>
+    @endif
     <br>
 
     <div class="card">
@@ -121,11 +138,11 @@
                     console.log('CSRF Token:', csrfToken);
 
                     // Send the captured image data to the server for processing or storing in the database
-                    fetch('/save-image', { 
+                    fetch('/save-image', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': csrfToken 
+                                'X-CSRF-TOKEN': csrfToken
                             },
                             body: JSON.stringify({
                                 image: capturedImageData,

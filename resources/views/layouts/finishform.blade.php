@@ -7,7 +7,7 @@
 </form>
 @section('content')
 <div class="container">
-    @if( auth()->user()->category != "Company")
+    @if( Auth::user()->category == 'Contractor')
     <ul class="steps">
         <li class="step step--complete step--inactive">
             <span class="step__icon"></span>
@@ -22,6 +22,21 @@
             <span class="step__label">Step 3: Capture Picture</span>
         </li>
         <li class="step step--incomplete step--active">
+            <span class="step__icon"></span>
+            <span class="step__label">Step 3: Finish</span>
+        </li>
+    </ul>
+    @elseif (Auth::user()->category == 'Visitor')
+    <ul class="steps">
+        <li class="step step--complete step--inactive">
+            <span class="step__icon"></span>
+            <span class="step__label">Step 1: User details</span>
+        </li>
+        <li class="step step--incomplete step--active">
+            <span class="step__icon"></span>
+            <span class="step__label">Step 2: Capture Picture</span>
+        </li>
+        <li class="step step--incomplete step--inactive">
             <span class="step__icon"></span>
             <span class="step__label">Step 3: Finish</span>
         </li>

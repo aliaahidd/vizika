@@ -33,7 +33,7 @@ class AppointmentController extends Controller
                 'appointmentinfo.id AS appointID', 'staff.*', 'appointmentinfo.*', 'laptopinfo.*',
                 'companyinfo.companyName AS companyName' // Select the company name using an alias
             ])
-            ->where('staffID', Auth::user()->id)
+            ->where('staff.id', Auth::user()->id)
             ->orderBy('appointmentinfo.id', 'desc')
             ->get();
 

@@ -39,6 +39,14 @@ Route::get('/register-contractor', function () {
     return view('auth.register_contractor', compact('companylist'));
 })->name('loginuser');
 
+Route::get('/register-visitor-form', function () {
+    Auth::logout();
+    $companylist = DB::table('companyinfo')
+        ->orderBy('companyName', 'asc')
+        ->get();
+    return view('auth.register_visitor', compact('companylist'));
+})->name('loginuser');
+
 Route::get('/register-company', function () {
     Auth::logout();
     $stafflist = DB::table('users')
@@ -73,6 +81,8 @@ Route::get('/Profile/Edit-Profile/{id}', [App\Http\Controllers\ProfileController
 Route::get('/User-List', [App\Http\Controllers\ProfileController::class, 'userlist'])->name('userlist');
 //registration approval by officer
 Route::get('/Registered-List', [App\Http\Controllers\ProfileController::class, 'registeredby'])->name('registeredby');
+//registration approval by officer
+Route::get('/Registered-List-Visitor', [App\Http\Controllers\ProfileController::class, 'registeredbyvisitor'])->name('registeredbyvisitor');
 //registration approval by officer
 Route::get('/Edit-Profile-Approval-List', [App\Http\Controllers\ProfileController::class, 'editprofileapproval'])->name('editprofileapproval');
 //view detail for approval from staff

@@ -4,7 +4,7 @@
 <!-- Page Header -->
 <div class="page-header row no-gutters pb-4">
     <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
-        <h1 class="page-title mb-3">Registration Approval Contractor</h1>
+        <h1 class="page-title mb-3">Registration Approval Visitor</h1>
         <h6>Registration Approval List</h6>
     </div>
 </div>
@@ -51,7 +51,6 @@
                             <th>Name</th>
                             <th>Email</th>
                             <th>Type</th>
-                            <th>Booking Slot</th>
                             <th>Status</th>
                             <th>Action</th>
                         </tr>
@@ -63,13 +62,6 @@
                             <td>{{ $data->name }}</td>
                             <td>{{ $data->email }}</td>
                             <td>{{ $data->category }}</td>
-                            <td>
-                                @if ($data->passExpiryDate != NULL)
-                                {{ $data->passExpiryDate }}
-                                @else
-                                {{ $data->briefingDate }} ({{ $data->briefingTimeStart }} - {{ $data->briefingTimeEnd }})
-                                @endif
-                            </td>
                             @if( $data->status == 'Registered')
                             <td>
                                 <div style="background-color: #dff0fa; border-radius: 10px; display: flex; justify-content: center; align-items: center; margin: auto; width: 100px">

@@ -32,17 +32,8 @@
                     <div class="row mb-">
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="companyName" class="col-form-label text-md-end">{{ __('Company Name') }}<span style="color: red; margin-left: 5px">*</span></label>
-                                <select id="companyName" class="form-control" name="companyID" required>
-                                    <option value="">Please select</option>
-                                    @foreach ($companylist as $data)
-                                    <option value="{{ $data->id }}">{{ $data->companyName }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label for="icNo" class="col-form-label text-md-end">{{ __('IC No. / Passport No.') }}<span style="color: red; margin-left: 5px">*</span></label>
-                                <input id="icNo" type="text" class="form-control" name="icNo" placeholder="Ic Number / Passport Number" required autofocus>
+                                <label for="name" class="col-form-label text-md-end">{{ __('Name') }}<span style="color: red; margin-left: 5px">*</span></label>
+                                <input id="name" type="text" class="form-control" name="name" placeholder="Name" required autofocus>
                             </div>
                             <div class="mb-3">
                                 <label for="employeeNo" class="col-form-label text-md-end">{{ __('Employee ID') }}<span style="color: red; margin-left: 5px">*</span></label>

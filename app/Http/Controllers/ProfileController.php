@@ -135,6 +135,25 @@ class ProfileController extends Controller
         return view('profile.registeredby', compact('visitorlist'));
     }
 
+    public function registeredbyvisitor()
+    {
+        $id = Auth::user()->id;
+
+        $visitorlist = DB::table('visitorinfo')
+            ->join('users', 'users.id', '=', 'visitorinfo.userID')
+            ->join('companyinfo', 'companyinfo.id', '=', 'visitorinfo.companyID')
+            ->join('biometricinfo', 'biometricinfo.userID', '=', 'users.id')
+            ->select([
+                'users.id AS sessionID',
+                'companyinfo.id AS companyID',
+                'visitorinfo.id AS contID', 'users.*', 'visitorinfo.*', 'companyinfo.*', 'biometricinfo.*'
+            ])
+            ->where('status', 'Pending')
+            ->get();
+
+        return view('profile.registeredbyvisitor', compact('visitorlist'));
+    }
+
     //list name edit profile approval 
     public function editprofileapproval()
     {
@@ -346,11 +365,13 @@ class ProfileController extends Controller
     //register visitor (by staff)
     public function registervisitor(Request $request)
     {
-        // create visitor account 
-        // get user auth
-        $name = $request->input('name');
+        $request->validate([
+            'icNo' => ['required', 'string', 'max:255', new UniqueICNumber],
+            'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')],
+        ]);
+
+        $icNo = $request->input('icNo');
         $email = $request->input('email');
-        $category = $request->input('category');
         $password = $request->input('password');
         $companyID = $request->input('companyID');
 
@@ -359,22 +380,12 @@ class ProfileController extends Controller
             return redirect()->back()->with('success', 'Email already exists');
         }
 
-        $publicFolderPath = public_path('assets/' . $name);
-
-        // Create the folder
-        try {
-            if (!is_dir($publicFolderPath)) {
-                mkdir($publicFolderPath, 0755, true);
-            }
-        } catch (\Exception $e) {
-            return "An error occurred: " . $e->getMessage();
-        }
-
         $data = array(
-            'name' => $name,
+            'icNo' => $icNo,
+            'name' => 'Default',
             'email' => $email,
             'password' => Hash::make($password),
-            'category' => $category,
+            'category' => 'Visitor',
             'status' => 'Pending',
             'companyID' => $companyID,
         );
@@ -383,7 +394,7 @@ class ProfileController extends Controller
         DB::table('users')->insert($data);
 
         sleep(1);
-        return redirect()->route('login');
+        return redirect()->route('login')->with('success', 'Registration successful. Please login with your credentials.');
     }
 
     //register contractor
@@ -794,7 +805,7 @@ class ProfileController extends Controller
             // }
 
             $visitorinfo->companyID = $request->input('companyID');
-            $visitorinfo->icNo = $request->input('icNo');
+            //$visitorinfo->icNo = $request->input('icNo');
             $visitorinfo->phoneNo = $request->input('phoneNo');
             $visitorinfo->employeeNo = $request->input('employeeNo');
             $visitorinfo->occupation = $request->input('occupation');
@@ -813,7 +824,7 @@ class ProfileController extends Controller
 
         $employeeNo = $request->input('employeeNo');
         $companyID = $request->input('companyID');
-        $icNo = $request->input('icNo');
+        $name = $request->input('name');
         $occupation = $request->input('occupation');
         $phonenumber = $request->input('phoneNo');
         $birthDate = $request->input('birthDate');
@@ -828,11 +839,17 @@ class ProfileController extends Controller
         // // to store the file by moving to assets folder
         // $passportPhoto->move('assets/' . $name, $filename);
 
+        $userinfo = User::where('id', $id)->first();
+        $userinfo->name = $request->input('name');
+
+        // upadate query in the database
+        $userinfo->update();
+
         $data = array(
             'userID' => $id,
             'employeeNo' => $employeeNo,
-            'companyID' => $companyID,
-            'icNo' => $icNo,
+            'companyID' => $userinfo->companyID,
+            //'icNo' => $icNo,
             'occupation' => $occupation,
             'phoneNo' => $phonenumber,
             'birthDate' => $birthDate,
@@ -842,6 +859,17 @@ class ProfileController extends Controller
 
         // insert query
         DB::table('visitorinfo')->insert($data);
+
+        $publicFolderPath = public_path('assets/' . $name);
+
+        // Create the folder
+        try {
+            if (!is_dir($publicFolderPath)) {
+                mkdir($publicFolderPath, 0755, true);
+            }
+        } catch (\Exception $e) {
+            return "An error occurred: " . $e->getMessage();
+        }
 
         return redirect()->route('registerBiometric');
     }
